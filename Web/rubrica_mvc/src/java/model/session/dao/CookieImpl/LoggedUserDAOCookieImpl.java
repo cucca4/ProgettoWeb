@@ -20,13 +20,11 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO {
   @Override
   public LoggedUser create(
           Long userId,
-          String firstname,
-          String surname) {
+          String username ){
 
     LoggedUser loggedUser = new LoggedUser();
     loggedUser.setUserId(userId);
-    loggedUser.setFirstname(firstname);
-    loggedUser.setSurname(surname);
+    loggedUser.setUsername(username);
 
     Cookie cookie;
     cookie = new Cookie("loggedUser", encode(loggedUser));
@@ -79,7 +77,7 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO {
   private String encode(LoggedUser loggedUser) {
 
     String encodedLoggedUser;
-    encodedLoggedUser = loggedUser.getUserId() + "#" + loggedUser.getFirstname() + "#" + loggedUser.getSurname();
+    encodedLoggedUser = loggedUser.getUserId() + "#" + loggedUser.getUsername();
     return encodedLoggedUser;
 
   }
@@ -91,8 +89,8 @@ public class LoggedUserDAOCookieImpl implements LoggedUserDAO {
     String[] values = encodedLoggedUser.split("#");
 
     loggedUser.setUserId(Long.parseLong(values[0]));
-    loggedUser.setFirstname(values[1]);
-    loggedUser.setSurname(values[2]);
+    loggedUser.setUsername(values[1]);
+ 
 
     return loggedUser;
     

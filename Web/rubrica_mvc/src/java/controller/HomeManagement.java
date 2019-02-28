@@ -36,7 +36,9 @@ public class HomeManagement {
 
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
-
+      
+      if(loggedUser!=null) 
+           request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("viewUrl", "homeManagement/view");
@@ -75,11 +77,12 @@ public class HomeManagement {
       User user = userDAO.findByUsername(username);
 
       if (user == null || !user.getPassword().equals(password)) {
-        loggedUserDAO.destroy();
+        loggedUserDAO.destroy(); //distrugge il cookie perche l'utente/password sono errati
         applicationMessage = "Username e password errati!";
         loggedUser=null;
       } else {
-        loggedUser = loggedUserDAO.create(user.getUserId(), user.getFirstname(), user.getSurname());
+        loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
+        applicationMessage="Benvenuto " + loggedUser.getUsername();
       }
 
       daoFactory.commitTransaction(); //IMPORTANTISSIMA

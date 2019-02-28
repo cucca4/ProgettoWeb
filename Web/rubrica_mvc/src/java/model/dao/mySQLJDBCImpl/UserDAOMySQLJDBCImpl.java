@@ -103,7 +103,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     
     User user = new User();
     try {
-      user.setUserId(rs.getLong("ID_U"));
+      user.setUserId(rs.getLong("userId"));
     } catch (SQLException sqle) {
     }
     try {
@@ -118,8 +118,29 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       user.setFirstname(rs.getString("firstname"));
     } catch (SQLException sqle) {
     }
+    
     try {
       user.setSurname(rs.getString("surname"));
+    } catch (SQLException sqle) {
+    }
+   
+    try {
+      user.setEmail(rs.getString("email"));
+    } catch (SQLException sqle) {
+    }
+   
+    try {
+      user.setAddress(rs.getString("address"));
+    } catch (SQLException sqle) {
+    }
+   
+    try {
+      user.setCity(rs.getString("city"));
+    } catch (SQLException sqle) {
+    }
+   
+    try {
+      user.setCap(rs.getString("cap"));
     } catch (SQLException sqle) {
     }
    

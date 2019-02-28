@@ -3,31 +3,24 @@ package model.session.mo;
 public class LoggedUser {
   
   private Long userId;
-  private String firstname;
-  private String surname;
+  private String username;
 
-  public Long getUserId() {
-    return userId;
-  }
+    public Long getUserId() {
+        return userId;
+    }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-  public String getFirstname() {
-    return firstname;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
-  }
-
-  public String getSurname() {
-    return surname;
-  }
-
-  public void setSurname(String surname) {
-    this.surname = surname;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+  
+  
   
 }
