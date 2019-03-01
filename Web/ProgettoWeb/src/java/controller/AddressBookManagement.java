@@ -10,15 +10,15 @@ import services.config.Configuration;
 import services.logservice.LogService;
 
 import model.mo.User;
-import model.mo.Contact;
+import model.mo.Admin;
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
-import model.dao.ContactDAO;
 import model.dao.exception.DuplicatedObjectException;
 
 import model.session.mo.LoggedUser;
 import model.session.dao.SessionDAOFactory;
 import model.session.dao.LoggedUserDAO;
+import model.dao.AdminDAO;
 
 public class AddressBookManagement {
 
@@ -97,8 +97,8 @@ public class AddressBookManagement {
 
       Long contactId = new Long(request.getParameter("contactId"));
 
-      ContactDAO contactDAO = daoFactory.getContactDAO();
-      Contact contact = contactDAO.findByContactId(contactId);
+      AdminDAO contactDAO = daoFactory.getContactDAO();
+      Admin contact = contactDAO.findByContactId(contactId);
       contactDAO.delete(contact);
 
       commonView(daoFactory, sessionDAOFactory, request);
@@ -182,7 +182,7 @@ public class AddressBookManagement {
       UserDAO userDAO = daoFactory.getUserDAO();
       User user = userDAO.findByUserId(loggedUser.getUserId());
       
-      ContactDAO contactDAO = daoFactory.getContactDAO();
+      AdminDAO contactDAO = daoFactory.getContactDAO();
 
       try {
 
@@ -253,8 +253,8 @@ public class AddressBookManagement {
       String selectedInitial = request.getParameter("selectedInitial");
       Long contactId = new Long(request.getParameter("contactId"));
 
-      ContactDAO contactDAO = daoFactory.getContactDAO();
-      Contact contact = contactDAO.findByContactId(contactId);
+      AdminDAO contactDAO = daoFactory.getContactDAO();
+      Admin contact = contactDAO.findByContactId(contactId);
 
       daoFactory.commitTransaction();
 
@@ -305,8 +305,8 @@ public class AddressBookManagement {
       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
       daoFactory.beginTransaction();
 
-      ContactDAO contactDAO = daoFactory.getContactDAO();
-      Contact contact = contactDAO.findByContactId(new Long(request.getParameter("contactId")));
+      AdminDAO contactDAO = daoFactory.getContactDAO();
+      Admin contact = contactDAO.findByContactId(new Long(request.getParameter("contactId")));
 
       contact.setFirstname(request.getParameter("firstname"));
       contact.setSurname(request.getParameter("surname"));
@@ -358,7 +358,7 @@ public class AddressBookManagement {
   private static void commonView(DAOFactory daoFactory, SessionDAOFactory sessionDAOFactory, HttpServletRequest request) {
 
     List<String> initials;
-    List<Contact> contacts;
+    List<Admin> contacts;
 
     LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
     LoggedUser loggedUser = loggedUserDAO.find();
@@ -366,7 +366,7 @@ public class AddressBookManagement {
     UserDAO userDAO = daoFactory.getUserDAO();
     User user = userDAO.findByUserId(loggedUser.getUserId());
 
-    ContactDAO contactDAO = daoFactory.getContactDAO();
+    AdminDAO contactDAO = daoFactory.getContactDAO();
     initials = contactDAO.findInitialsByUser(user);
 
     String selectedInitial = request.getParameter("selectedInitial");

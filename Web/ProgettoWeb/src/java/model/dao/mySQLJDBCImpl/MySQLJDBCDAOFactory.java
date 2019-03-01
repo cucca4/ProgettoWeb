@@ -8,7 +8,7 @@ import services.config.Configuration;
 
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
-import model.dao.ContactDAO;
+import model.dao.AdminDAO;
 
 public class MySQLJDBCDAOFactory extends DAOFactory {
 
@@ -64,7 +64,7 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
   }
 
   @Override
-  public ContactDAO getContactDAO() {
-    return new ContactDAOMySQLJDBCImpl(connection);
+  public AdminDAO getContactDAO() {
+    return new AdminDAOMySQLJDBCImpl(connection);
   }
 }

@@ -9,6 +9,10 @@ public interface UserDAO {
           String password,
           String firstname,
           String surname,
+          String email,
+          String address,
+          String city,
+          String cap,
           String languageCode);
 
   public void update(User user);

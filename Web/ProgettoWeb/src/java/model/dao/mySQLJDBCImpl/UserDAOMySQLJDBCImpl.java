@@ -17,9 +17,62 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   public UserDAOMySQLJDBCImpl(Connection conn) {
     this.conn = conn;
   }
-
+      
+    User read(ResultSet rs){
+        
+        User user = new User();
+        try {
+            user.setUserId(rs.getLong("userId"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setUsername(rs.getString("username"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setPassword(rs.getString("password"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setFirstname(rs.getString("firstname"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setSurname(rs.getString("surname"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setEmail(rs.getString("email"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setAddress(rs.getString("address"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setCity(rs.getString("city"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setCap(rs.getString("cap"));
+        } catch (SQLException sqle) {
+        }
+        try {
+            user.setDeleted(rs.getBoolean("deleted"));
+        } catch (SQLException sqle) {
+        }
+        return user;
+    }
   @Override
-  public User insert(String username, String password, String firstname, String surname, String languageCode) {
+  public User insert(String username,
+          String password,
+          String firstname,
+          String surname,
+          String email,
+          String address,
+          String city,
+          String cap,
+          String languageCode) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.  
   }
 
@@ -34,7 +87,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public User findByUserId(Long ID_U) {
+  public User findByUserId(Long userId) {
 
     PreparedStatement ps;
     User user = null;
@@ -45,10 +98,10 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
               = " SELECT * "
               + "   FROM user "
               + " WHERE "
-              + "   ID_U = ?";
+              + "   userId = ?";
 
       ps = conn.prepareStatement(sql);
-      ps.setLong(1, ID_U);
+      ps.setLong(1, userId);
 
       ResultSet resultSet = ps.executeQuery();
 
@@ -99,57 +152,4 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
   }  
   
-  User read(ResultSet rs) {
-    
-    User user = new User();
-    try {
-      user.setUserId(rs.getLong("userId"));
-    } catch (SQLException sqle) {
-    }
-    try {
-      user.setUsername(rs.getString("username"));
-    } catch (SQLException sqle) {
-    }
-    try {
-      user.setPassword(rs.getString("password"));
-    } catch (SQLException sqle) {
-    }
-    try {
-      user.setFirstname(rs.getString("firstname"));
-    } catch (SQLException sqle) {
-    }
-    
-    try {
-      user.setSurname(rs.getString("surname"));
-    } catch (SQLException sqle) {
-    }
-   
-    try {
-      user.setEmail(rs.getString("email"));
-    } catch (SQLException sqle) {
-    }
-   
-    try {
-      user.setAddress(rs.getString("address"));
-    } catch (SQLException sqle) {
-    }
-   
-    try {
-      user.setCity(rs.getString("city"));
-    } catch (SQLException sqle) {
-    }
-   
-    try {
-      user.setCap(rs.getString("cap"));
-    } catch (SQLException sqle) {
-    }
-   
-  
-    try {
-      user.setDeleted(rs.getString("deleted").equals("Y"));
-    } catch (SQLException sqle) {
-    }
-    return user;
-  }
-
 }
