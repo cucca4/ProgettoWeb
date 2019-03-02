@@ -81,7 +81,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
                       + "FROM product "
                       + "WHERE brand = ? AND "
                       + "model = ? AND "
-                      + "deleted = '0' ";
+                      + "deleted_Pr = '0' ";
 
                   ps = conn.prepareStatement(sql);
                   ps.setString(1, product.getBrand());
@@ -90,7 +90,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
                   resultSet = ps.executeQuery();
 
                   if(resultSet.next())
-                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un prodotto già esistente.");
+                      throw new DuplicatedObjectException("ProductDAOJDBCImpl.create: Tentativo di inserimento di un prodotto già esistente.");
                   
                   try {
                       sql
@@ -119,7 +119,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
                       ps.executeUpdate();
                   }
                   catch(SQLIntegrityConstraintViolationException e){
-                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un prodotto già esistente.");
+                      throw new DuplicatedObjectException("ProductDAOJDBCImpl.create: Tentativo di inserimento di un prodotto già esistente.");
                   }
               }
               catch(SQLException e)
@@ -129,30 +129,30 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
 
               return product;
         }
-    }
+    
  
 
-@Override
-public void update(Product product) throws DuplicatedObjectException{
-    PreparedStatement ps;
-    ResultSet resultSet;
-
+    @Override
+    public void update(Product product) throws DuplicatedObjectException{
+        PreparedStatement ps;
+    
         try {
 
             String sql;
             sql
-            + "     brand,"
-            + "     model,"
-            + "     description,"
-            + "     category,"
-            + "     price,"
-            + "     qty,"
-            + "   ) "
-            + " VALUES (?,?,?,?,?,?,?)";
+            ="UPDATE product"
+            +"SET "
+            + "     brand = ?, "
+            + "     model = ?, "
+            + "     description = ?, "
+            + "     category = ?, "
+            + "     price = ?, "
+            + "     qty = ?, "
+            + "WHERE "
+            +"Prod_Id = ?";
 
             ps = conn.prepareStatement(sql);
 
-            ps.setLong(1, product.getProd_Id());
             ps.setString(2,product.getBrand());
             ps.setString(3,product.getModel() );
             ps.setString(4, product.getDescription());
@@ -167,11 +167,11 @@ public void update(Product product) throws DuplicatedObjectException{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-}
+    }
 
-@Override
-public void delete(Product product){
-    PreparedStatement ps;
+    @Override
+    public void delete(Product product){
+        PreparedStatement ps;
 
         try {
 
@@ -183,7 +183,7 @@ public void delete(Product product){
 
             ps = conn.prepareStatement(sql);
 
-            ps.setLong(1, product.getProdId());
+            ps.setLong(1, product.getProd_Id());
 
             ps.executeUpdate();
             ps.close();
@@ -191,7 +191,7 @@ public void delete(Product product){
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-}
+    }
 
   @Override
   public Product findByProdId(Long prod_Id){
@@ -203,7 +203,7 @@ public void delete(Product product){
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE prod_Id = ?";
+                      + " WHERE Prod_Id = ?";
 
               ps = conn.prepareStatement(sq1);
               ps.setLong(1, prod_Id);
@@ -381,7 +381,7 @@ public void delete(Product product){
 
          return product;
 
-}
+    }
     
     
 }

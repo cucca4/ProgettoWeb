@@ -52,13 +52,56 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
     }
   
     @Override
-    public void update(Admin admin){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Admin admin) throws DuplicatedObjectException{
+        PreparedStatement ps;
+    
+        try {
+
+            String sql;
+            sql
+            ="UPDATE admin"
+            +"SET "
+            + "     username_Ad = ?, "
+            + "     psw_ad = ?, "
+            + "WHERE "
+            +"admin_Id = ?";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(2,admin.getUsername_Ad());
+            ps.setString(3,admin.getPassword_Ad() );
+            
+            ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     @Override
     public void delete(Admin admin){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement ps;
+
+        try {
+
+            String sql
+                    = "DELETE "
+                    + "FROM admin "
+                    + "WHERE "
+                    + "admin_Id = ? ";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setLong(1, admin.getAdmin_Id());
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
         public Admin findAdminByAdminId(Long id){
         PreparedStatement ps;
