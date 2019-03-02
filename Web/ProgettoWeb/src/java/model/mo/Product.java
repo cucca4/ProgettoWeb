@@ -3,7 +3,6 @@ package model.mo;
 
 public class Product {
     private Long Prod_Id;
-    private String name;
     private String brand;
     private String model;
     private String description;
@@ -18,14 +17,6 @@ public class Product {
 
     public void setProd_Id(Long Prod_Id) {
         this.Prod_Id = Prod_Id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getBrand() {

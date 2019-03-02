@@ -28,10 +28,6 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
         } catch (SQLException sqle) {
         }
         try {
-            product.setName(rs.getString("name"));
-        } catch (SQLException sqle) {
-        }
-        try {
             product.setBrand(rs.getString("brand"));
         } catch (SQLException sqle) {
         }
@@ -62,7 +58,6 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
   @Override
   public Product insert(
      Long Prod_Id,
-     String name,
      String brand,
      String model,
      String description,
@@ -74,7 +69,6 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
      PreparedStatement ps;
      ResultSet resultSet;
      Product product=new Product();
-     product.setName(name);
      product.setBrand(brand);
      product.setModel(model);
      product.setDescription(description);
@@ -84,34 +78,310 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
      try{
                   String sql;
                   sql = "SELECT * "
-                      + "FROM product ";
-                      
-                      
+                      + "FROM product "
+                      + "WHERE brand = ? AND "
+                      + "model = ? AND "
+                      + "deleted = '0' ";
 
                   ps = conn.prepareStatement(sql);
+                  ps.setString(1, product.getBrand());
+                  ps.setString(2, product.getModel());
+
                   resultSet = ps.executeQuery();
+
+                  if(resultSet.next())
+                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un prodotto già esistente.");
+                  
+                  try {
+                      sql
+                      = " INSERT INTO product "
+                      + "   ( Prod_id,"
+                      + "     brand,"
+                      + "     model,"
+                      + "     description,"
+                      + "     category,"
+                      + "     price,"
+                      + "     qty,"
+                      + "     deleted_Pr "
+                      + "   ) "
+                      + " VALUES (?,?,?,?,?,?,?,'0')";
+
+                      ps = conn.prepareStatement(sql);
+
+                      ps.setLong(1, product.getProd_Id());
+                      ps.setString(2,product.getBrand());
+                      ps.setString(3,product.getModel() );
+                      ps.setString(4, product.getDescription());
+                      ps.setString(5,product.getCategory());
+                      ps.setFloat (6,product.getPrice());
+                      ps.setLong (7, product.getQty());
+
+                      ps.executeUpdate();
+                  }
+                  catch(SQLIntegrityConstraintViolationException e){
+                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un prodotto già esistente.");
+                  }
+              }
+              catch(SQLException e)
+              {
+                  throw new RuntimeException(e);
+              }
+
+              return product;
+        }
     }
-    catch(SQLIntegrityConstraintViolationException e){
-                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un volo già esistente.");        
-    }
-    
+ 
+
+@Override
+public void update(Product product) throws DuplicatedObjectException{
+    PreparedStatement ps;
+    ResultSet resultSet;
+
+        try {
+
+            String sql;
+            sql
+            + "     brand,"
+            + "     model,"
+            + "     description,"
+            + "     category,"
+            + "     price,"
+            + "     qty,"
+            + "   ) "
+            + " VALUES (?,?,?,?,?,?,?)";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setLong(1, product.getProd_Id());
+            ps.setString(2,product.getBrand());
+            ps.setString(3,product.getModel() );
+            ps.setString(4, product.getDescription());
+            ps.setString(5,product.getCategory());
+            ps.setFloat (6,product.getPrice());
+            ps.setLong (7, product.getQty());
+
+            ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+}
+
+@Override
+public void delete(Product product){
+    PreparedStatement ps;
+
+        try {
+
+            String sql
+                    = "DELETE "
+                    + "FROM product "
+                    + "WHERE "
+                    + "Prod_Id = ? ";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setLong(1, product.getProdId());
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+}
+
   @Override
-  public Product findByProdId(Long prod_Id){}
+  public Product findByProdId(Long prod_Id){
+         PreparedStatement ps;
+         Product product = new Product();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE prod_Id = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setLong(1, prod_Id);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+     }
   
   @Override
-  public Product findByName(String name){}
+  public Product findByBrand(String brand){
+
+    PreparedStatement ps;
+         Product product = new Product();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE brand = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setString(1, brand);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+
+  }
   
   @Override
-  public Product findByCategory(String category){}
+  public Product findByCategory(String category){
+
+    PreparedStatement ps;
+         Product product = new Product();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE category = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setString(1, category);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+
+}
   
   @Override
-  public Product findByModel(String model){}
+  public Product findByModel(String model){
+
+    PreparedStatement ps;
+         Product product = new Product();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE model = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setString(1, model);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+
+}
   
   @Override
-  public Product findByQty(Long qty){}
+  public Product findByQty(Long qty){
+
+    PreparedStatement ps;
+         Product product = new Product();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE qty = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setLong(1, qty);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+
+}
   
   @Override
-  public Product findByPrice(Float Price){}
+  public Product findByPrice(Float price){
+
+    PreparedStatement ps;
+         Product product = new Product();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE price = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setFloat (1, price);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+
+}
     
     
 }
