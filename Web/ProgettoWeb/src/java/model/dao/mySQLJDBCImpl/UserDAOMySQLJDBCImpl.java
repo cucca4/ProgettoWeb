@@ -77,13 +77,72 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
-  public void update(User user) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public void update(User user)
+  {
+        PreparedStatement ps;
+    
+        try {
+
+            String sql;
+            sql
+            ="UPDATE user"
+            +"SET "
+            + "     username = ?, "
+            + "     password = ?, "
+            + "     firstname = ?, "
+            + "     surname = ?, "
+            + "     email = ?, "
+            + "     address = ?, "
+            + "     city = ?, "
+            + "     cap = ?,"
+            + "WHERE "
+            +"admin_Id = ?";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(2,user.getUsername());
+            ps.setString(3,user.getPassword());
+            ps.setString(4,user.getFirstname());
+            ps.setString(5,user.getSurname());
+            ps.setString(6,user.getEmail());
+            ps.setString(7,user.getAddress());
+            ps.setString(8,user.getCity());
+            ps.setString(9,user.getCap());
+            
+            ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
   }
 
   @Override
   public void delete(User user) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+      PreparedStatement ps;
+
+        try {
+
+            String sql
+                    = "DELETE "
+                    + "FROM user "
+                    + "WHERE "
+                    + "userId = ? ";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setLong(1, user.getUserId());
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+      
   }
 
   @Override

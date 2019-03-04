@@ -38,10 +38,10 @@ public class HomeManagement {
       loggedUser = loggedUserDAO.find();
       
       if(loggedUser!=null) 
-           request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
-      request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("viewUrl", "homeManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
