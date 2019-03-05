@@ -13,6 +13,8 @@ public abstract class SessionDAOFactory {
   public abstract void initSession(HttpServletRequest request, HttpServletResponse response);
 
   public abstract LoggedUserDAO getLoggedUserDAO();
+  
+  public abstract LoggedAdminDAO getLoggedAdminDAO();
 
   public static SessionDAOFactory getSesssionDAOFactory(String whichFactory) {
 

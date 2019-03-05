@@ -24,5 +24,9 @@ public abstract class DAOFactory {
       return null;
     }
   }
+
+    public AdminDAO getAdminDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 

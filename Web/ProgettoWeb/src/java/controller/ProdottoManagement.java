@@ -9,6 +9,6 @@ package controller;
  *
  * @author Cuccarello
  */
-public class prodottoView {
+public class ProdottoManagement {
     
 }

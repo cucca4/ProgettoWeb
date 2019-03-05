@@ -76,14 +76,14 @@ and open the template in the editor.
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item ">
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Area Personale<span class="sr-only">(current)</span></a>
+                    <a class="nav-link active" href="#">Area Personale<span class="sr-only">(current)</span></a>
                 </li>
             </ul>  
             <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
@@ -112,14 +112,11 @@ and open the template in the editor.
                     <h5 class="mt-0 mb-1">ORDINI</h5>
                      Visualizza la cronologia degli ordini effettuati o lo stato di quelli ancora da consegnare.
                      <section>
-                        <form name="oForm" action="dispatcher" method="post">
-                            
+                        <form name="oForm" action="dispatcher" method="post">   
                         <br><br>
                         <div>
                             <%for(i=0; i<orders.size(); i++) {%>
-                            
                                 <a href="javascript:goToViewOrders('<%=orders.get(i).getOrder_Id()%>', <%=orders.get(i).getTotprice()%>, <%=orders.get(i).getStatus()%>');">
-                            
                                     <article class=" clearfix">
                                     <img src="images/prova.png" alt="Chat" class="support-img-chat">
                                     <div class='support-article-centraldiv'>
@@ -145,11 +142,8 @@ and open the template in the editor.
                                         <%}%>
                                         </h3>
                                     </div>
-                 
                                     </article>
-                            
-                                </a>
-                                    
+                                </a> 
                             <%}%>
                         
                             <% if(orders.size()==0) {%>
