@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import model.dao.exception.DuplicatedObjectException;
 
 import model.mo.User;
 import model.dao.UserDAO;
@@ -11,7 +13,7 @@ import model.dao.UserDAO;
 
 public class UserDAOMySQLJDBCImpl implements UserDAO {
 
-  private final String COUNTER_ID = "ID_U";  
+  private final String COUNTER_ID = "userId";  
   Connection conn;
 
   public UserDAOMySQLJDBCImpl(Connection conn) {
@@ -71,9 +73,77 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
           String email,
           String address,
           String city,
-          String cap,
-          String languageCode) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.  
+          String cap) throws DuplicatedObjectException{
+    
+          PreparedStatement ps;
+     ResultSet resultSet;
+     User user=new User();
+     user.setUsername(username);
+     user.setPassword(password);
+     user.setFirstname(firstname);
+     user.setSurname(surname);
+     user.setEmail(email);
+     user.setAddress(address);
+     user.setCity(city);
+     user.setCap(cap);
+     try{
+                  String sql;
+                  sql = "SELECT * "
+                      + "FROM user "
+                      + "WHERE firstname = ? AND "
+                      + "surname = ? AND "
+                      + "deleted_Pr = '0' ";
+
+                  ps = conn.prepareStatement(sql);
+                  ps.setString(1, user.getFirstname());
+                  ps.setString(2, user.getSurname());
+
+                  resultSet = ps.executeQuery();
+
+                  if(resultSet.next())
+                      throw new DuplicatedObjectException("ProductDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
+                  
+                  try {
+                      sql
+                      = " INSERT INTO user "
+                      + "   ( userId,"
+                      + "     username,"
+                      + "     password,"
+                      + "     firstname,"
+                      + "     surname,"
+                      + "     email,"
+                      + "     address,"
+                      + "     city,"
+                      + "     cap,"
+                      + "     deleted "
+                      + "   ) "
+                      + " VALUES (?,?,?,?,?,?,?,?,?,'0')";
+
+                      ps = conn.prepareStatement(sql);
+
+                      ps.setLong(1, user.getUserId());
+                      ps.setString(2,user.getUsername());
+                      ps.setString(3,user.getPassword() );
+                      ps.setString(4, user.getFirstname());
+                      ps.setString(5,user.getSurname());
+                      ps.setString (6,user.getEmail());
+                      ps.setString (7, user.getAddress());
+                      ps.setString (8, user.getCity());
+                      ps.setString (9, user.getCap());
+
+                      ps.executeUpdate();
+                  }
+                  catch(SQLIntegrityConstraintViolationException e){
+                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
+                  }
+              }
+              catch(SQLException e)
+              {
+                  throw new RuntimeException(e);
+              }
+
+              return user;
+  
   }
 
   @Override

@@ -7,10 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.session.mo.LoggedAdmin;
 import model.session.dao.LoggedAdminDAO;
-/**
- *
- * @author Filippo
- */
+
+
 public class LoggedAdminDAOCookieImpl implements LoggedAdminDAO{
     HttpServletRequest request;
     HttpServletResponse response;

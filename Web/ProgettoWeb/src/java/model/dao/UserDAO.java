@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.dao.exception.DuplicatedObjectException;
 import model.mo.User;
 
 public interface UserDAO {
@@ -12,8 +13,7 @@ public interface UserDAO {
           String email,
           String address,
           String city,
-          String cap,
-          String languageCode);
+          String cap)throws DuplicatedObjectException;
 
   public void update(User user);
 

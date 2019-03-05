@@ -1,10 +1,8 @@
 
 package model.mo;
 
-/**
- *
- * @author Cuccarello
- */
+
+
 public class Orders {
   private Long order_Id;
   private String buyer;

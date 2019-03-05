@@ -48,7 +48,7 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
     public Admin insert(Long admin_Id,
            String username_Ad,
            String password_Ad){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
   
     @Override
