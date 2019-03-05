@@ -190,6 +190,31 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
   }
 
   @Override
+    public void updatePassword(User user){
+        PreparedStatement ps;
+        
+        try {
+            String sql 
+            = "UPDATE user "
+            + "SET "
+            + "password = ? "              
+            + "WHERE "
+            + "id = ? ";
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, user.getPassword());
+            ps.setLong(2, user.getUserId());
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+  
+  @Override
   public void delete(User user) {
     
       PreparedStatement ps;

@@ -40,11 +40,13 @@
                 </li>
       
                 <% if(loggedOn) {%>
+                <span class="nav-link nav-message"> <%=applicationMessage%></span>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Area Personale</a>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link nav-message"> <%=applicationMessage%></span>
+                    
+                    <form class="form-inline mt-2 mt-md-0" name="userarea" action="Dispatcher" method="post"> 
+                    <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Area Personale">
+                    <input type="hidden" name="controllerAction" value="userArea.view">
+                    </form>
                 </li>
                 <%}%>
             </ul>
@@ -66,7 +68,7 @@
       
         <form class="form-inline mt-2 mt-md-0">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
         </form>
         </div>
     </nav>

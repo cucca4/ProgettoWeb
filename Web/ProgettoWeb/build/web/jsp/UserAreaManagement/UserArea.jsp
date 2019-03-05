@@ -118,7 +118,7 @@ and open the template in the editor.
                         <div>
                             <%for(i=0; i<orders.size(); i++) {%>
                             
-                                <a href="javascript:goToViewOrders('<%=orders.get(i).order_Id%>', <%=orders.get(i).getTotPrice()%>, <%=orders.get(i).getStatus()%>');">
+                                <a href="javascript:goToViewOrders('<%=orders.get(i).getOrder_Id()%>', <%=orders.get(i).getTotprice()%>, <%=orders.get(i).getStatus()%>');">
                             
                                     <article class=" clearfix">
                                     <img src="images/prova.png" alt="Chat" class="support-img-chat">
@@ -202,7 +202,7 @@ and open the template in the editor.
                             </br></br>
                             <input type="submit" value="Salva" class="submit submit-dimensioni">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
-                            <input type="hidden" name="controllerAction" value="UserArea.modify"/>
+                            <input type="hidden" name="controllerAction" value="userArea.modify"/>
                             </form>
                     </section>
                     <section>
@@ -215,7 +215,7 @@ and open the template in the editor.
                             </br></br>
                             <input type="submit" value="Salva" class="submit submit-dimensioni">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
-                            <input type="hidden" name="controllerAction" value="UserArea.modifyPassword"/>
+                            <input type="hidden" name="controllerAction" value="userArea.modifyPassword"/>
                             </form>
                     </section>
                     <section >
@@ -225,7 +225,7 @@ and open the template in the editor.
                         </br></br>
                         <input type="submit" value="Elimina" class="submit">
                         <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
-                        <input type="hidden" name="controllerAction" value="UserArea.deleteAccount"/>
+                        <input type="hidden" name="controllerAction" value="userArea.deleteAccount"/>
                         </form>
                     </section>
                 </div>

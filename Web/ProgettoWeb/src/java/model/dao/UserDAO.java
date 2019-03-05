@@ -16,7 +16,7 @@ public interface UserDAO {
           String cap)throws DuplicatedObjectException;
 
   public void update(User user);
-
+  public void updatePassword(User user);
   public void delete(User user);
 
   public User findByUserId(Long userId);
