@@ -4,7 +4,7 @@ import model.dao.mySQLJDBCImpl.MySQLJDBCDAOFactory;
 
 public abstract class DAOFactory {
 
-  // List of DAO types supported by the factory
+ 
   public static final String MYSQLJDBCIMPL = "MySQLJDBCImpl";
 
   public abstract void beginTransaction();

@@ -19,11 +19,9 @@
   if(actionPage.equals("setpassword")) thisform = "'none','block','none'";
   if(actionPage.equals("delete")) thisform = "'none','none','block'";%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
+
+
 <html>
     <head>
         
@@ -176,8 +174,8 @@ and open the template in the editor.
                             <label for="username"> Username </label>
                             <input type="text" id="username" name="username" maxlength="40" value="<%=user.getUsername()%>" required>
                             </br></br>
-                            <label for="fistname"> Nome </label>
-                            <input type="text" id="fistname" name="fistname" maxlength="40" value="<%=user.getFirstname()%>" required>
+                            <label for="firstname"> Nome </label>
+                            <input type="text" id="firstname" name="firstname" maxlength="40" value="<%=user.getFirstname()%>" required>
                             </br></br>
                             <label for="surname"> Cognome </label>
                             <input type="text" id="surname" name="surname" maxlength="40" value="<%=user.getSurname()%>" required>
@@ -194,9 +192,9 @@ and open the template in the editor.
                             <label for="cap"> Cap </label>
                             <input type="cap" id="cap" name="cap" maxlength="40" value="<%=user.getCap()%>" required>            
                             </br></br>
-                            <input type="submit" value="Salva" class="submit submit-dimensioni">
+                            <input type="submit" value="Salva" class="submit">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
-                            <input type="hidden" name="controllerAction" value="userArea.modify"/>
+                            <input type="hidden" name="controllerAction" value="UserArea.modify"/>
                             </form>
                     </section>
                     <section>
@@ -204,12 +202,12 @@ and open the template in the editor.
                             <label for="oldPassword"> Password </label>
                             <input type="password" id="oldPassword" name="oldpassword" maxlength="40" required>
                             </br></br>
-                            <label for="newPassword"> New password </label>
+                            <label for="newPassword"> Nuova password </label>
                             <input type="password" id="newPassword" name="newpassword" maxlength="40" required>
                             </br></br>
                             <input type="submit" value="Salva" class="submit submit-dimensioni">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
-                            <input type="hidden" name="controllerAction" value="userArea.modifyPassword"/>
+                            <input type="hidden" name="controllerAction" value="UserArea.modifyPassword"/>
                             </form>
                     </section>
                     <section >
@@ -219,7 +217,7 @@ and open the template in the editor.
                         </br></br>
                         <input type="submit" value="Elimina" class="submit">
                         <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
-                        <input type="hidden" name="controllerAction" value="userArea.deleteAccount"/>
+                        <input type="hidden" name="controllerAction" value="UserArea.deleteAccount"/>
                         </form>
                     </section>
                 </div>

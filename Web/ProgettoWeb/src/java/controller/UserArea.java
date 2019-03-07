@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import model.dao.UserDAO;
+
 
 import services.config.Configuration;
 import services.logservice.LogService;
@@ -21,10 +21,9 @@ import model.mo.User;
 import model.session.mo.LoggedUser;
 import model.session.dao.LoggedUserDAO;
 import model.session.dao.SessionDAOFactory;
-/**
- *
- * @author Filippo
- */
+
+
+
 public class UserArea {
     
     private UserArea(){
@@ -58,7 +57,7 @@ public class UserArea {
                 request.setAttribute("loggedOn", loggedUser != null);
                 request.setAttribute("loggedUser", loggedUser);
                 request.setAttribute("actionPage", "account");
-                request.setAttribute("viewUrl", "UserAreaManagement/userArea");
+                request.setAttribute("viewUrl", "userAreaManagement/userArea");
             }
         catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -106,7 +105,7 @@ public class UserArea {
             User user = new User();
             user.setUserId(new Long(request.getParameter("userId")));
             user.setUsername(request.getParameter("username"));
-            user.setFirstname(request.getParameter("nome"));
+            user.setFirstname(request.getParameter("firstname"));
             user.setSurname(request.getParameter("surname"));
             user.setEmail(request.getParameter("email"));
             user.setAddress("address");
@@ -120,7 +119,7 @@ public class UserArea {
             
             daoFactory.commitTransaction();
             
-            request.setAttribute("viewUrl", "UserArea");
+            request.setAttribute("viewUrl", "userAreaManagement/userArea");
             request.setAttribute("user",user);
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
@@ -188,7 +187,7 @@ public class UserArea {
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("actionPage", "setpassword");
-            request.setAttribute("viewUrl", "UserArea/profile");
+            request.setAttribute("viewUrl", "userAreaManagement/userArea");
             
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -248,7 +247,7 @@ public class UserArea {
                 request.setAttribute("applicationMessage", applicationMessage);
                 request.setAttribute("user",user);
                 request.setAttribute("actionPage", "delete");
-                request.setAttribute("viewUrl", "userArea");
+                request.setAttribute("viewUrl", "userAreaManagement/userArea");
             }
             
             daoFactory.commitTransaction();

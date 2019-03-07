@@ -45,7 +45,7 @@
                     
                     <form class="form-inline mt-2 mt-md-0" name="userarea" action="Dispatcher" method="post"> 
                     <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Area Personale">
-                    <input type="hidden" name="controllerAction" value="userArea.view">
+                    <input type="hidden" name="controllerAction" value="UserArea.view">
                     </form>
                 </li>
                 <%}%>
