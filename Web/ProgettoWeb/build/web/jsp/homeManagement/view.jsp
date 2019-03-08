@@ -9,11 +9,11 @@
 
 <html lang="it">
 <head>
-    <!-- Required meta tags -->
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-grid.css">
@@ -60,15 +60,17 @@
             </form>
         <%} else {%>
             <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
-            <input class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2" type="submit" value="Logout">
+            <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
             <input type="hidden" name="controllerAction" value="HomeManagement.logout">
             </form>
       
          <%}%>
       
         <form class="form-inline mt-2 mt-md-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
+        <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
+        <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
+        <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Cerca</input>
+        <input type="hidden" name="controllerAction" value="">
         </form>
         </div>
     </nav>

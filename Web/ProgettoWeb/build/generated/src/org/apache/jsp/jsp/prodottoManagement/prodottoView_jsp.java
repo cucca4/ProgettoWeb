@@ -1,4 +1,4 @@
-package org.apache.jsp;
+package org.apache.jsp.jsp.prodottoManagement;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -110,14 +110,14 @@ public final class prodottoView_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("            <input class=\"form-control mr-sm-2\" type=\"text\" placeholder=\"Username\" aria-label=\"Username\" name=\"username\" id=\"username\">\r\n");
       out.write("            <input class=\"form-control mr-sm-2\" type=\"text\" placeholder=\"Password\" aria-label=\"Password\" name=\"password\" id=\"password\">\r\n");
       out.write("            <input class=\"btn btn-outline-success my-2 my-sm-0 mr-sm-2\" type=\"submit\">\r\n");
-      out.write("            <input type=\"hidden\" name=\"controllerAction\" value=\"HomeManagement.logon\">\r\n");
+      out.write("            <input type=\"hidden\" name=\"controllerAction\" value=\"ProdottoManagement.logon\">\r\n");
       out.write("            </form>\r\n");
       out.write("        ");
 } else {
       out.write("\r\n");
       out.write("            <form class=\"form-inline mt-2 mt-md-0\" name=\"logout\" action=\"Dispatcher\" method=\"post\"> \r\n");
       out.write("            <input class=\"btn btn-outline-danger my-2 mr-sm-0 mr-sm-2\" type=\"submit\" value=\"Logout\">\r\n");
-      out.write("            <input type=\"hidden\" name=\"controllerAction\" value=\"HomeManagement.logout\">\r\n");
+      out.write("            <input type=\"hidden\" name=\"controllerAction\" value=\"ProdottoManagement.logout\">\r\n");
       out.write("            </form>\r\n");
       out.write("      \r\n");
       out.write("         ");

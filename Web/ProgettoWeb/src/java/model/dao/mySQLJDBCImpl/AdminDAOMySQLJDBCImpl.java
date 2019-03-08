@@ -12,7 +12,6 @@ import model.mo.User;
 import model.mo.Admin;
 import model.dao.exception.DuplicatedObjectException;
 import model.dao.AdminDAO;
-import java.util.Random;
 
 public class AdminDAOMySQLJDBCImpl implements AdminDAO {
 

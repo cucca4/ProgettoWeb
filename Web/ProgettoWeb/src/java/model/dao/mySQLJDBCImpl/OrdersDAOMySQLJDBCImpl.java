@@ -142,6 +142,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                
     }
 
+     @Override
     public void delete(Orders order){
         PreparedStatement ps;
 
@@ -165,6 +166,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
         }
     }
 
+     @Override
     public Orders findOrdersByOrder_Id(Long order_Id){
         
         PreparedStatement ps;

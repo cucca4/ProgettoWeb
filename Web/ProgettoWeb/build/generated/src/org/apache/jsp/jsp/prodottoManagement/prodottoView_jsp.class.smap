@@ -4,7 +4,7 @@ JSP
 *S JSP
 *F
 + 0 prodottoView.jsp
-prodottoView.jsp
+jsp/prodottoManagement/prodottoView.jsp
 *L
 1,9:45
 9,34:54

@@ -1,4 +1,5 @@
 <%@page import="model.session.mo.LoggedUser"%>
+
 <!doctype html>
 
 <%
@@ -56,12 +57,12 @@
             <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
             <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password" name="password" id="password">
             <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">
-            <input type="hidden" name="controllerAction" value="HomeManagement.logon">
+            <input type="hidden" name="controllerAction" value="ProdottoManagement.logon">
             </form>
         <%} else {%>
             <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
             <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
-            <input type="hidden" name="controllerAction" value="HomeManagement.logout">
+            <input type="hidden" name="controllerAction" value="ProdottoManagement.logout">
             </form>
       
          <%}%>
@@ -70,7 +71,7 @@
         <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
         <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
         <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Cerca</input>
-        <input type="hidden" name="controllerAction" value="">
+        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
         </form>
         </div>
     </nav>
@@ -78,84 +79,23 @@
     <div class="pt-5"></div>
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
-    <div class="row">
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="pt-4"></div>
+            <div class="float-left">
+                <img src="images/prova.jpg" class="mr-3" width="320" height="320">
+            </div><br>
+            <div class="media-body">
+                <h5 class="mt-0 mb-1">brand-model-price</h5>
+                product description.
             </div>
-            </div> 
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div> 
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div> 
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-    </div>
+            <div class="pt-3"></div>
+            <button type="button" class="btn btn-warning">Compra</button>
+            <div class="pt-xl-5"></div>
+            <div class="pt-xl-5"></div>
+            <div class="pt-xl-5"></div>
+            <div class="pt-xl-5"></div>
+            <div class="pt-xl-5"></div>
+            <div class="pt-xl-5"></div>
+
     </div>
 </body>
 
