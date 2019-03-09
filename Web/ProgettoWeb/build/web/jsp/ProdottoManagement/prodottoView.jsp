@@ -88,7 +88,16 @@
                 product description.
             </div>
             <div class="pt-3"></div>
+            
+            <% if(!loggedOn) {%>     
+            <div class="alert alert-warning" role="alert">
+                Effettua il login per cominciare lo shopping!
+            
+            
+        <%} else {%>
             <button type="button" class="btn btn-warning">Compra</button>
+      
+         <%}%>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>
