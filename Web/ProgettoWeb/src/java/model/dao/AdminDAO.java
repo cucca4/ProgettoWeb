@@ -17,5 +17,7 @@ public interface AdminDAO {
 
   public void delete(Admin Admin);
 
-  public Admin findAdminByAdminId(Long admin_Id);
+  public Admin findAdminByUsername(String username);
+  
+  public int countOrdersByBuyer (String buyer);
 }

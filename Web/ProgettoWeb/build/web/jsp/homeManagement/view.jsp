@@ -43,7 +43,7 @@
                 <span class="nav-link nav-message"> <%=applicationMessage%></span>
                 <li class="nav-item">
                     
-                    <form class="form-inline mt-2 mt-md-0" name="userarea" action="Dispatcher" method="post"> 
+                    <form class="form-inline mt-2 mt-md-0" action="Dispatcher" method="post"> 
                     <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Area Personale">
                     <input type="hidden" name="controllerAction" value="UserArea.view">
                     </form>
@@ -158,5 +158,15 @@
     </div>
     </div>
 </body>
+
+<footer>
+        <% if(!loggedOn) {%>
+        <form action="Dispatcher" method="post">
+            <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Admin Area</input>
+             <input type="hidden" name="controllerAction" value="AdminManagement.viewLogin">
+        </form>
+        <% } %>
+    
+</footer>
 
 </html>

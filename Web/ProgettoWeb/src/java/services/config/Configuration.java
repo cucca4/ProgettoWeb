@@ -18,7 +18,7 @@ public class Configuration {
   
   /* Logger Configuration */
   public static final String GLOBAL_LOGGER_NAME="dronazon";  
-  public static final String GLOBAL_LOGGER_FILE="C:\\Users\\zambrini\\Documents\\logs\\dronazon_log.%g.txt";
+  public static final String GLOBAL_LOGGER_FILE="C:\\Users\\Cuccarello\\Documents\\logs\\dronazon_log.%g.txt";
   public static final Level GLOBAL_LOGGER_LEVEL=Level.ALL;
   
 }

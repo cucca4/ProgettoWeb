@@ -6,18 +6,15 @@
 <%@page import="model.mo.Orders"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%User user = (User)request.getAttribute("user");
+<%
+  User user = (User)request.getAttribute("user");
   LoggedUser loggedUser = (LoggedUser)request.getAttribute("loggedUser");
   Boolean loggedOn = (Boolean)request.getAttribute("loggedOn");
   String applicationMessage = (String)request.getAttribute("applicationMessage");
   String actionPage = (String)request.getAttribute("actionPage");
   List<Orders> orders = (List<Orders>)request.getAttribute("orders");
   int i=0;
-  
-  String thisform = null;
-  if(actionPage.equals("account")) thisform = "'block','none','none'";
-  if(actionPage.equals("setpassword")) thisform = "'none','block','none'";
-  if(actionPage.equals("delete")) thisform = "'none','none','block'";%>
+%>
 <!DOCTYPE html>
 
 
@@ -28,40 +25,6 @@
         <title>Dronazon</title>
         
         <script language="javascript">
-            function whichForm(accountForm, passwordForm, deleteAccountForm){
-                forms = document.querySelectorAll(".userform");
-                forms[0].style.display = accountForm;
-                forms[1].style.display = passwordForm;
-                forms[2].style.display = deleteAccountForm;
-            }
-            
-            function visualizeAccount(){
-                whichForm("block","none","none");
-            }
-            
-            function changePassword(){
-                whichForm("none","block","none");
-            }
-            
-            function deleteAccount(){
-                whichForm("none","none","block");
-            }
-            
-            function profileLoadHandler(){
-                whichForm(<%=thisform%>);
-            }
-            
-            function gotoOrders(){
-                document.orders.submit();
-            }
-            
-            function goToViewOrders(order_Id, totprice, status){
-                
-                document.getElementById("order_id").value=order_Id;
-                document.getElementById("totprice").value=totprice;
-                document.getElementById("status").value=status;
-                
-            }
             
         </script>
     </head>

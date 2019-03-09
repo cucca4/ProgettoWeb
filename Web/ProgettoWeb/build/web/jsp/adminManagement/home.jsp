@@ -20,41 +20,21 @@
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css">
     <link rel="stylesheet" type="text/css" href="css/homestyle.css">
-        <script language="javascript">
-            
-            function logout(){
-                b = document.logoutForm;
-                b.submit();
-            }
-            
-            function goOnCreateProduct(){
-                c = document.createAbsFlightForm;
-                c.submit();
-            }
-            
-            function goOnProductModify(){
-                c = document.absFlightsForm;
-                c.submit();
-            }
-            
-            function onLoadHandler(){
-                
-            }            
-            
-            window.addEventListener("load", onLoadHandler);
-            
-        </script>
+    
 </head>
 <body class="clearfix">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark clearfix">
-        <a class="navbar-brand" href="#">Dronazon</a>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary clearfix">
+        <a class="navbar-brand" href="#">Dronazon - Admin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
+                        <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
+                        <input type="hidden" name="controllerAction" value="AdminManagement.logout">
+                    </form>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
@@ -62,30 +42,31 @@
             </ul>
         </div>
     </nav>
-      <main class="main">
-        <section class="action bkColor clearfix">
-          <div class="actionimage">
+      <main class="">
+        <section class="clearfix">
+          <div class="">
             <img src="images/notes.png" alt="" width="40%">
           </div>
           <div>
-            <p class="actiondescription">
+            <p class="">
               <span>Crea inserzione.</span>
             </p>
-            <a class="actionlink" href="javascript:goOnCreateProduct()">Crea</a>
+            <a class="">Crea</a>
           </div>
         </section>
-        <section class="action bkColor clearfix">
+        <section class="clearfix">
           <div>
             <img src="images/prova.png" alt="" width="40%">
           </div>
-          <div class="actioninfo">
-            <p class="actiondescription">
+          <div class="">
+            <p class="">
               <span>Modifica, ricerca, eliminazione di prodotti</span>
             </p>
-            <a class="actionlink" href="javascript:goOnProductModify()">Conferma</a>
+            <a class="" >Conferma</a>
           </div>
         </section>
       </main>
+    <%/*%>
       <form name="logoutForm" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="AdminManagement.view">
       </form> 
@@ -97,6 +78,7 @@
       <form name="absFlightsForm" action="Dispatcher" method="post">
         <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
       </form>
+    <%*/%>
         
     </body>
 </html>

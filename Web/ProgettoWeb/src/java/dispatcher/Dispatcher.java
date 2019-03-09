@@ -32,7 +32,10 @@ public class Dispatcher extends HttpServlet {
       LogService.getApplicationLogger().log(Level.INFO,splittedAction[0]+" "+splittedAction[1]);
       controllerMethod.invoke(null,request,response);
       
+      
+      
       String viewUrl=(String)request.getAttribute("viewUrl");
+      System.out.println("jsp/"+viewUrl+".jsp");
       RequestDispatcher view=request.getRequestDispatcher("jsp/"+viewUrl+".jsp");
       view.forward(request,response);
       

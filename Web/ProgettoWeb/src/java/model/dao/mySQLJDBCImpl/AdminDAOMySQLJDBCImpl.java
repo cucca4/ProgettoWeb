@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.ArrayList;
 
 import model.mo.User;
+import model.mo.Orders;
 import model.mo.Admin;
 import model.dao.exception.DuplicatedObjectException;
 import model.dao.AdminDAO;
+
 
 public class AdminDAOMySQLJDBCImpl implements AdminDAO {
 
@@ -41,6 +43,14 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
         } catch (SQLException sqle) {
         }
         return admin;
+    }
+  
+    int readCount(ResultSet rs) {
+        try {
+            return rs.getInt("count");
+        }catch(SQLException sqle){
+            return -1;
+        }
     }
   
       @Override
@@ -102,7 +112,8 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
             throw new RuntimeException(e);
         }
     }
-        public Admin findAdminByAdminId(Long id){
+  @Override
+        public Admin findAdminByUsername(String username){
         PreparedStatement ps;
         Admin admin = null;
 
@@ -112,11 +123,11 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
                     = "SELECT * "
                     + "FROM admin "
                     + "WHERE "
-                    + "admin_Id = ? AND "
+                    + "username_Ad = ? AND "
                     + "deleted_Ad = '0' ";
             
             ps = conn.prepareStatement(sql);
-            ps.setLong(1, id);
+            ps.setString(1, username);
             
             ResultSet resultSet = ps.executeQuery();
 
@@ -130,5 +141,35 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
             throw new RuntimeException(e);
         }
         return admin;
+    }
+
+    @Override
+    public int countOrdersByBuyer(String buyer) {
+        PreparedStatement ps;
+        int numOrders=-1;
+         
+
+         try {
+              String sq1
+                      = "SELECT COUNT * AS count "
+                      + " FROM orders "
+                      + " WHERE buyer = ?";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setString(1, buyer);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  numOrders = readCount(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return numOrders;
     }
 }

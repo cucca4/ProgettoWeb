@@ -71,6 +71,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
      PreparedStatement ps;
      ResultSet resultSet;
      Product product=new Product();
+     product.setProd_Id(Prod_Id);
      product.setBrand(brand);
      product.setModel(model);
      product.setDescription(description);

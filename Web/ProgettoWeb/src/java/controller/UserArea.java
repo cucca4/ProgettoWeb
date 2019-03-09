@@ -43,6 +43,8 @@ public class UserArea {
 
                 LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
                 loggedUser = loggedUserDAO.find();
+                
+                System.out.println(loggedUser.getUserId());
 
                 daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
                 daoFactory.beginTransaction();
@@ -52,12 +54,14 @@ public class UserArea {
                 
                 daoFactory.commitTransaction();
                 
+                System.out.println(user.getFirstname());
+                
                 user.setPassword(null);
                 request.setAttribute("user", user);
                 request.setAttribute("loggedOn", loggedUser != null);
                 request.setAttribute("loggedUser", loggedUser);
                 request.setAttribute("actionPage", "account");
-                request.setAttribute("viewUrl", "userAreaManagement/userArea");
+                request.setAttribute("viewUrl", "userAreaManagement/view");
             }
         catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);

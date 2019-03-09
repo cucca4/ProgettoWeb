@@ -14,10 +14,13 @@ import model.mo.Product;
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
 import model.dao.ProductDAO;
+import model.dao.exception.DuplicatedObjectException;
+import model.session.dao.LoggedAdminDAO;
 
 import model.session.mo.LoggedUser;
 import model.session.dao.SessionDAOFactory;
 import model.session.dao.LoggedUserDAO;
+import model.session.mo.LoggedAdmin;
 
 
 
@@ -142,4 +145,78 @@ public class ProdottoManagement {
     request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
 
   }
+  
+  
+  public static void createProduct(HttpServletRequest request, HttpServletResponse response){
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        String applicationMessage = null;
+        Logger logger = LogService.getApplicationLogger();
+        
+        Product vprod = new Product();
+        LoggedAdmin loggedAdmin = null;
+        
+        try{
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
+            
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            
+            vprod.setProd_Id( new Long (request.getParameter("Peod_Id")));
+            vprod.setBrand(request.getParameter("brand"));
+            vprod.setModel(request.getParameter("model"));
+            vprod.setDescription(request.getParameter("description"));
+            vprod.setCategory(request.getParameter("category"));
+            vprod.setPrice(new Float(request.getParameter("price")));
+            vprod.setQty(new Long (request.getParameter("qty")));
+            
+            
+            
+            
+            daoFactory.beginTransaction();
+            ProductDAO productDAO = daoFactory.getProductDAO();
+            
+            try{
+                
+                Product product = productDAO.insert(vprod.getProd_Id(),vprod.getBrand(), vprod.getModel(), vprod.getDescription(),vprod.getCategory(), vprod.getPrice(),vprod.getQty());
+
+            } catch (DuplicatedObjectException e) {
+                
+                applicationMessage = "Codice o prodotto già esistente";
+               
+            }
+            
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("applicationMessage", applicationMessage);
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("viewUrl", "adminManagement/home");
+            
+        }
+        catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } 
+            catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+        } 
+        finally {
+            try {
+                    if (daoFactory != null) {
+                        daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+            }
+        }
+    }
+  
+  
 }

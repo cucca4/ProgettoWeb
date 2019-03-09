@@ -25,7 +25,8 @@ public class AdminManagement {
     private AdminManagement(){
     }
     
-    public static void view (HttpServletRequest request, HttpServletResponse response){
+    
+     public static void viewLogin (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
         
@@ -45,9 +46,34 @@ public class AdminManagement {
             }
             
             
-            request.setAttribute("viewUrl", "adminManagement/login");
+            request.setAttribute("viewUrl", "adminManagement/loginAdmin");
             
             request.setAttribute("loggedadmin", loggedAdmin);
+            
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            throw new RuntimeException(e);
+        }
+    }
+    
+    
+    
+    public static void view (HttpServletRequest request, HttpServletResponse response){
+        SessionDAOFactory sessionDAOFactory;
+        LoggedAdmin loggedAdmin;
+        
+        Logger logger = LogService.getApplicationLogger();
+        
+        try{
+            
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();            
+            
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -85,7 +111,7 @@ public class AdminManagement {
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
         LoggedAdmin loggedAdmin;
-        String applicationMessage;
+        String applicationMessage = null;
         
         try{
             
@@ -96,36 +122,35 @@ public class AdminManagement {
             loggedAdmin = loggedAdminDAO.find();
             
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-            
             daoFactory.beginTransaction();
             
-            AdminDAO adminDAO = daoFactory.getAdminDAO();
+           
             
             String username_Ad = request.getParameter("username_Ad");
-            
-            Long admin_Id = new Long(request.getParameter("admin_Id"));
             String password_Ad = request.getParameter("password_Ad");
             
-            Admin admin = adminDAO.findAdminByAdminId(admin_Id);
-            
-            daoFactory.commitTransaction();
+            AdminDAO adminDAO = daoFactory.getAdminDAO();
+            Admin admin = adminDAO.findAdminByUsername(username_Ad);
+          
             
             if(admin == null || !admin.getPassword_Ad().equals(password_Ad)){
                 loggedAdminDAO.destroy();
                 applicationMessage = "username o password errati";
                 loggedAdmin=null;
                 
-                request.setAttribute("viewUrl", "adminManagement/login");
+                request.setAttribute("viewUrl", "adminManagement/loginAdmin");
             } else {
                 applicationMessage = "Corretti";
                 loggedAdmin = loggedAdminDAO.create(admin.getUsername_Ad(),admin.getAdmin_Id());
                 
-                request.setAttribute("loggedadmin", loggedAdmin);
-                request.setAttribute("loggedAdminOn",loggedAdmin!=null);
-                request.setAttribute("viewUrl", "adminManagement/home");
             }
             
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+            request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("adminApplicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "adminManagement/home");
           
         }catch(Exception e){
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -145,4 +170,30 @@ public class AdminManagement {
             }
         }
     }
+    
+    public static void logout(HttpServletRequest request, HttpServletResponse response) {
+
+    SessionDAOFactory sessionDAOFactory;
+    
+    Logger logger = LogService.getApplicationLogger();
+
+    try {
+
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory.initSession(request, response);
+
+      LoggedAdminDAO loggedUserDAO = sessionDAOFactory.getLoggedAdminDAO();
+      loggedUserDAO.destroy();
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      throw new RuntimeException(e);
+
+    }
+    request.setAttribute("loggedAdminOn",false);
+    request.setAttribute("loggedAdmin", null);
+    request.setAttribute("viewUrl", "homeManagement/view");
+
+  }
+    
 }
