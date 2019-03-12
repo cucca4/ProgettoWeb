@@ -12,7 +12,7 @@
        <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+ 
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-grid.css">
@@ -44,41 +44,35 @@
     </nav>
       <main class="">
         <section class="clearfix">
-          <div class="">
-            <img src="images/notes.png" alt="" width="40%">
-          </div>
-          <div>
-            <p class="">
-              <span>Crea inserzione.</span>
-            </p>
-            <a class="">Crea</a>
-          </div>
+          <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
+                Crea nuova inserzione<br>
+            <input class="form-control mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
+            <input class="form-control mr-sm-2" type="text" placeholder="Modello" aria-label="model" name="model" id="model">
+            <input class="form-control mr-sm-2" type="text" placeholder="Descrizione" aria-label="description" name="description" id="description">
+            <input class="form-control mr-sm-2" type="text" placeholder="Categoria" aria-label="category" name="category" id="category">
+            <input class="form-control mr-sm-2" type="text" placeholder="prezzo" aria-label="price" name="price" id="price">
+            <input class="form-control mr-sm-2" type="text" placeholder="Quantità" aria-label="qty" name="qty" id="qty">
+            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Crea">
+            <input type="hidden" name="controllerAction" value="ProdottoManagement.createProduct">
+            </form>
         </section>
         <section class="clearfix">
-          <div>
-            <img src="images/prova.png" alt="" width="40%">
-          </div>
-          <div class="">
-            <p class="">
-              <span>Modifica, ricerca, eliminazione di prodotti</span>
-            </p>
-            <a class="" >Conferma</a>
-          </div>
+            <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
+               Elimina prodotto inserendo il Modello<br>
+            <input class="form-control mr-sm-2" type="text" placeholder="Model" aria-label="Model" name="model" id="model">
+            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Elimina">
+            <input type="hidden" name="controllerAction" value="ProdottoManagement.deleteProduct">
+            </form>
         </section>
+        <section class="clearfix">
+            <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
+                Controlla il numero di ordini effettuati da un utente inserendo il suo Username<br>
+            <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
+            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
+            <input type="hidden" name="controllerAction" value="AdminManagement.count">
+            </form>
+        </section>
+          
       </main>
-    <%/*%>
-      <form name="logoutForm" action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="AdminManagement.view">
-      </form> 
-      
-      <form name="createProduct" action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="ProdottoManagement.viewCreatePage">
-      </form> 
-      
-      <form name="absFlightsForm" action="Dispatcher" method="post">
-        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
-      </form>
-    <%*/%>
-        
     </body>
 </html>

@@ -1,10 +1,14 @@
+<%@page import="java.util.List"%>
+<%@page import="model.mo.PushedProduct"%>
 <%@page import="model.session.mo.LoggedUser"%>
 <!doctype html>
 
 <%
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
+    List<PushedProduct> pushedProduct = (List<PushedProduct>) request.getAttribute("pushedProduct");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
+    int c;
 %>
 
 <html lang="it">
@@ -80,29 +84,16 @@
     <div class="container bg-light mx-auto">
     <div class="row">
         <div class="col">
+            <%for(c=0; c<4; c++ ) { %>
             <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
+            <img src="images/product/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%> .jpg" class="card-img-top" >
             <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text"><%=pushedProduct.get(c).getDescription()%></p>
             </div>
             </div> 
+            <%}%>
         </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
+        
     </div>
     <div class="row">
         <div class="col">

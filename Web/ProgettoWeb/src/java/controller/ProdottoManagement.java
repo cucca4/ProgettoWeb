@@ -218,5 +218,55 @@ public class ProdottoManagement {
         }
     }
   
+  public static void deleteProduct(HttpServletRequest request, HttpServletResponse response){
+        Logger logger = LogService.getApplicationLogger();
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        Product product;
+        
+        LoggedAdmin loggedAdmin = null;
+        
+        try{
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
+            
+            String model = request.getParameter("model");
+            
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+            
+            ProductDAO productDAO = daoFactory.getProductDAO();
+            product = productDAO.findByModel(model);
+            productDAO.delete(product);
+            
+        
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("viewUrl", "adminManagement/home");
+            
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+          
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
+        }
+    }
+  
   
 }
