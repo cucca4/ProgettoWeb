@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +11,9 @@ import services.logservice.LogService;
 
 import model.mo.User;
 import model.dao.DAOFactory;
+import model.dao.PushedProductDAO;
 import model.dao.UserDAO;
+import model.mo.PushedProduct;
 
 import model.session.mo.LoggedUser;
 import model.session.dao.SessionDAOFactory;
@@ -25,6 +28,7 @@ public class HomeManagement {
   public static void view(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
+    DAOFactory daoFactory = null;
     LoggedUser loggedUser;
 
     Logger logger = LogService.getApplicationLogger();
@@ -33,15 +37,26 @@ public class HomeManagement {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
-
+      
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory.beginTransaction();
+      
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
+      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+      
+      
       
       if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("viewUrl", "homeManagement/view");
+      
+      daoFactory.commitTransaction();
+      
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("viewUrl", "homeManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
@@ -75,6 +90,9 @@ public class HomeManagement {
 
       UserDAO userDAO = daoFactory.getUserDAO();
       User user = userDAO.findByUsername(username);
+      
+      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
 
       if (user == null || !user.getPassword().equals(password)) {
         loggedUserDAO.destroy(); //distrugge il cookie perche l'utente/password sono errati
@@ -89,6 +107,7 @@ public class HomeManagement {
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("pushedProduct", pushedProduct);
       request.setAttribute("applicationMessage", applicationMessage);
       request.setAttribute("viewUrl", "homeManagement/view");
 
@@ -116,6 +135,7 @@ public class HomeManagement {
   public static void logout(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
+    DAOFactory daoFactory = null;
     
     Logger logger = LogService.getApplicationLogger();
 
@@ -123,18 +143,30 @@ public class HomeManagement {
 
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
-
+      
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory.beginTransaction();
+      
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUserDAO.destroy();
+      
+      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
 
+      
+      daoFactory.commitTransaction();
+      
+      request.setAttribute("loggedOn",false);
+      request.setAttribute("loggedUser", null);
+      request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("viewUrl", "homeManagement/view");
+      
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
       throw new RuntimeException(e);
 
     }
-    request.setAttribute("loggedOn",false);
-    request.setAttribute("loggedUser", null);
-    request.setAttribute("viewUrl", "homeManagement/view");
+    
 
   }
 

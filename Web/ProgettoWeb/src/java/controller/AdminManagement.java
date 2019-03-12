@@ -73,6 +73,9 @@ public class AdminManagement {
             loggedAdmin = loggedAdminDAO.find();            
             
             request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("createMessage", " ");
+            request.setAttribute("deleteMessage", " ");
+            request.setAttribute("countMessage", " ");
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
@@ -80,7 +83,7 @@ public class AdminManagement {
             throw new RuntimeException(e);
         }
     }
-    
+    /*
     public static void viewHome (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
@@ -103,6 +106,7 @@ public class AdminManagement {
             throw new RuntimeException(e);
         }
     }
+    */
     
     public static void login (HttpServletRequest request, HttpServletResponse response){
         
@@ -149,6 +153,9 @@ public class AdminManagement {
             
             request.setAttribute("loggedAdminOn",loggedAdmin!=null);
             request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("createMessage", " ");
+            request.setAttribute("deleteMessage", " ");
+            request.setAttribute("countMessage", " ");
             request.setAttribute("adminApplicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "adminManagement/home");
           
@@ -196,7 +203,7 @@ public class AdminManagement {
 
   }
     
-    /*public static void count (HttpServletRequest request, HttpServletResponse response) {
+    public static void count (HttpServletRequest request, HttpServletResponse response) {
 
         Logger logger = LogService.getApplicationLogger();
         
@@ -224,13 +231,19 @@ public class AdminManagement {
         AdminDAO adminDAO = daoFactory.getAdminDAO();
         int numorders = adminDAO.countOrdersByBuyer(username);
         
+        String count = "L'utente ha effettuato" + numorders +"ordini";
         
+        request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+        request.setAttribute("loggedadmin", loggedAdmin);
+        request.setAttribute("countMessage", count);
+        request.setAttribute("adminApplicationMessage", applicationMessage);
+        request.setAttribute("viewUrl", "adminManagement/home");
       
     }catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
       throw new RuntimeException(e);
 
     }
-    }*/
+    }
     
 }

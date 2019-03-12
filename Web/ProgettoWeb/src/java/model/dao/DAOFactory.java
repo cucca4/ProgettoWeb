@@ -28,5 +28,7 @@ public abstract class DAOFactory {
     public AdminDAO getAdminDAO() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
+    
+    public abstract PushedProductDAO getPushedProductDAO();
 }
 

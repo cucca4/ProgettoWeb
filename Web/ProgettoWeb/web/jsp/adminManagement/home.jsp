@@ -3,7 +3,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedAdmin"%>
 
-<% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");%>
+<% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
+   String createMessage = (String) request.getAttribute("createMessage");
+   String deleteMessage = (String) request.getAttribute("deleteMessage");
+   String countMessage = (String) request.getAttribute("countMessage");
+%>
 <!DOCTYPE html>
 
 <html>
@@ -44,6 +48,7 @@
     </nav>
       <main class="">
         <section class="clearfix">
+            <span> <%=createMessage%></span><br>
           <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
                 Crea nuova inserzione<br>
             <input class="form-control mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
@@ -57,6 +62,7 @@
             </form>
         </section>
         <section class="clearfix">
+            <span> <%=deleteMessage%></span><br>
             <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
                Elimina prodotto inserendo il Modello<br>
             <input class="form-control mr-sm-2" type="text" placeholder="Model" aria-label="Model" name="model" id="model">
@@ -71,6 +77,7 @@
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
             <input type="hidden" name="controllerAction" value="AdminManagement.count">
             </form>
+            <span> <%=countMessage%></span><br>
         </section>
           
       </main>

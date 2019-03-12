@@ -193,6 +193,9 @@ public class ProdottoManagement {
             
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("createMessage", "prodotto creato");
+            request.setAttribute("deleteMessage", " ");
+            request.setAttribute("countMessage", " ");
             request.setAttribute("viewUrl", "adminManagement/home");
             
         }
@@ -246,6 +249,9 @@ public class ProdottoManagement {
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("createMessage", " ");
+            request.setAttribute("deleteMessage", "prodotto eleminato");
+            request.setAttribute("countMessage", " ");
             request.setAttribute("viewUrl", "adminManagement/home");
             
         }catch(Exception e){

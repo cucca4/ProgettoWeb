@@ -1,3 +1,5 @@
+
+<%@page session="false"%>
 <%@page import="java.util.List"%>
 <%@page import="model.mo.PushedProduct"%>
 <%@page import="model.session.mo.LoggedUser"%>
@@ -30,14 +32,14 @@
 </head>
 <body class="clearfix">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark clearfix">
-        <a class="navbar-brand" href="#">Dronazon</a>
+        <a class="navbar-brand">Dronazon</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="Dispatcher?controllerAction=HomeManagement.view">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
@@ -74,7 +76,7 @@
         <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
         <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
         <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Cerca</input>
-        <input type="hidden" name="controllerAction" value="">
+        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
         </form>
         </div>
     </nav>
@@ -86,7 +88,7 @@
         <div class="col">
             <%for(c=0; c<4; c++ ) { %>
             <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/product/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%> .jpg" class="card-img-top" >
+            <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%> .jpg" class="card-img-top" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
             <div class="card-body">
                 <p class="card-text"><%=pushedProduct.get(c).getDescription()%></p>
             </div>
@@ -97,54 +99,27 @@
     </div>
     <div class="row">
         <div class="col">
+            
+            <%for(c=4; c<8; c++ ) { %>
             <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
+            <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%> .jpg" class="card-img-top" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
             <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text"><%=pushedProduct.get(c).getDescription()%></p>
             </div>
             </div> 
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
+            <%}%>
         </div>
     </div>
     <div class="row">
         <div class="col">
+            <%for(c=8; c<12; c++ ) { %>
             <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
+            <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%> .jpg" class="card-img-top" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
             <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text"><%=pushedProduct.get(c).getDescription()%></p>
             </div>
             </div> 
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card margin-card mx-auto" style="width: 18rem;">
-            <img src="images/prova.jpg" class="card-img-top" >
-            <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            </div>
+            <%}%> 
         </div>
     </div>
     </div>
