@@ -1,10 +1,12 @@
 <%@page import="model.session.mo.LoggedUser"%>
+<%@page import="model.mo.Product"%>
 
 <!doctype html>
 
 <%
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
+    Product product = (Product) request.getAttribute("product");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
 %>
 
@@ -81,11 +83,12 @@
     <div class="container bg-light mx-auto">
             <div class="pt-4"></div>
             <div class="float-left">
-                <img src="images/prova.jpg" class="mr-3" width="320" height="320">
+                <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
             </div><br>
             <div class="media-body">
-                <h5 class="mt-0 mb-1">brand-model-price</h5>
-                product description.
+                <h5 class="mt-0 mb-1"><%=product.getBrand()%></h5>
+                <h6 class="mt-0 mb-1"><%=product.getModel()%></h6>
+                <%=product.getDescription()%>
             </div>
             <div class="pt-3"></div>
             
@@ -96,8 +99,7 @@
             
         <%} else {%>
             <button type="button" class="btn btn-warning">Compra</button>
-      
-         <%}%>
+        <%}%>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>

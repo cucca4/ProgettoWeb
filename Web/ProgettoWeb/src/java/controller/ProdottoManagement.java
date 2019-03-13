@@ -24,6 +24,7 @@ import model.session.mo.LoggedAdmin;
 
 
 
+
 public class ProdottoManagement {
     
     private ProdottoManagement(){
@@ -34,6 +35,8 @@ public class ProdottoManagement {
 
     SessionDAOFactory sessionDAOFactory;
     LoggedUser loggedUser;
+    DAOFactory daoFactory = null;
+    ProductDAO productDAO;
 
     Logger logger = LogService.getApplicationLogger();
     
@@ -45,10 +48,21 @@ public class ProdottoManagement {
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
       
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory.beginTransaction();
+      
+      String model= (String)request.getParameter("search");
+      
+      
+      productDAO= daoFactory.getProductDAO();
+      Product product = productDAO.findByModel(model) ;
+      
+      
       if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("product", product);
             request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
 
     } catch (Exception e) {
@@ -229,7 +243,6 @@ public class ProdottoManagement {
         String delete;
         
         LoggedAdmin loggedAdmin = null;
-        
         try{
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
