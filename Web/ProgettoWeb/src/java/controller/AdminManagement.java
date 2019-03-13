@@ -2,6 +2,7 @@
 
 package controller;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +18,8 @@ import model.session.dao.LoggedAdminDAO;
 
 import model.dao.DAOFactory;
 import model.dao.AdminDAO;
+import model.dao.PushedProductDAO;
+import model.mo.PushedProduct;
 
 import model.session.mo.LoggedAdmin;
 
@@ -26,7 +29,7 @@ public class AdminManagement {
     }
     
     
-     /*public static void viewLogin (HttpServletRequest request, HttpServletResponse response){
+     public static void viewLogin (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
         
@@ -54,7 +57,7 @@ public class AdminManagement {
             logger.log(Level.SEVERE, "Controller Error", e);
             throw new RuntimeException(e);
         }
-    }*/
+    }
     
     
     
@@ -181,6 +184,8 @@ public class AdminManagement {
     public static void logout(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
+    DAOFactory daoFactory = null;
+    
     
     Logger logger = LogService.getApplicationLogger();
 
@@ -189,18 +194,32 @@ public class AdminManagement {
       sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
       sessionDAOFactory.initSession(request, response);
 
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory.beginTransaction();
+      
+      
       LoggedAdminDAO loggedUserDAO = sessionDAOFactory.getLoggedAdminDAO();
       loggedUserDAO.destroy();
+      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+
+      
+      daoFactory.commitTransaction();
+      
+      
+      request.setAttribute("loggedAdminOn",false);
+      request.setAttribute("loggedAdmin", null);
+      request.setAttribute("loggedOn",false);
+      request.setAttribute("loggedUser", null);
+      request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("viewUrl", "homeManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
       throw new RuntimeException(e);
 
     }
-    request.setAttribute("loggedAdminOn",false);
-    request.setAttribute("loggedAdmin", null);
-    request.setAttribute("viewUrl", "homeManagement/view");
-
+    
   }
     
     public static void count (HttpServletRequest request, HttpServletResponse response) {
