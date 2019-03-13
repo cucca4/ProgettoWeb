@@ -241,7 +241,7 @@ public class AdminManagement {
 
         daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
         daoFactory.beginTransaction();
-
+        String count;
 
 
         String username= request.getParameter("username");
@@ -250,7 +250,9 @@ public class AdminManagement {
         AdminDAO adminDAO = daoFactory.getAdminDAO();
         int numorders = adminDAO.countOrdersByBuyer(username);
         
-        String count = "L'utente ha effettuato" + numorders +"ordini";
+        if(numorders!= 1)
+         count = "L'utente "+username+" ha effettuato " + numorders +" ordini";
+        else count = "L'utente "+username+" ha effettuato " + numorders +" ordine";
         
         request.setAttribute("loggedAdminOn",loggedAdmin!=null);
         request.setAttribute("loggedadmin", loggedAdmin);

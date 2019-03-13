@@ -73,7 +73,7 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
             + "     username_Ad = ?, "
             + "     psw_ad = ?, "
             + "WHERE "
-            +"admin_Id = ?";
+            +" admin_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -99,7 +99,7 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
                     = "DELETE "
                     + "FROM admin "
                     + "WHERE "
-                    + "admin_Id = ? ";
+                    + "admin_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -124,7 +124,7 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
                     + "FROM admin "
                     + "WHERE "
                     + "username_Ad = ? AND "
-                    + "deleted_Ad = '0' ";
+                    + "deleted_Ad = '0';";
             
             ps = conn.prepareStatement(sql);
             ps.setString(1, username);
@@ -151,9 +151,10 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
 
          try {
               String sq1
-                      = "SELECT COUNT * AS count "
+                      = " SELECT COUNT(*)" 
+                      + " AS count "
                       + " FROM orders "
-                      + " WHERE buyer = ?";
+                      + " WHERE buyer = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setString(1, buyer);
@@ -165,11 +166,9 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
 
               resultSet.close();
               ps.close();
-
+              return numOrders;
          }catch(SQLException e){
               throw new RuntimeException(e);
          }
-
-         return numOrders;
     }
 }

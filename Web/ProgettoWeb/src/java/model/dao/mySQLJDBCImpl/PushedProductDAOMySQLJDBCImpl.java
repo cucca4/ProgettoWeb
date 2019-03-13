@@ -29,7 +29,7 @@ public class PushedProductDAOMySQLJDBCImpl implements PushedProductDAO{
       try {
           String sq1
             = "SELECT * "
-            + "FROM pushedproduct ";
+            + "FROM pushedproduct;";
             
           ps = conn.prepareStatement(sq1);
 

@@ -67,7 +67,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                       + "WHERE buyer = ? AND "
                       + "totprice = ? AND "
                       + "status = ? AND "
-                      + "deleted_Or = '0' ";
+                      + "deleted_Or = '0';";
 
                   ps = conn.prepareStatement(sql);
                   ps.setString(1, order.getBuyer());
@@ -88,7 +88,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                       + "     status,"
                       + "     deleted_Or "
                       + "   ) "
-                      + " VALUES (?,?,?,?,'0')";
+                      + " VALUES (?,?,?,?,'0');";
 
                       ps = conn.prepareStatement(sql);
 
@@ -124,7 +124,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
             + "     totprice = ?, "
             + "     status = ?, "
             + "WHERE "
-            +"order_Id = ?";
+            +"order_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -152,7 +152,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                     = "DELETE "
                     + "FROM orders "
                     + "WHERE "
-                    + "order_Id = ? ";
+                    + "order_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -177,7 +177,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
               String sq1
                       = "SELECT * "
                       + " FROM orders "
-                      + " WHERE order_Id = ?";
+                      + " WHERE order_Id = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setLong(1, order_Id);

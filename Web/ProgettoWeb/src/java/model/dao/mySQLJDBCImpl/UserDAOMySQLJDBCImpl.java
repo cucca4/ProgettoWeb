@@ -92,7 +92,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
                       + "FROM user "
                       + "WHERE firstname = ? AND "
                       + "surname = ? AND "
-                      + "deleted_Pr = '0' ";
+                      + "deleted_Pr = '0';";
 
                   ps = conn.prepareStatement(sql);
                   ps.setString(1, user.getFirstname());
@@ -117,7 +117,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
                       + "     cap,"
                       + "     deleted "
                       + "   ) "
-                      + " VALUES (?,?,?,?,?,?,?,?,?,'0')";
+                      + " VALUES (?,?,?,?,?,?,?,?,?,'0');";
 
                       ps = conn.prepareStatement(sql);
 
@@ -166,7 +166,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             + "     city = ?, "
             + "     cap = ?,"
             + "WHERE "
-            +"admin_Id = ?";
+            +"admin_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -199,7 +199,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             + "SET "
             + "password = ? "              
             + "WHERE "
-            + "id = ? ";
+            + "id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -225,7 +225,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
                     = "DELETE "
                     + "FROM user "
                     + "WHERE "
-                    + "userId = ? ";
+                    + "userId = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -252,7 +252,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
               = " SELECT * "
               + "   FROM user "
               + " WHERE "
-              + "   userId = ?";
+              + "   userId = ?;";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, userId);
@@ -285,7 +285,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
               = " SELECT * "
               + "   FROM user "
               + " WHERE "
-              + "   username = ?";
+              + "   username = ?;";
 
       ps = conn.prepareStatement(sql);
       ps.setString(1, username);

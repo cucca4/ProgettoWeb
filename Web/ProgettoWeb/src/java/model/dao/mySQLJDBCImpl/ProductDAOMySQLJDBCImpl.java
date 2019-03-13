@@ -84,7 +84,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
                       + "FROM product "
                       + "WHERE brand = ? AND "
                       + "model = ? AND "
-                      + "deleted_Pr = '0' ";
+                      + "deleted_Pr = '0';";
 
                   ps = conn.prepareStatement(sql);
                   ps.setString(1, product.getBrand());
@@ -107,7 +107,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
                       + "     qty,"
                       + "     deleted_Pr "
                       + "   ) "
-                      + " VALUES (?,?,?,?,?,?,?,'0')";
+                      + " VALUES (?,?,?,?,?,?,?,'0');";
 
                       ps = conn.prepareStatement(sql);
 
@@ -152,7 +152,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
             + "     price = ?, "
             + "     qty = ?, "
             + "WHERE "
-            +"Prod_Id = ?";
+            +"Prod_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -182,7 +182,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
                     = "DELETE "
                     + "FROM product "
                     + "WHERE "
-                    + "Prod_Id = ? ";
+                    + "Prod_Id = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -206,7 +206,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE Prod_Id = ?";
+                      + " WHERE Prod_Id = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setLong(1, prod_Id);
@@ -237,7 +237,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE brand = ?";
+                      + " WHERE brand = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setString(1, brand);
@@ -269,7 +269,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE category = ?";
+                      + " WHERE category = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setString(1, category);
@@ -301,7 +301,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE model = ?";
+                      + " WHERE model = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setString(1, model);
@@ -313,14 +313,13 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
 
               resultSet.close();
               ps.close();
-
+              
+              return product;
+              
          }catch(SQLException e){
               throw new RuntimeException(e);
          }
-
-         return product;
-
-}
+    }
   
   @Override
   public Product findByQty(Long qty){
@@ -333,7 +332,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE qty = ?";
+                      + " WHERE qty = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setLong(1, qty);
@@ -365,7 +364,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
               String sq1
                       = "SELECT * "
                       + " FROM product "
-                      + " WHERE price = ?";
+                      + " WHERE price = ?;";
 
               ps = conn.prepareStatement(sq1);
               ps.setFloat (1, price);

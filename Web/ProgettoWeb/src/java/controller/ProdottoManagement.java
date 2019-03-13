@@ -152,7 +152,7 @@ public class ProdottoManagement {
         DAOFactory daoFactory = null;
         String applicationMessage = null;
         Logger logger = LogService.getApplicationLogger();
-        
+        String create;
         Product vprod = new Product();
         LoggedAdmin loggedAdmin = null;
         
@@ -165,7 +165,7 @@ public class ProdottoManagement {
             
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             
-            vprod.setProd_Id( new Long (request.getParameter("Peod_Id")));
+            vprod.setProd_Id( new Long (request.getParameter("Prod_Id")));
             vprod.setBrand(request.getParameter("brand"));
             vprod.setModel(request.getParameter("model"));
             vprod.setDescription(request.getParameter("description"));
@@ -190,10 +190,10 @@ public class ProdottoManagement {
             }
             
             daoFactory.commitTransaction();
-            
+            create ="prodotto "+vprod.getModel()+" creato";
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("loggedadmin", loggedAdmin);
-            request.setAttribute("createMessage", "prodotto creato");
+            request.setAttribute("createMessage", create);
             request.setAttribute("deleteMessage", " ");
             request.setAttribute("countMessage", " ");
             request.setAttribute("viewUrl", "adminManagement/home");
@@ -226,6 +226,7 @@ public class ProdottoManagement {
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
         Product product;
+        String delete;
         
         LoggedAdmin loggedAdmin = null;
         
@@ -236,7 +237,7 @@ public class ProdottoManagement {
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();
             
-            String model = request.getParameter("model");
+            String model = (String) request.getParameter("model");
             
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             daoFactory.beginTransaction();
@@ -244,13 +245,13 @@ public class ProdottoManagement {
             ProductDAO productDAO = daoFactory.getProductDAO();
             product = productDAO.findByModel(model);
             productDAO.delete(product);
-            
+            delete= "prodotto "+model+" eliminato";
         
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
-            request.setAttribute("deleteMessage", "prodotto eleminato");
+            request.setAttribute("deleteMessage", delete);
             request.setAttribute("countMessage", " ");
             request.setAttribute("viewUrl", "adminManagement/home");
             

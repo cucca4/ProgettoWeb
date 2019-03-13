@@ -49,13 +49,14 @@
             </form>
         </div>
     </nav>
-      <div class="pt-5"></div>
+    <div class="pt-5"></div>
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
+        <div class="pt-4"></div>
         <section class="clearfix">
-            <span> <%=createMessage%></span><br>
           <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
                 <span>Crea nuova inserzione</span>
+                <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Codice ID" aria-label="Codice ID" name="Prod_Id" id="Prod_Id">
                 <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
                 <input class="form-control mr-sm-2" type="text" placeholder="Modello" aria-label="model" name="model" id="model">
                 <input class="form-control mr-sm-2" type="text" placeholder="Descrizione" aria-label="description" name="description" id="description">
@@ -65,16 +66,23 @@
                 <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Crea">
                 <input type="hidden" name="controllerAction" value="ProdottoManagement.createProduct">
             </form>
+            <% if(createMessage != null) {%>
+                <%=createMessage%>
+            <%}%>
         </section>
+        <div class="pt-3"></div>
         <section class="clearfix">
-            <span> <%=deleteMessage%></span><br>
-            <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
+            <form class="form-inline mt-2 mt-md-0" name="delete" action="Dispatcher" method="post"> 
                Elimina prodotto inserendo il Modello<br>
             <input class="form-control  ml-sm-2 mr-sm-2" type="text" placeholder="Modello" aria-label="Modello" name="model" id="model">
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Elimina">
             <input type="hidden" name="controllerAction" value="ProdottoManagement.deleteProduct">
             </form>
+            <% if(deleteMessage != null) {%>
+                <%=deleteMessage%>
+            <%}%>
         </section>
+        <div class="pt-3"></div>
         <section class="clearfix">
             <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
                 Controlla il numero di ordini effettuati da un utente inserendo il suo Username<br>
@@ -82,7 +90,10 @@
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
             <input type="hidden" name="controllerAction" value="AdminManagement.count">
             </form>
-            <span> <%=countMessage%></span><br>
+            <% if(countMessage != null) {%>
+                <%=countMessage%>
+            <%}%>
+            <div class="pt-2"></div>
         </section>
     </div>
     </body>
