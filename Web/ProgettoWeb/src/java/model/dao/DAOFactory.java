@@ -28,5 +28,8 @@ public abstract class DAOFactory {
     public abstract AdminDAO getAdminDAO();
     
     public abstract PushedProductDAO getPushedProductDAO();
+
+    public abstract OrdersDAO getOrdersDAO();
+        
 }
 

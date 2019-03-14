@@ -2,11 +2,19 @@
 <%@page session="false"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedAdmin"%>
+<%@page import="model.mo.User"%>
+<%@page import="model.dao.UserDAO"%>
+<%@page import="model.mo.Orders"%>
+<%@page import="java.util.List"%>
+
 
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
    String createMessage = (String) request.getAttribute("createMessage");
    String deleteMessage = (String) request.getAttribute("deleteMessage");
    String countMessage = (String) request.getAttribute("countMessage");
+   List<Orders> Listorders = (List<Orders>) request.getAttribute("Listorders");
+   User user = (User) request.getAttribute("user");
+   int i;
 %>
 <!DOCTYPE html>
 
@@ -28,7 +36,7 @@
 </head>
 <body class="clearfix">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary clearfix">
-        <a class="navbar-brand" href="#">Dronazon-Admin</a>
+        <a class="navbar-brand" href="">Dronazon-Admin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -92,6 +100,50 @@
             </form>
             <% if(countMessage != null) {%>
                 <%=countMessage%>
+            <%}%>
+            <div class="pt-2"></div>
+        </section>
+        <div class="pt-3"></div>
+        <section class="clearfix">
+            <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
+                Visualizza le informazioni di un utente inserendo il suo Username<br>
+            <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
+            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
+            <input type="hidden" name="controllerAction" value="AdminManagement.findUser">
+            </form>
+            <% if(user != null) {%>
+            Username: <%=user.getUsername()%>
+                Password: <%=user.getPassword()%><br>
+                Nome: <%=user.getFirstname()%>
+                Cognome: <%=user.getSurname()%><br>
+                Email: <%=user.getEmail()%><br>
+                Città: <%=user.getCity()%>
+                Cap: <%=user.getCap()%>
+                Indirizzo: <%=user.getAddress()%>
+            <%}%>
+            <div class="pt-2"></div>
+        </section>
+        <div class="pt-2"></div>    
+        <section class="clearfix">
+            <div class="pt-3"></div>
+            Lista degli ordini effettuati su Dronazon!<br>
+            <div class="container">
+                <%for(i=0;i<Listorders.size();i++) { %>
+                <div class="row">
+                  <div class="col-sm">
+                    <%=Listorders.get(i).getOrder_Id()%>
+                  </div>
+                  <div class="col-sm">
+                    <%=Listorders.get(i).getBuyer()%>
+                  </div>
+                  <div class="col-sm">
+                    <%=Listorders.get(i).getTotprice()%>
+                  </div>
+                    <div class="col-sm">
+                    <%=Listorders.get(i).getStatus()%>
+                  </div>
+                </div>
+              </div>
             <%}%>
             <div class="pt-2"></div>
         </section>

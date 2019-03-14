@@ -165,7 +165,38 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
             throw new RuntimeException(e);
         }
     }
+    
+    
+    @Override
+     public List<Orders> ALLview(){
+        PreparedStatement ps;
+        List<Orders> Listorders = new ArrayList<Orders>();
+        try{
+            String sql
+                    = " SELECT *"
+                    + "FROM orders;";
+        
+       
+            ps = conn.prepareStatement(sql);
 
+            ResultSet resultSet = ps.executeQuery();
+            
+            
+            while(resultSet.next()){
+              Listorders.add(read(resultSet));
+            }
+            
+            resultSet.close();
+            ps.close();
+            
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return Listorders;
+     }
+    
+    
+    
      @Override
     public Orders findOrdersByOrder_Id(Long order_Id){
         

@@ -51,10 +51,10 @@ public class ProdottoManagement {
       daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
       daoFactory.beginTransaction();
       
-      String model= (String)request.getParameter("search");
+      String model= (String) request.getParameter("search");
       
       
-      productDAO= daoFactory.getProductDAO();
+      productDAO = daoFactory.getProductDAO();
       Product product = productDAO.findByModel(model) ;
       
       

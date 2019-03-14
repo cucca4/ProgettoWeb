@@ -18,6 +18,8 @@ public interface OrdersDAO {
   public void update(Orders order) throws DuplicatedObjectException;
 
   public void delete(Orders order);
+  
+  public List<Orders> ALLview();
 
   public Orders findOrdersByOrder_Id(Long order_Id);
 }

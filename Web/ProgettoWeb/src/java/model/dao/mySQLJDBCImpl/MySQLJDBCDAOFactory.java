@@ -9,6 +9,7 @@ import services.config.Configuration;
 import model.dao.DAOFactory;
 import model.dao.UserDAO;
 import model.dao.AdminDAO;
+import model.dao.OrdersDAO;
 import model.dao.ProductDAO;
 import model.dao.PushedProductDAO;
 
@@ -79,5 +80,10 @@ public class MySQLJDBCDAOFactory extends DAOFactory {
     @Override
     public ProductDAO getProductDAO() {
         return new ProductDAOMySQLJDBCImpl(connection);
+    }
+    
+    @Override
+    public  OrdersDAO getOrdersDAO(){
+        return new OrdersDAOMySQLJDBCImpl(connection);
     }
 }

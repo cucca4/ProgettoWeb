@@ -18,8 +18,12 @@ import model.session.dao.LoggedAdminDAO;
 
 import model.dao.DAOFactory;
 import model.dao.AdminDAO;
+import model.dao.OrdersDAO;
 import model.dao.PushedProductDAO;
+import model.dao.UserDAO;
+import model.mo.Orders;
 import model.mo.PushedProduct;
+import model.mo.User;
 
 import model.session.mo.LoggedAdmin;
 
@@ -64,6 +68,7 @@ public class AdminManagement {
     public static void view (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
+        DAOFactory daoFactory = null;
         
         Logger logger = LogService.getApplicationLogger();
         
@@ -73,12 +78,17 @@ public class AdminManagement {
             sessionDAOFactory.initSession(request, response);
             
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
-            loggedAdmin = loggedAdminDAO.find();            
+            loggedAdmin = loggedAdminDAO.find();  
+            
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            List<Orders> Listorders = ordersdao.ALLview();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", " ");
             request.setAttribute("countMessage", " ");
+            request.setAttribute("user", " ");
+            request.setAttribute("Listorders", Listorders);
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
@@ -266,5 +276,81 @@ public class AdminManagement {
 
     }
     }
+    
+    public static void findUser (HttpServletRequest request, HttpServletResponse response) {
+        Logger logger = LogService.getApplicationLogger();
+        
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedAdmin loggedAdmin;
+        String applicationMessage = null;
+
+    try {
+
+        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+        sessionDAOFactory.initSession(request, response);
+
+        LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+        loggedAdmin = loggedAdminDAO.find();
+
+        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+        daoFactory.beginTransaction();
+      
+
+        String username= request.getParameter("username");
+
+
+        UserDAO adminDAO = daoFactory.getUserDAO();
+        User user = adminDAO.findByUsername(username);
+        
+        
+        request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+        request.setAttribute("loggedadmin", loggedAdmin);
+        request.setAttribute("user", user);
+        request.setAttribute("adminApplicationMessage", applicationMessage);
+        request.setAttribute("viewUrl", "adminManagement/home");
+      
+    }catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      throw new RuntimeException(e);
+
+    }
+    }
+    
+    /*public static void viewOrders (HttpServletRequest request, HttpServletResponse response) {
+        Logger logger = LogService.getApplicationLogger();
+        
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedAdmin loggedAdmin;
+        String applicationMessage = null;
+
+    try {
+
+        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+        sessionDAOFactory.initSession(request, response);
+
+        LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+        loggedAdmin = loggedAdminDAO.find();
+
+        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+        daoFactory.beginTransaction();
+        
+        
+        OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+        List<Orders> orders = ordersdao.ALLview();
+        
+        request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+        request.setAttribute("loggedadmin", loggedAdmin);
+        request.setAttribute("Listorders", orders);
+        request.setAttribute("adminApplicationMessage", applicationMessage);
+        request.setAttribute("viewUrl", "adminManagement/home");
+      
+    }catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      throw new RuntimeException(e);
+
+    }
+    }*/
     
 }
