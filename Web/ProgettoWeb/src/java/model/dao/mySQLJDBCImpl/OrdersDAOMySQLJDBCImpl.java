@@ -170,7 +170,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
     @Override
      public List<Orders> ALLview(){
         PreparedStatement ps;
-        List<Orders> Listorders = new ArrayList<Orders>();
+        ArrayList<Orders> Listorders = new ArrayList<Orders>();
         try{
             String sql
                     = " SELECT *"

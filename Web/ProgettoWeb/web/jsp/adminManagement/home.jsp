@@ -3,7 +3,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.session.mo.LoggedAdmin"%>
 <%@page import="model.mo.User"%>
-<%@page import="model.dao.UserDAO"%>
 <%@page import="model.mo.Orders"%>
 <%@page import="java.util.List"%>
 
@@ -128,7 +127,7 @@
             <div class="pt-3"></div>
             Lista degli ordini effettuati su Dronazon!<br>
             <div class="container">
-                <%for(i=0;i<Listorders.size();i++) { %>
+                <% for(i=0;i<Listorders.size();i++) { %>
                 <div class="row">
                   <div class="col-sm">
                     <%=Listorders.get(i).getOrder_Id()%>
@@ -143,8 +142,8 @@
                     <%=Listorders.get(i).getStatus()%>
                   </div>
                 </div>
-              </div>
-            <%}%>
+                <%}%>
+            </div>
             <div class="pt-2"></div>
         </section>
     </div>

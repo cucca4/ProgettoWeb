@@ -41,12 +41,16 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="Dispatcher?controllerAction=HomeManagement.view">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
                 </li>
-      
+                <% if(!loggedOn){%>
+                <li class="nav-item">
+                    <a class="nav-link" href="Registrazione.html">Registrazione</a>
+                </li>
+                <%}%>
                 <% if(loggedOn) {%>
                 <span class="nav-link nav-message"> <%=applicationMessage%></span>
                 <li class="nav-item">
@@ -59,66 +63,66 @@
                 <%}%>
             </ul>
       
-        <% if(!loggedOn) {%>     
-            <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
-            <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
-            <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password" name="password" id="password">
-            <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">
-            <input type="hidden" name="controllerAction" value="HomeManagement.logon">
-            </form>
-        <%} else {%>
-            <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
-            <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
-            <input type="hidden" name="controllerAction" value="HomeManagement.logout">
-            </form>
-      
-         <%}%>
-      
-        <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
-        <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
-        <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
-        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
-        </form>
+            <% if(!loggedOn) {%>     
+
+
+                <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
+                <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
+                <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password" name="password" id="password">
+                <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">
+                <input type="hidden" name="controllerAction" value="HomeManagement.logon">
+                </form>
+            <%} else {%>
+                <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
+                <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
+                <input type="hidden" name="controllerAction" value="HomeManagement.logout">
+                </form>
+
+             <%}%>
+
+                <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
+                    <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
+                    <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
+                    <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+                </form>
         </div>
     </nav>
 
     <div class="pt-5"></div>
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
-    <div class="row">
+        <div class="row">
        
             <%for(c=0; c<3; c++ ) { %>
-            <div class="card margin-card mx-auto" style="width: 19rem;">
-            <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
-            <div class="card-body">
-                <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
-            </div>
-            </div> 
+                <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
+                    <div class="card-body">
+                        <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
+                    </div>
+                </div> 
             <%}%>
         
-        
-    </div>
-    <div class="row">
-      
+        </div>
+        <div class="row">
             <%for(c=3; c<6; c++ ) { %>
-            <div class="card margin-card mx-auto" style="width: 19rem;">
-            <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
-            <div class="card-body">
-                <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
-            </div>
-            </div> 
+                <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
+                    <div class="card-body">
+                        <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
+                    </div>
+                </div> 
             <%}%>
-    </div>
-    <div class="row">
+        </div>
+        <div class="row">
             <%for(c=6; c<9; c++ ) { %>
-            <div class="card margin-card mx-auto" style="width: 19rem;">
-            <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
-            <div class="card-body">
-                <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%> </p>
-            </div>
-            </div> 
-            <%}%> 
-    </div>
+                <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
+                    <div class="card-body">
+                        <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%> </p>
+                    </div>
+                </div> 
+             <%}%> 
+        </div>
     </div>
 </body>
 
@@ -126,7 +130,7 @@
         <% if(!loggedOn) {%>
         <form action="Dispatcher" method="post">
             <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Admin Area</input>
-             <input type="hidden" name="controllerAction" value="AdminManagement.viewLogin">
+            <input type="hidden" name="controllerAction" value="AdminManagement.viewLogin">
         </form>
         <% } %>
     

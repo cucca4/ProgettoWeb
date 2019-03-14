@@ -68,7 +68,7 @@ public class AdminManagement {
     public static void view (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
-        DAOFactory daoFactory = null;
+        DAOFactory daoFactory;
         
         Logger logger = LogService.getApplicationLogger();
         
@@ -77,11 +77,16 @@ public class AdminManagement {
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
             
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+            
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();  
             
             OrdersDAO ordersdao = daoFactory.getOrdersDAO();
             List<Orders> Listorders = ordersdao.ALLview();
+            
+            daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");

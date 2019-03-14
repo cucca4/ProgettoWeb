@@ -85,6 +85,76 @@ public class UserArea {
         }
     }
     
+    
+    public static void createUser(HttpServletRequest request, HttpServletResponse response){
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        String applicationMessage = null;
+        Logger logger = LogService.getApplicationLogger();
+        User vuser = new User();
+       
+        
+        try{
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+           
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            
+            
+            vuser.setUsername(request.getParameter("username"));
+            vuser.setPassword(request.getParameter("password"));
+            vuser.setFirstname(request.getParameter("firstname"));
+            vuser.setSurname(request.getParameter("surname"));
+            vuser.setEmail(request.getParameter("email"));
+            vuser.setAddress(request.getParameter("address"));
+            vuser.setCity(request.getParameter("city"));
+            vuser.setCap(request.getParameter("cap"));
+            
+            
+            
+            
+            daoFactory.beginTransaction();
+            UserDAO userDAO = daoFactory.getUserDAO();
+            
+            try{
+                
+                User user = userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
+
+            } catch (DuplicatedObjectException e) {
+                
+                applicationMessage = "Codice o prodotto già esistente";
+               
+            }
+            
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("applicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "homeManagement/view");
+            
+        }
+        catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
+
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } 
+            catch (Throwable t) {
+            }
+            throw new RuntimeException(e);
+        } 
+        finally {
+            try {
+                    if (daoFactory != null) {
+                        daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+            }
+        }
+    }
+    
 
     public static void modify(HttpServletRequest request, HttpServletResponse response){
         
