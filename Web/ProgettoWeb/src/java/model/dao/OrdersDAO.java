@@ -20,6 +20,8 @@ public interface OrdersDAO {
   public void delete(Orders order);
   
   public List<Orders> ALLview();
+  
+  public List<Orders> findByBuyer(String buyer);
 
   public Orders findOrdersByOrder_Id(Long order_Id);
 }

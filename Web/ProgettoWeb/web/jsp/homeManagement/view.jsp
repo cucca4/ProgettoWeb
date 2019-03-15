@@ -41,14 +41,14 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="jsp/homeManagement/home.html">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
                 </li>
                 <% if(!loggedOn){%>
                 <li class="nav-item">
-                    <a class="nav-link" href="Registrazione.html">Registrazione</a>
+                    <a class="nav-link" href="jsp/homeManagement/Registrazione.html">Registrazione</a>
                 </li>
                 <%}%>
                 <% if(loggedOn) {%>

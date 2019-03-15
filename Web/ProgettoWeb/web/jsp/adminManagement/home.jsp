@@ -122,7 +122,8 @@
             <%}%>
             <div class="pt-2"></div>
         </section>
-        <div class="pt-2"></div>    
+        <div class="pt-2"></div> 
+        <%--
         <section class="clearfix">
             <div class="pt-3"></div>
             Lista degli ordini effettuati su Dronazon!<br>
@@ -146,6 +147,7 @@
             </div>
             <div class="pt-2"></div>
         </section>
+        --%>
     </div>
     </body>
 </html>

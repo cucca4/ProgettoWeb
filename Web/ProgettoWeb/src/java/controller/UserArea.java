@@ -14,6 +14,7 @@ import services.logservice.LogService;
 
 import model.dao.exception.DuplicatedObjectException;
 import model.dao.DAOFactory;
+import model.dao.OrdersDAO;
 import model.dao.UserDAO;
 import model.mo.Orders;
 import model.mo.User;
@@ -52,6 +53,10 @@ public class UserArea {
                 UserDAO userDAO = daoFactory.getUserDAO();
                 User user = userDAO.findByUserId(loggedUser.getUserId());
                 
+                OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
+                List<Orders> orders = ordersDAO.findByBuyer(user.getUsername());  
+                
+                
                 daoFactory.commitTransaction();
                 
                 System.out.println(user.getFirstname());
@@ -61,6 +66,7 @@ public class UserArea {
                 request.setAttribute("loggedOn", loggedUser != null);
                 request.setAttribute("loggedUser", loggedUser);
                 request.setAttribute("actionPage", "account");
+                request.setAttribute("orders", orders);
                 request.setAttribute("viewUrl", "userAreaManagement/view");
             }
         catch (Exception e) {
@@ -110,16 +116,13 @@ public class UserArea {
             vuser.setAddress(request.getParameter("address"));
             vuser.setCity(request.getParameter("city"));
             vuser.setCap(request.getParameter("cap"));
-            
-            
-            
-            
+                        
             daoFactory.beginTransaction();
             UserDAO userDAO = daoFactory.getUserDAO();
             
             try{
                 
-                User user = userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
+                userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
 
             } catch (DuplicatedObjectException e) {
                 
@@ -182,9 +185,9 @@ public class UserArea {
             user.setFirstname(request.getParameter("firstname"));
             user.setSurname(request.getParameter("surname"));
             user.setEmail(request.getParameter("email"));
-            user.setAddress("address");
-            user.setCity("city");
-            user.setCap("cap");
+            user.setAddress(request.getParameter("address"));
+            user.setCity(request.getParameter("city"));
+            user.setCap(request.getParameter("cap"));
             
             
             userDAO.update(user);

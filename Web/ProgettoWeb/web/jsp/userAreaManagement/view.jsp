@@ -7,13 +7,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-  User user = (User)request.getAttribute("user");
-  LoggedUser loggedUser = (LoggedUser)request.getAttribute("loggedUser");
-  Boolean loggedOn = (Boolean)request.getAttribute("loggedOn");
-  String applicationMessage = (String)request.getAttribute("applicationMessage");
-  String actionPage = (String)request.getAttribute("actionPage");
-  List<Orders> orders = (List<Orders>)request.getAttribute("orders");
-  int i=0;
+    User user = (User)request.getAttribute("user");
+    LoggedUser loggedUser = (LoggedUser)request.getAttribute("loggedUser");
+    Boolean loggedOn = (Boolean)request.getAttribute("loggedOn");
+    String applicationMessage = (String)request.getAttribute("applicationMessage");
+    String actionPage = (String)request.getAttribute("actionPage");
+    List<Orders> orders = (List<Orders>)request.getAttribute("orders");
+    int i;
 %>
 <!DOCTYPE html>
 
@@ -22,11 +22,19 @@
 <html>
     <head>
         
-        <title>Dronazon</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
-        <script language="javascript">
-            
-        </script>
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-grid.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-reboot.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" type="text/css" href="css/homestyle.css">
+        
+        <title>Dronazon</title>
+ 
     </head>
     
     <body class="clearfix">
@@ -38,7 +46,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="home.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
@@ -58,80 +66,71 @@
         </form>
         </div>
     </nav>
-
-    
-    
     <div class="pt-5"></div>
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
-    
     <div class="pt-3"></div>    
-        <ul class="list-unstyled">
-            <li class="media">
+        <ul class="">
+            <li class="">
                 <img src="images/scatola.jpg" class="mr-3" width="120" height="120">
                 <div class="media-body">
                     <h5 class="mt-0 mb-1">ORDINI</h5>
                      Visualizza la cronologia degli ordini effettuati o lo stato di quelli ancora da consegnare.
-                     <section>
+                    <section>
                         <form name="oForm" action="dispatcher" method="post">   
                         <br><br>
-                        <div>
-                            <%for(i=0; i<orders.size(); i++) {%>
-                                <a href="javascript:goToViewOrders('<%=orders.get(i).getOrder_Id()%>', <%=orders.get(i).getTotprice()%>, <%=orders.get(i).getStatus()%>');">
+                            <div>
+                                <%for(i=0; i<orders.size(); i++) {%>
                                     <article class=" clearfix">
-                                    <img src="images/prova.png" alt="Chat" class="support-img-chat">
-                                    <div class='support-article-centraldiv'>
-                                        <h2 class='support-h2'>
-                                        <%=orders.get(i).getOrder_Id()%>, 
-                                        
+                                        <div>
+                                            <h2 >
+                                            <%=orders.get(i).getOrder_Id()%>
+                                            <%=orders.get(i).getTotprice()%>
+                                            </h2>
+                                            <h3 class='clearfix'>
+                                            <br>
+                                            <% if(orders.get(i).getStatus()== "elaborazione"){%>
+
+                                                Ordine non ancora spedito
+
+                                            <%} else {%>
+                                                <% if(orders.get(i).getStatus()== "spedito"){%>
+
+                                                Ordine spedito
+
+                                            <%} else {%>
+                                                <strong>Ordine consegnato</strong>
+                                            <%}%>
+                                            <%}%>
+                                            </h3>
+                                        </div>
+                                        </article>
+
+                                <%}%>
+
+                                <% if(orders.size()==0) {%>
+                                    <article class="clearfix">
+                                        <img src="images/error.png" alt="" class="">
+                                        <div>
+                                        <h2>
+                                            Nessun ordine effettuato!
                                         </h2>
-                                        <h3 class='clearfix'>
-                                        
-                                        <br>
-                                        <% if(orders.get(i).getStatus()== "elaboramento"){%>
-                                        
-                                            Ordine non ancora spedito
-                                        
-                                        <%} else {%>
-                                            <% if(orders.get(i).getStatus()== "spedito"){%>
-                                        
-                                            Ordine spedito
-                                        
-                                        <%} else {%>
-                                            <strong>Ordine consegnato</strong>
-                                        <%}%>
-                                        <%}%>
+                                        <h3 class='support-h3'>
+                                            Effettua un ordine per visualizzarne i dettagli.
                                         </h3>
-                                    </div>
+                                        </div>
                                     </article>
-                                </a> 
-                            <%}%>
-                        
-                            <% if(orders.size()==0) {%>
-                                <article class="support-article-chat clearfix">
-                                    <img src="images/error.png" alt="Chat" class="support-img-chat">
-                                    <div class='support-article-centraldiv'>
-                                    <h2 class='support-h2'>
-                                        Nessun ordine effettuato!
-                                    </h2>
-                                    <h3 class='support-h3'>
-                                        Effettua un ordine per visualizzarne i dettagli.
-                                    </h3>
-                                    </div>
-                                </article>
-                            <%}%>
-                        
-                        </div>  
+                                <%}%>
+                            </div>  
                         </form>
-                         
-                     </section>
+                    </section>
                 </div>
             </li>
             <li class="media my-4">
             <img src="images/omino-ok.jpg" class="mr-3" width="120" height="120">
                 <div class="media-body">
                     <h5 class="mt-0 mb-1">PROFILO</h5>
-                    Controlla le informazioni sul tuo profilo o modifica l'indirizzo di consegna.
+                    Controlla le informazioni sul tuo profilo o modificane i parametri.
                     <section>
                             <form name="uForm" action="Dispatcher" method="post">
                             <label for="username"> Username </label>
@@ -155,11 +154,13 @@
                             <label for="cap"> Cap </label>
                             <input type="cap" id="cap" name="cap" maxlength="40" value="<%=user.getCap()%>" required>            
                             </br></br>
-                            <input type="submit" value="Salva" class="submit">
+                            <input type="submit" value="Salva" class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
                             <input type="hidden" name="controllerAction" value="UserArea.modify"/>
                             </form>
                     </section>
+                    <div class="pt-3"></div>
+                    Cambia Password
                     <section>
                             <form name="passwordForm" action="Dispatcher" method="post">
                             <label for="oldPassword"> Password </label>
@@ -168,17 +169,19 @@
                             <label for="newPassword"> Nuova password </label>
                             <input type="password" id="newPassword" name="newpassword" maxlength="40" required>
                             </br></br>
-                            <input type="submit" value="Salva" class="submit submit-dimensioni">
+                            <input type="submit" value="Salva" class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
                             <input type="hidden" name="controllerAction" value="UserArea.modifyPassword"/>
                             </form>
                     </section>
+                    <div class="pt-3"></div>
+                    Elimina Account
                     <section >
                         <form name="deleteAccountForm" action="Dispatcher" method="post">
                         <label for="Password"> Password </label>
                         <input type="password" id="Password" name="password" maxlength="40" required>
                         </br></br>
-                        <input type="submit" value="Elimina" class="submit">
+                        <input type="submit" value="Elimina" class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2">
                         <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
                         <input type="hidden" name="controllerAction" value="UserArea.deleteAccount"/>
                         </form>

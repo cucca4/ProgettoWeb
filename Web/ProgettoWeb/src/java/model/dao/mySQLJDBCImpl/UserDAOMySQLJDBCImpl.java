@@ -67,84 +67,81 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     }
   @Override
   public User insert(String username,
-          String password,
-          String firstname,
-          String surname,
-          String email,
-          String address,
-          String city,
-          String cap) throws DuplicatedObjectException{
-    
-          PreparedStatement ps;
-     ResultSet resultSet;
-     User user=new User();
-     user.setUsername(username);
-     user.setPassword(password);
-     user.setFirstname(firstname);
-     user.setSurname(surname);
-     user.setEmail(email);
-     user.setAddress(address);
-     user.setCity(city);
-     user.setCap(cap);
-     try{
-                  String sql;
-                  sql = "SELECT * "
-                      + "FROM user "
-                      + "WHERE firstname = ? AND "
-                      + "surname = ? AND "
-                      + "deleted_Pr = '0';";
+        String password,
+        String firstname,
+        String surname,
+        String email,
+        String address,
+        String city,
+        String cap) throws DuplicatedObjectException{
 
-                  ps = conn.prepareStatement(sql);
-                  ps.setString(1, user.getFirstname());
-                  ps.setString(2, user.getSurname());
+        PreparedStatement ps;
+        ResultSet resultSet;
+        User user=new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setFirstname(firstname);
+        user.setSurname(surname);
+        user.setEmail(email);
+        user.setAddress(address);
+        user.setCity(city);
+        user.setCap(cap);
+        try{
+            String sql;
+            sql = "SELECT * "
+                + "FROM user "
+                + "WHERE firstname = ? AND "
+                + "surname = ? AND "
+                + "deleted_Pr = '0';";
 
-                  resultSet = ps.executeQuery();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user.getFirstname());
+            ps.setString(2, user.getSurname());
 
-                  if(resultSet.next())
-                      throw new DuplicatedObjectException("ProductDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
-                  
-                  try {
-                      sql
-                      = " INSERT INTO user "
-                      + "   ( userId,"
-                      + "     username,"
-                      + "     password,"
-                      + "     firstname,"
-                      + "     surname,"
-                      + "     email,"
-                      + "     address,"
-                      + "     city,"
-                      + "     cap,"
-                      + "     deleted "
-                      + "   ) "
-                      + " VALUES (?,?,?,?,?,?,?,?,?,'0');";
+            resultSet = ps.executeQuery();
 
-                      ps = conn.prepareStatement(sql);
+            if(resultSet.next())
+                throw new DuplicatedObjectException("ProductDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
 
-                      ps.setLong(1, user.getUserId());
-                      ps.setString(2,user.getUsername());
-                      ps.setString(3,user.getPassword() );
-                      ps.setString(4, user.getFirstname());
-                      ps.setString(5,user.getSurname());
-                      ps.setString (6,user.getEmail());
-                      ps.setString (7, user.getAddress());
-                      ps.setString (8, user.getCity());
-                      ps.setString (9, user.getCap());
+            try {
+                sql
+                = " INSERT INTO user "
+                + "   ( username,"
+                + "     password,"
+                + "     firstname,"
+                + "     surname,"
+                + "     email,"
+                + "     address,"
+                + "     city,"
+                + "     cap,"
+                + "     deleted "
+                + "   ) "
+                + " VALUES (?,?,?,?,?,?,?,?,'0');";
 
-                      ps.executeUpdate();
-                  }
-                  catch(SQLIntegrityConstraintViolationException e){
-                      throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
-                  }
-              }
-              catch(SQLException e)
-              {
-                  throw new RuntimeException(e);
-              }
+                ps = conn.prepareStatement(sql);
 
-              return user;
-  
-  }
+                //ps.setLong(1, user.getUserId());
+                ps.setString(2,user.getUsername());
+                ps.setString(3,user.getPassword() );
+                ps.setString(4, user.getFirstname());
+                ps.setString(5,user.getSurname());
+                ps.setString (6,user.getEmail());
+                ps.setString (7, user.getAddress());
+                ps.setString (8, user.getCity());
+                ps.setString (9, user.getCap());
+
+                ps.executeUpdate();
+            }
+            catch(SQLIntegrityConstraintViolationException e){
+                throw new DuplicatedObjectException("UserDAOJDBCImpl.create: Tentativo di inserimento di un utente già esistente.");
+            }
+        }
+        catch(SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
 
   @Override
   public void update(User user)
@@ -199,7 +196,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             + "SET "
             + "password = ? "              
             + "WHERE "
-            + "id = ?;";
+            + "userId = ?;";
 
             ps = conn.prepareStatement(sql);
 
@@ -250,9 +247,9 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
       String sql
               = " SELECT * "
-              + "   FROM user "
+              + " FROM user "
               + " WHERE "
-              + "   userId = ?;";
+              + " userId = ?;";
 
       ps = conn.prepareStatement(sql);
       ps.setLong(1, userId);
@@ -283,9 +280,9 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
       String sql
               = " SELECT * "
-              + "   FROM user "
+              + " FROM user "
               + " WHERE "
-              + "   username = ?;";
+              + " username = ?;";
 
       ps = conn.prepareStatement(sql);
       ps.setString(1, username);
@@ -303,7 +300,5 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
     }
 
     return user;
-
   }  
-  
 }
