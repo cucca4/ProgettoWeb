@@ -31,9 +31,8 @@ public class AdminManagement {
     
     private AdminManagement(){
     }
-    
-    
-     public static void viewLogin (HttpServletRequest request, HttpServletResponse response){
+
+    public static void viewLogin (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
         
@@ -52,9 +51,7 @@ public class AdminManagement {
                 loggedAdmin = null;
             }
             
-            
             request.setAttribute("viewUrl", "adminManagement/loginAdmin");
-            
             request.setAttribute("loggedadmin", loggedAdmin);
             
         }catch(Exception e){
@@ -68,8 +65,7 @@ public class AdminManagement {
     public static void view (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
-        DAOFactory daoFactory;
-        
+                
         Logger logger = LogService.getApplicationLogger();
         
         try{
@@ -77,23 +73,17 @@ public class AdminManagement {
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
             
-            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-            daoFactory.beginTransaction();
-            
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();  
-            
-            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
-            List<Orders> Listorders = ordersdao.ALLview();
-            
-            daoFactory.commitTransaction();
-            
+           
+           
+   
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", " ");
             request.setAttribute("countMessage", " ");
             request.setAttribute("user", " ");
-            request.setAttribute("Listorders", Listorders);
+            request.setAttribute("Listorders", " ");
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
@@ -145,9 +135,7 @@ public class AdminManagement {
             
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             daoFactory.beginTransaction();
-            
-           
-            
+                      
             String username_Ad = request.getParameter("username_Ad");
             String password_Ad = request.getParameter("password_Ad");
             
@@ -174,6 +162,8 @@ public class AdminManagement {
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", " ");
             request.setAttribute("countMessage", " ");
+            request.setAttribute("user", " ");
+            request.setAttribute("Listorders", " ");
             request.setAttribute("adminApplicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "adminManagement/home");
           
@@ -198,44 +188,43 @@ public class AdminManagement {
     
     public static void logout(HttpServletRequest request, HttpServletResponse response) {
 
-    SessionDAOFactory sessionDAOFactory;
-    DAOFactory daoFactory = null;
-    
-    
-    Logger logger = LogService.getApplicationLogger();
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
 
-    try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-      sessionDAOFactory.initSession(request, response);
+        Logger logger = LogService.getApplicationLogger();
 
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-      daoFactory.beginTransaction();
-      
-      
-      LoggedAdminDAO loggedUserDAO = sessionDAOFactory.getLoggedAdminDAO();
-      loggedUserDAO.destroy();
-      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
-      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+        try {
 
-      
-      daoFactory.commitTransaction();
-      
-      
-      request.setAttribute("loggedAdminOn",false);
-      request.setAttribute("loggedAdmin", null);
-      request.setAttribute("loggedOn",false);
-      request.setAttribute("loggedUser", null);
-      request.setAttribute("pushedProduct", pushedProduct);
-      request.setAttribute("viewUrl", "homeManagement/view");
+          sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+          sessionDAOFactory.initSession(request, response);
 
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
+          daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+          daoFactory.beginTransaction();
 
+
+          LoggedAdminDAO loggedUserDAO = sessionDAOFactory.getLoggedAdminDAO();
+          loggedUserDAO.destroy();
+          PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+          List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+
+
+          daoFactory.commitTransaction();
+
+
+          request.setAttribute("loggedAdminOn",false);
+          request.setAttribute("loggedAdmin", null);
+          request.setAttribute("loggedOn",false);
+          request.setAttribute("loggedUser", null);
+          request.setAttribute("pushedProduct", pushedProduct);
+          request.setAttribute("viewUrl", "homeManagement/view");
+
+        } catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          throw new RuntimeException(e);
+
+        }
     }
-    
-  }
     
     public static void count (HttpServletRequest request, HttpServletResponse response) {
 
@@ -246,43 +235,82 @@ public class AdminManagement {
         LoggedAdmin loggedAdmin;
         String applicationMessage = null;
 
-    try {
+        try {
 
-        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-        sessionDAOFactory.initSession(request, response);
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
 
-        LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
-        loggedAdmin = loggedAdminDAO.find();
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
 
-        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-        daoFactory.beginTransaction();
-        String count;
-
-
-        String username= request.getParameter("username");
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+            String count;
 
 
-        AdminDAO adminDAO = daoFactory.getAdminDAO();
-        int numorders = adminDAO.countOrdersByBuyer(username);
-        
-        if(numorders!= 1)
-         count = "L'utente "+username+" ha effettuato " + numorders +" ordini";
-        else count = "L'utente "+username+" ha effettuato " + numorders +" ordine";
-        
-        request.setAttribute("loggedAdminOn",loggedAdmin!=null);
-        request.setAttribute("loggedadmin", loggedAdmin);
-        request.setAttribute("countMessage", count);
-        request.setAttribute("adminApplicationMessage", applicationMessage);
-        request.setAttribute("viewUrl", "adminManagement/home");
-      
-    }catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
+            String username= request.getParameter("username");
 
-    }
-    }
+
+            AdminDAO adminDAO = daoFactory.getAdminDAO();
+            int numorders = adminDAO.countOrdersByBuyer(username);
+
+            if(numorders!= 1)
+             count = "L'utente " + username + " ha effettuato " + numorders + " ordini";
+            else count = "L'utente " + username + " ha effettuato " + numorders + " ordine";
+
+            request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("countMessage", count);
+            request.setAttribute("adminApplicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "adminManagement/home");
+
+        }catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          throw new RuntimeException(e);
+
+        }
+        }
+
+        public static void findUser (HttpServletRequest request, HttpServletResponse response) {
+            Logger logger = LogService.getApplicationLogger();
+
+            SessionDAOFactory sessionDAOFactory;
+            DAOFactory daoFactory = null;
+            LoggedAdmin loggedAdmin;
+            String applicationMessage = null;
+
+            try {
+
+                sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+                sessionDAOFactory.initSession(request, response);
+
+                LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+                loggedAdmin = loggedAdminDAO.find();
+
+                daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+                daoFactory.beginTransaction();
+
+
+                String username= request.getParameter("username");
+
+
+                UserDAO adminDAO = daoFactory.getUserDAO();
+                User user = adminDAO.findByUsername(username);
+
+
+                request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+                request.setAttribute("loggedadmin", loggedAdmin);
+                request.setAttribute("user", user);
+                request.setAttribute("adminApplicationMessage", applicationMessage);
+                request.setAttribute("viewUrl", "adminManagement/home");
+
+            }catch (Exception e) {
+                logger.log(Level.SEVERE, "Controller Error", e);
+                    throw new RuntimeException(e);
+            }
+        }
     
-    public static void findUser (HttpServletRequest request, HttpServletResponse response) {
+    public static void viewOrders (HttpServletRequest request, HttpServletResponse response) {
         Logger logger = LogService.getApplicationLogger();
         
         SessionDAOFactory sessionDAOFactory;
@@ -290,72 +318,32 @@ public class AdminManagement {
         LoggedAdmin loggedAdmin;
         String applicationMessage = null;
 
-    try {
+        try {
 
-        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-        sessionDAOFactory.initSession(request, response);
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
 
-        LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
-        loggedAdmin = loggedAdminDAO.find();
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
 
-        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-        daoFactory.beginTransaction();
-      
-
-        String username= request.getParameter("username");
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
 
 
-        UserDAO adminDAO = daoFactory.getUserDAO();
-        User user = adminDAO.findByUsername(username);
-        
-        
-        request.setAttribute("loggedAdminOn",loggedAdmin!=null);
-        request.setAttribute("loggedadmin", loggedAdmin);
-        request.setAttribute("user", user);
-        request.setAttribute("adminApplicationMessage", applicationMessage);
-        request.setAttribute("viewUrl", "adminManagement/home");
-      
-    }catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            List<Orders> Listorders = ordersdao.ALLview();
+            
+            
+            request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("Listorders", Listorders);
+            request.setAttribute("adminApplicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "adminManagement/home");
 
-    }
-    }
-    
-    /*public static void viewOrders (HttpServletRequest request, HttpServletResponse response) {
-        Logger logger = LogService.getApplicationLogger();
-        
-        SessionDAOFactory sessionDAOFactory;
-        DAOFactory daoFactory = null;
-        LoggedAdmin loggedAdmin;
-        String applicationMessage = null;
+        }catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          throw new RuntimeException(e);
 
-    try {
-
-        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-        sessionDAOFactory.initSession(request, response);
-
-        LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
-        loggedAdmin = loggedAdminDAO.find();
-
-        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-        daoFactory.beginTransaction();
-        
-        
-        OrdersDAO ordersdao = daoFactory.getOrdersDAO();
-        List<Orders> orders = ordersdao.ALLview();
-        
-        request.setAttribute("loggedAdminOn",loggedAdmin!=null);
-        request.setAttribute("loggedadmin", loggedAdmin);
-        request.setAttribute("Listorders", orders);
-        request.setAttribute("adminApplicationMessage", applicationMessage);
-        request.setAttribute("viewUrl", "adminManagement/home");
-      
-    }catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
-
-    }
-    }*/
-    
+        }
+    } 
 }

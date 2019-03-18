@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import model.session.mo.LoggedUser;
+import model.mo.Product;
 
 public final class prodottoView_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -44,22 +45,24 @@ public final class prodottoView_jsp extends org.apache.jasper.runtime.HttpJspBas
 
       out.write("\r\n");
       out.write("\r\n");
+      out.write("\r\n");
       out.write("<!doctype html>\r\n");
       out.write("\r\n");
 
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
+    Product product = (Product) request.getAttribute("product");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
 
       out.write("\r\n");
       out.write("\r\n");
       out.write("<html lang=\"it\">\r\n");
       out.write("<head>\r\n");
-      out.write("    <!-- Required meta tags -->\r\n");
+      out.write("    \r\n");
       out.write("    <meta charset=\"utf-8\">\r\n");
       out.write("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n");
       out.write("\r\n");
-      out.write("    <!-- Bootstrap CSS -->\r\n");
+      out.write("    \r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap-4.3.1-dist/css/bootstrap.min.css\">\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap-4.3.1-dist/css/bootstrap.css\">\r\n");
       out.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap-4.3.1-dist/css/bootstrap-grid.css\">\r\n");
@@ -79,7 +82,7 @@ public final class prodottoView_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("        <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\r\n");
       out.write("            <ul class=\"navbar-nav mr-auto\">\r\n");
       out.write("                <li class=\"nav-item active\">\r\n");
-      out.write("                    <a class=\"nav-link\" href=\"#\">Home <span class=\"sr-only\">(current)</span></a>\r\n");
+      out.write("                    <a class=\"nav-link\" href=\"/homeManagement/home.html\">Home <span class=\"sr-only\"></span></a>\r\n");
       out.write("                </li>\r\n");
       out.write("                <li class=\"nav-item\">\r\n");
       out.write("                    <a class=\"nav-link\" href=\"#\">Catalogo</a>\r\n");
@@ -123,12 +126,11 @@ public final class prodottoView_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("         ");
 }
       out.write("\r\n");
-      out.write("      \r\n");
-      out.write("        <form class=\"form-inline mt-2 mt-md-0\">\r\n");
-      out.write("        <form class=\"form-inline mt-2 mt-md-0\" name=\"login\" action=\"Dispatcher\" method=\"post\"> \r\n");
+      out.write("         \r\n");
+      out.write("        <form class=\"form-inline mt-2 mt-md-0\" name=\"serch\" action=\"Dispatcher\" method=\"post\"> \r\n");
       out.write("        <input class=\"form-control mr-sm-2\" type=\"text\" placeholder=\"Cerca\" aria-label=\"Search\">\r\n");
       out.write("        <input class=\"btn btn-outline-success my-2 my-sm-0 mr-sm-2\" type=\"submit\">Cerca</input>\r\n");
-      out.write("        <input type=\"hidden\" name=\"controllerAction\" value=\"\">\r\n");
+      out.write("        <input type=\"hidden\" name=\"controllerAction\" value=\"ProdottoManagement.view\">\r\n");
       out.write("        </form>\r\n");
       out.write("        </div>\r\n");
       out.write("    </nav>\r\n");
@@ -138,14 +140,39 @@ public final class prodottoView_jsp extends org.apache.jasper.runtime.HttpJspBas
       out.write("    <div class=\"container bg-light mx-auto\">\r\n");
       out.write("            <div class=\"pt-4\"></div>\r\n");
       out.write("            <div class=\"float-left\">\r\n");
-      out.write("                <img src=\"images/prova.jpg\" class=\"mr-3\" width=\"320\" height=\"320\">\r\n");
+      out.write("                <img src=\"images/products/");
+      out.print(product.getBrand());
+      out.write('-');
+      out.print(product.getModel());
+      out.write(".jpg\" class=\"mr-3\" width=\"320\" height=\"320\">\r\n");
       out.write("            </div><br>\r\n");
       out.write("            <div class=\"media-body\">\r\n");
-      out.write("                <h5 class=\"mt-0 mb-1\">brand-model-price</h5>\r\n");
-      out.write("                product description.\r\n");
+      out.write("                <h5 class=\"mt-0 mb-1\">");
+      out.print(product.getBrand());
+      out.write("</h5>\r\n");
+      out.write("                <h6 class=\"mt-0 mb-1\">");
+      out.print(product.getModel());
+      out.write("</h6>\r\n");
+      out.write("                ");
+      out.print(product.getDescription());
+      out.write("\r\n");
       out.write("            </div>\r\n");
       out.write("            <div class=\"pt-3\"></div>\r\n");
+      out.write("            \r\n");
+      out.write("            ");
+ if(!loggedOn) {
+      out.write("     \r\n");
+      out.write("            <div class=\"alert alert-warning\" role=\"alert\">\r\n");
+      out.write("                Effettua il login per cominciare lo shopping!\r\n");
+      out.write("            \r\n");
+      out.write("            \r\n");
+      out.write("        ");
+} else {
+      out.write("\r\n");
       out.write("            <button type=\"button\" class=\"btn btn-warning\">Compra</button>\r\n");
+      out.write("        ");
+}
+      out.write("\r\n");
       out.write("            <div class=\"pt-xl-5\"></div>\r\n");
       out.write("            <div class=\"pt-xl-5\"></div>\r\n");
       out.write("            <div class=\"pt-xl-5\"></div>\r\n");

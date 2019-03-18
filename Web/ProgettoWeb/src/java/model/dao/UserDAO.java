@@ -6,6 +6,7 @@ import model.mo.User;
 public interface UserDAO {
 
   public User insert(
+          //Long userId,
           String username,
           String password,
           String firstname,

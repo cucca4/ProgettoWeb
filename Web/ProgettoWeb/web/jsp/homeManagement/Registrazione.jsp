@@ -1,5 +1,6 @@
-<!DOCTYPE html>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 
 
 <html>
@@ -34,13 +35,11 @@
                      <a class="nav-link" href="home.html">Home</a>
                  </li>
                 </ul>
-                
         </nav>
         
         <div class="pt-4"></div>
         <div class="pt-4"></div>
         
-    
         <main>
             <div class="pt-3"></div>
             <div class="container bg-light mx-auto">

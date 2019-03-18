@@ -10,7 +10,6 @@
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     List<PushedProduct> pushedProduct = (List<PushedProduct>) request.getAttribute("pushedProduct");
-    
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     int c;
 %>
@@ -48,14 +47,13 @@
                 </li>
                 <% if(!loggedOn){%>
                 <li class="nav-item">
-                    <a class="nav-link" href="jsp/homeManagement/Registrazione.html">Registrazione</a>
+                    <a class="nav-link" href="jsp/homeManagement/Registrazione.jsp">Registrazione</a>
                 </li>
                 <%}%>
                 <% if(loggedOn) {%>
                 <span class="nav-link nav-message"> <%=applicationMessage%></span>
                 <li class="nav-item">
-                    
-                    <form class="form-inline mt-2 mt-md-0" action="Dispatcher" method="post"> 
+                    <form class="form-inline mt-2 mt-md-0" name="userArea" action="Dispatcher" method="post"> 
                     <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Area Personale">
                     <input type="hidden" name="controllerAction" value="UserArea.view">
                     </form>

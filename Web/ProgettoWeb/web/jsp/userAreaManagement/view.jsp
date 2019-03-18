@@ -70,47 +70,40 @@
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
     <div class="pt-3"></div>    
-        <ul class="">
-            <li class="">
+        
                 <img src="images/scatola.jpg" class="mr-3" width="120" height="120">
                 <div class="media-body">
-                    <h5 class="mt-0 mb-1">ORDINI</h5>
-                     Visualizza la cronologia degli ordini effettuati o lo stato di quelli ancora da consegnare.
+                    <h1 class="mt-0 mb-1">ORDINI:</h1>
                     <section>
-                        <form name="oForm" action="dispatcher" method="post">   
-                        <br><br>
+                        <form name="oForm" action="dispatcher" method="post">
                             <div>
                                 <%for(i=0; i<orders.size(); i++) {%>
                                     <article class=" clearfix">
                                         <div>
-                                            <h2 >
-                                            <%=orders.get(i).getOrder_Id()%>
-                                            <%=orders.get(i).getTotprice()%>
-                                            </h2>
-                                            <h3 class='clearfix'>
+                                            <h4>
+                                                Order Id: <%=orders.get(i).getOrder_Id()%><br>
+                                                Totale €: <%=orders.get(i).getTotprice()%>
                                             <br>
+                                            Stato: 
                                             <% if(orders.get(i).getStatus()== "elaborazione"){%>
 
                                                 Ordine non ancora spedito
 
                                             <%} else {%>
                                                 <% if(orders.get(i).getStatus()== "spedito"){%>
-
                                                 Ordine spedito
 
                                             <%} else {%>
                                                 <strong>Ordine consegnato</strong>
                                             <%}%>
                                             <%}%>
-                                            </h3>
+                                            </h4>
                                         </div>
                                         </article>
-
                                 <%}%>
-
                                 <% if(orders.size()==0) {%>
                                     <article class="clearfix">
-                                        <img src="images/error.png" alt="" class="">
+                                        <img src="images/error.png">
                                         <div>
                                         <h2>
                                             Nessun ordine effettuato!
@@ -125,70 +118,84 @@
                         </form>
                     </section>
                 </div>
-            </li>
-            <li class="media my-4">
+            <div class="pt-3"></div>
             <img src="images/omino-ok.jpg" class="mr-3" width="120" height="120">
                 <div class="media-body">
-                    <h5 class="mt-0 mb-1">PROFILO</h5>
+                    <h1 class="mt-0 mb-1">PROFILO</h1>
                     Controlla le informazioni sul tuo profilo o modificane i parametri.
+                    <br>
                     <section>
                             <form name="uForm" action="Dispatcher" method="post">
-                            <label for="username"> Username </label>
-                            <input type="text" id="username" name="username" maxlength="40" value="<%=user.getUsername()%>" required>
-                            </br></br>
-                            <label for="firstname"> Nome </label>
-                            <input type="text" id="firstname" name="firstname" maxlength="40" value="<%=user.getFirstname()%>" required>
-                            </br></br>
-                            <label for="surname"> Cognome </label>
-                            <input type="text" id="surname" name="surname" maxlength="40" value="<%=user.getSurname()%>" required>
-                            </br></br>
-                            <label for="email"> E-mail </label>
-                            <input type="email" id="email" name="email" maxlength="40" value="<%=user.getEmail()%>" required>            
-                            </br></br>
-                            <label for="address"> Indirizzo </label>
-                            <input type="address" id="address" name="address" maxlength="40" value="<%=user.getAddress()%>" required>            
-                            </br></br>
-                            <label for="city"> Città </label>
-                            <input type="city" id="city" name="city" maxlength="40" value="<%=user.getCity()%>" required>            
-                            </br></br>
-                            <label for="cap"> Cap </label>
-                            <input type="cap" id="cap" name="cap" maxlength="40" value="<%=user.getCap()%>" required>            
-                            </br></br>
-                            <input type="submit" value="Salva" class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2">
-                            <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">                          
+                                    <label for="inputEmail4">Email</label>
+                                    <input type="email" class="form-control"  id="email" name="email" maxlength="40" value="<%=user.getEmail()%>" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputUsername4">Username</label>
+                                    <input type="text" class="form-control"  id="username" name="username" maxlength="40" value="<%=user.getUsername()%>" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputFirstname4">Nome</label>
+                                    <input type="text" class="form-control"  id="firstname" name="firstname" maxlength="40" value="<%=user.getFirstname()%>" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputSurname4">Cognome</label>
+                                    <input type="text" class="form-control" id="surname" name="surname" maxlength="40"  value="<%=user.getSurname()%>" required>
+                                </div>
+                            </div>
+                            <div class="form-row">   
+                                <div class="form-group">
+                                    <label for="inputAddress">Indirizzo</label>
+                                    <input type="text" class="form-control" id="address" name="address" maxlength="40" value="<%=user.getAddress()%>" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">Città</label>
+                                    <input type="text" class="form-control" id="city" name="city" maxlength="40" value="<%=user.getCity()%>" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputCap">Cap</label>
+                                    <input type="text" class="form-control" id="cap" name="cap" maxlength="40" value="<%=user.getCap()%>" required>
+                                </div>
+                            </div>
                             <input type="hidden" name="controllerAction" value="UserArea.modify"/>
                             </form>
                     </section>
                     <div class="pt-3"></div>
-                    Cambia Password
+                    <h1 class="mt-0 mb-1">CAMBIA PASSWORD</h1>
+                    <div class="pt-1"></div>
                     <section>
                             <form name="passwordForm" action="Dispatcher" method="post">
                             <label for="oldPassword"> Password </label>
                             <input type="password" id="oldPassword" name="oldpassword" maxlength="40" required>
-                            </br></br>
+                            </br>
                             <label for="newPassword"> Nuova password </label>
                             <input type="password" id="newPassword" name="newpassword" maxlength="40" required>
-                            </br></br>
-                            <input type="submit" value="Salva" class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2">
+                            </br>
+                            <input type="submit" value="Salva" class="btn btn-outline-warning my-2 mr-sm-0 mr-sm-2">
                             <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
                             <input type="hidden" name="controllerAction" value="UserArea.modifyPassword"/>
                             </form>
                     </section>
                     <div class="pt-3"></div>
-                    Elimina Account
+                    <h1 class="mt-0 mb-1">ELIMINA ACCOUNT</h1>
+                    <div class="pt-1"></div>
                     <section >
                         <form name="deleteAccountForm" action="Dispatcher" method="post">
                         <label for="Password"> Password </label>
                         <input type="password" id="Password" name="password" maxlength="40" required>
-                        </br></br>
+                        </br>
                         <input type="submit" value="Elimina" class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2">
                         <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
                         <input type="hidden" name="controllerAction" value="UserArea.deleteAccount"/>
                         </form>
                     </section>
                 </div>
-            </li>
-        </ul>
+           
     </div>
 </body>
 

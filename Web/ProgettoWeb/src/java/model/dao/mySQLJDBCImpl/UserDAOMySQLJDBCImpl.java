@@ -66,7 +66,8 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
         return user;
     }
   @Override
-  public User insert(String username,
+  public User insert(//Long userId,
+        String username,
         String password,
         String firstname,
         String surname,
@@ -78,6 +79,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
         PreparedStatement ps;
         ResultSet resultSet;
         User user=new User();
+        //user.setUserId(userId);
         user.setUsername(username);
         user.setPassword(password);
         user.setFirstname(firstname);
@@ -90,11 +92,13 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             String sql;
             sql = "SELECT * "
                 + "FROM user "
-                + "WHERE firstname = ? AND "
+                + "WHERE  "
+                + "firstname = ? AND "
                 + "surname = ? AND "
                 + "deleted_Pr = '0';";
 
             ps = conn.prepareStatement(sql);
+            //ps.setLong(1, user.getUserId());
             ps.setString(1, user.getFirstname());
             ps.setString(2, user.getSurname());
 
@@ -106,7 +110,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             try {
                 sql
                 = " INSERT INTO user "
-                + "   ( username,"
+                + "    (username,"
                 + "     password,"
                 + "     firstname,"
                 + "     surname,"
@@ -121,14 +125,14 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
                 ps = conn.prepareStatement(sql);
 
                 //ps.setLong(1, user.getUserId());
-                ps.setString(2,user.getUsername());
-                ps.setString(3,user.getPassword() );
-                ps.setString(4, user.getFirstname());
-                ps.setString(5,user.getSurname());
-                ps.setString (6,user.getEmail());
-                ps.setString (7, user.getAddress());
-                ps.setString (8, user.getCity());
-                ps.setString (9, user.getCap());
+                ps.setString(1,user.getUsername());
+                ps.setString(2,user.getPassword() );
+                ps.setString(3, user.getFirstname());
+                ps.setString(4,user.getSurname());
+                ps.setString (5,user.getEmail());
+                ps.setString (6, user.getAddress());
+                ps.setString (7, user.getCity());
+                ps.setString (8, user.getCap());
 
                 ps.executeUpdate();
             }
@@ -167,14 +171,14 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
             ps = conn.prepareStatement(sql);
 
-            ps.setString(2,user.getUsername());
-            ps.setString(3,user.getPassword());
-            ps.setString(4,user.getFirstname());
-            ps.setString(5,user.getSurname());
-            ps.setString(6,user.getEmail());
-            ps.setString(7,user.getAddress());
-            ps.setString(8,user.getCity());
-            ps.setString(9,user.getCap());
+            ps.setString(1,user.getUsername());
+            ps.setString(2,user.getPassword());
+            ps.setString(3,user.getFirstname());
+            ps.setString(4,user.getSurname());
+            ps.setString(5,user.getEmail());
+            ps.setString(6,user.getAddress());
+            ps.setString(7,user.getCity());
+            ps.setString(8,user.getCap());
             
             ps.executeUpdate();
 

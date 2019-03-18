@@ -36,7 +36,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/homeManagement/home.html">Home <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
@@ -68,9 +68,8 @@
             </form>
       
          <%}%>
-      
-        <form class="form-inline mt-2 mt-md-0">
-        <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
+         
+        <form class="form-inline mt-2 mt-md-0" name="serch" action="Dispatcher" method="post"> 
         <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
         <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Cerca</input>
         <input type="hidden" name="controllerAction" value="ProdottoManagement.view">

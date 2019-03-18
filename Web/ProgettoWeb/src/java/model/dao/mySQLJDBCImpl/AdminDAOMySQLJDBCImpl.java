@@ -76,7 +76,8 @@ public class AdminDAOMySQLJDBCImpl implements AdminDAO {
             +" admin_Id = ?;";
 
             ps = conn.prepareStatement(sql);
-
+            
+            ps.setLong(1,admin.getAdmin_Id());
             ps.setString(2,admin.getUsername_Ad());
             ps.setString(3,admin.getPassword_Ad() );
             

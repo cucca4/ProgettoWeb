@@ -15,8 +15,10 @@ import services.logservice.LogService;
 import model.dao.exception.DuplicatedObjectException;
 import model.dao.DAOFactory;
 import model.dao.OrdersDAO;
+import model.dao.PushedProductDAO;
 import model.dao.UserDAO;
 import model.mo.Orders;
+import model.mo.PushedProduct;
 import model.mo.User;
 
 import model.session.mo.LoggedUser;
@@ -41,27 +43,27 @@ public class UserArea {
         try{
                 sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
                 sessionDAOFactory.initSession(request, response);
-
+                
+                daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+                daoFactory.beginTransaction();
+                
                 LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
                 loggedUser = loggedUserDAO.find();
                 
-                System.out.println(loggedUser.getUserId());
+                System.out.println(loggedUser.getUsername()); //punto di controllo 1
 
-                daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-                daoFactory.beginTransaction();
-
+                
                 UserDAO userDAO = daoFactory.getUserDAO();
                 User user = userDAO.findByUserId(loggedUser.getUserId());
                 
                 OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
                 List<Orders> orders = ordersDAO.findByBuyer(user.getUsername());  
                 
-                
                 daoFactory.commitTransaction();
                 
-                System.out.println(user.getFirstname());
+                System.out.println(user.getFirstname());  //punto di controllo 2
                 
-                user.setPassword(null);
+                //user.setPassword(null);
                 request.setAttribute("user", user);
                 request.setAttribute("loggedOn", loggedUser != null);
                 request.setAttribute("loggedUser", loggedUser);
@@ -96,18 +98,19 @@ public class UserArea {
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
         String applicationMessage = null;
+        LoggedUser loggedUser;
         Logger logger = LogService.getApplicationLogger();
         User vuser = new User();
        
-        
         try{
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
             
-           
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             
             
+            
+            //vuser.setUserId(new Long (request.getParameter("userId")));
             vuser.setUsername(request.getParameter("username"));
             vuser.setPassword(request.getParameter("password"));
             vuser.setFirstname(request.getParameter("firstname"));
@@ -116,22 +119,34 @@ public class UserArea {
             vuser.setAddress(request.getParameter("address"));
             vuser.setCity(request.getParameter("city"));
             vuser.setCap(request.getParameter("cap"));
-                        
+            
+            System.out.println(vuser.getFirstname());
+            
             daoFactory.beginTransaction();
             UserDAO userDAO = daoFactory.getUserDAO();
             
+            
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+            PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+            List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+            
             try{
+                userDAO.insert(/*vuser.getUserId(),*/vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
+                loggedUser = loggedUserDAO.create(vuser.getUserId(), vuser.getUsername());
+                applicationMessage="Benvenuto " + loggedUser.getUsername();
                 
-                userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
-
             } catch (DuplicatedObjectException e) {
                 
-                applicationMessage = "Codice o prodotto già esistente";
+                applicationMessage = "Username o utente già esistente";
                
             }
             
             daoFactory.commitTransaction();
             
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("pushedProduct", pushedProduct);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "homeManagement/view");
             
@@ -314,7 +329,7 @@ public class UserArea {
                 userDAO.delete(user);
                 loggedUserDAO.destroy();
                 loggedUser = null;
-                /*commonView(daoFactory, request, loggedUser);*/
+               
                 
                 request.setAttribute("viewUrl", "homeManagement/view");
                 

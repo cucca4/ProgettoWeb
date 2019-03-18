@@ -23,11 +23,11 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
     
     Orders read(ResultSet rs){
             Orders order = new Orders();
-       /*
+       
         try {
             order.setOrder_Id(rs.getLong("order_Id"));
         } catch (SQLException sqle) {
-        }*/
+        }
         try {
             order.setBuyer(rs.getString("buyer"));
         } catch (SQLException sqle) {
@@ -65,10 +65,11 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                   String sql;
                   sql = "SELECT * "
                       + "FROM orders "
-                      + "WHERE buyer = ? AND "
+                      + "WHERE order_Id = ? AND "
+                      + "buyer = ? AND "
                       + "totprice = ? AND "
-                      + "status = ? AND "
-                      + "deleted_Or = '0';";
+                      + "status = ?;";
+                      
 
                   ps = conn.prepareStatement(sql);
                   ps.setLong(1, order.getOrder_Id());
@@ -80,7 +81,6 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
 
                   if(resultSet.next())
                       throw new DuplicatedObjectException("OrdersDAOJDBCImpl.create: Tentativo di inserimento di un ordine già esistente.");
-                  
                   try {
                       sql
                       = " INSERT INTO orders "
@@ -88,9 +88,8 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                       + "     buyer,"
                       + "     totprice,"
                       + "     status,"
-                      + "     deleted_Or "
-                      + "   ) "
-                      + " VALUES (?,?,?,'0');";
+                      + "     deleted_Or) "
+                      + " VALUES (?,?,?,?,'0');";
 
                       ps = conn.prepareStatement(sql);
                     
@@ -183,6 +182,8 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
         
        
             ps = conn.prepareStatement(sql);
+            
+            
 
             ResultSet resultSet = ps.executeQuery();
             
@@ -211,7 +212,9 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
                     + " WHERE buyer = ?;";
         
             ps = conn.prepareStatement(sql);
-
+            
+            ps.setString(1,buyer);
+            
             ResultSet resultSet = ps.executeQuery();
             
             

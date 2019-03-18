@@ -196,16 +196,16 @@ public class ProdottoManagement {
             try{
                 
                 Product product = productDAO.insert(vprod.getProd_Id(),vprod.getBrand(), vprod.getModel(), vprod.getDescription(),vprod.getCategory(), vprod.getPrice(),vprod.getQty());
-
+                 create ="prodotto "+vprod.getModel()+" creato";
             } catch (DuplicatedObjectException e) {
                 
-                applicationMessage = "Codice o prodotto già esistente";
+                create = "Codice o prodotto già esistente";
                
             }
             
             daoFactory.commitTransaction();
-            create ="prodotto "+vprod.getModel()+" creato";
-            request.setAttribute("applicationMessage", applicationMessage);
+            
+            
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", create);
             request.setAttribute("deleteMessage", " ");
@@ -258,7 +258,7 @@ public class ProdottoManagement {
             ProductDAO productDAO = daoFactory.getProductDAO();
             product = productDAO.findByModel(model);
             productDAO.delete(product);
-            delete= "prodotto "+model+" eliminato";
+            delete = "prodotto "+model+" eliminato";
         
             daoFactory.commitTransaction();
             
@@ -269,6 +269,7 @@ public class ProdottoManagement {
             request.setAttribute("viewUrl", "adminManagement/home");
             
         }catch(Exception e){
+            delete = "errore";
             logger.log(Level.SEVERE, "Controller Error", e);
           
             try {
