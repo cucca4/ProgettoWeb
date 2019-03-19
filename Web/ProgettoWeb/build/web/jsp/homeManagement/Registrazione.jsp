@@ -92,8 +92,8 @@
                     </div>
                     <input class="btn btn-warning my-2 my-sm-0 mr-sm-2" type="submit" value="Registrati">
                     <input type="hidden" name="controllerAction" value="UserArea.createUser">
-                    <div class="pt-2"></div>
                 </form>
+                <div class="pt-2"></div>
             </div>
             
         </main>

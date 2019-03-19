@@ -37,7 +37,7 @@ public class ProdottoManagement {
     LoggedUser loggedUser;
     DAOFactory daoFactory = null;
     ProductDAO productDAO;
-
+    String found=null;
     Logger logger = LogService.getApplicationLogger();
     
     try {
@@ -58,10 +58,14 @@ public class ProdottoManagement {
       Product product = productDAO.findByModel(model) ;
       
       
+      if(product.getBrand()== null)
+          found = "ERRORE!PRODOTTO NON TROVATO";
+            
       if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("notfoundMessage", found);
             request.setAttribute("product", product);
             request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
 
@@ -187,12 +191,8 @@ public class ProdottoManagement {
             vprod.setPrice(new Float(request.getParameter("price")));
             vprod.setQty(new Long (request.getParameter("qty")));
             
-            
-            
-            
             daoFactory.beginTransaction();
             ProductDAO productDAO = daoFactory.getProductDAO();
-            
             try{
                 
                 Product product = productDAO.insert(vprod.getProd_Id(),vprod.getBrand(), vprod.getModel(), vprod.getDescription(),vprod.getCategory(), vprod.getPrice(),vprod.getQty());
@@ -205,12 +205,10 @@ public class ProdottoManagement {
             
             daoFactory.commitTransaction();
             
-            
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", create);
             request.setAttribute("deleteMessage", " ");
-            request.setAttribute("countMessage", " ");
-            request.setAttribute("viewUrl", "adminManagement/home");
+            request.setAttribute("viewUrl", "adminManagement/prodAdmin");
             
         }
         catch (Exception e) {
@@ -265,8 +263,7 @@ public class ProdottoManagement {
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", delete);
-            request.setAttribute("countMessage", " ");
-            request.setAttribute("viewUrl", "adminManagement/home");
+            request.setAttribute("viewUrl", "adminManagement/prodAdmin");
             
         }catch(Exception e){
             delete = "errore";
@@ -288,6 +285,4 @@ public class ProdottoManagement {
             }
         }
     }
-  
-  
 }

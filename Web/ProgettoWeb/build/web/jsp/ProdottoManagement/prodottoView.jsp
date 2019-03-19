@@ -8,6 +8,7 @@
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     Product product = (Product) request.getAttribute("product");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
+    String notfoudMessage = (String) request.getAttribute("notfoudMessage");
 %>
 
 <html lang="it">
@@ -81,24 +82,26 @@
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
             <div class="pt-4"></div>
-            <div class="float-left">
-                <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
-            </div><br>
-            <div class="media-body">
-                <h5 class="mt-0 mb-1"><%=product.getBrand()%></h5>
-                <h6 class="mt-0 mb-1"><%=product.getModel()%></h6>
-                <%=product.getDescription()%>
-            </div>
-            <div class="pt-3"></div>
-            
-            <% if(!loggedOn) {%>     
-            <div class="alert alert-warning" role="alert">
-                Effettua il login per cominciare lo shopping!
-            
-            
-        <%} else {%>
-            <button type="button" class="btn btn-warning">Compra</button>
-        <%}%>
+            <% if( notfoudMessage == null) {%> 
+                <div class="float-left">
+                    <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
+                </div><br>
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1"><%=product.getBrand()%></h5>
+                    <h6 class="mt-0 mb-1"><%=product.getModel()%></h6>
+                    <%=product.getDescription()%>
+                </div>
+                <div class="pt-3"></div>
+
+                <% if(!loggedOn) {%>     
+                <div class="alert alert-warning" role="alert">
+                    Effettua il login per cominciare lo shopping!
+                <%} else {%>
+                    <button type="button" class="btn btn-warning">Compra</button>
+                <%}%>
+            <%} else {%>
+                <h1 class=""><%=notfoudMessage%></h1>
+            <%}%>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>

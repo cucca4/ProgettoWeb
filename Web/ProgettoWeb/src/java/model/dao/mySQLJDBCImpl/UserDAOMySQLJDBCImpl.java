@@ -156,32 +156,30 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
 
             String sql;
             sql
-            ="UPDATE user"
-            +"SET "
+            = " UPDATE user"
+            + " SET "
             + "     username = ?, "
-            + "     password = ?, "
             + "     firstname = ?, "
             + "     surname = ?, "
             + "     email = ?, "
             + "     address = ?, "
             + "     city = ?, "
-            + "     cap = ?,"
-            + "WHERE "
-            +"admin_Id = ?;";
+            + "     cap = ? "
+            + "WHERE userId = ?;";
+            
 
             ps = conn.prepareStatement(sql);
 
             ps.setString(1,user.getUsername());
-            ps.setString(2,user.getPassword());
-            ps.setString(3,user.getFirstname());
-            ps.setString(4,user.getSurname());
-            ps.setString(5,user.getEmail());
-            ps.setString(6,user.getAddress());
-            ps.setString(7,user.getCity());
-            ps.setString(8,user.getCap());
+            ps.setString(2,user.getFirstname());
+            ps.setString(3,user.getSurname());
+            ps.setString(4,user.getEmail());
+            ps.setString(5,user.getAddress());
+            ps.setString(6,user.getCity());
+            ps.setString(7,user.getCap());
+            ps.setLong(8,user.getUserId());
             
             ps.executeUpdate();
-
             ps.close();
 
         } catch (SQLException e) {
@@ -298,11 +296,9 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
       }
       resultSet.close();
       ps.close();
-
+      return user;
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-
-    return user;
   }  
 }

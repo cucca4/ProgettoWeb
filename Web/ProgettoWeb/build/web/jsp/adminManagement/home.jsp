@@ -8,12 +8,8 @@
 
 
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
-   String createMessage = (String) request.getAttribute("createMessage");
-   String deleteMessage = (String) request.getAttribute("deleteMessage");
-   String countMessage = (String) request.getAttribute("countMessage");
-   List<Orders> Listorders = (List<Orders>) request.getAttribute("Listorders");
-   User user = (User) request.getAttribute("user");
-   int i;
+   String countMessage = (String)request.getAttribute("countMessage");
+   User user = (User)request.getAttribute("user");
 %>
 
 <!DOCTYPE html>
@@ -62,36 +58,6 @@
     <div class="container bg-light mx-auto">
         <div class="pt-4"></div>
         <section class="clearfix">
-          <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
-                <span>Crea nuova inserzione</span>
-                <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Codice ID" aria-label="Codice ID" name="Prod_Id" id="Prod_Id">
-                <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
-                <input class="form-control mr-sm-2" type="text" placeholder="Modello" aria-label="model" name="model" id="model">
-                <input class="form-control mr-sm-2" type="text" placeholder="Descrizione" aria-label="description" name="description" id="description">
-                <input class="form-control mr-sm-2" type="text" placeholder="Categoria" aria-label="category" name="category" id="category">
-                <input class="form-control mr-sm-2" type="text" placeholder="prezzo" aria-label="price" name="price" id="price">
-                <input class="form-control mr-sm-2" type="text" placeholder="Quantità" aria-label="qty" name="qty" id="qty">
-                <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Crea">
-                <input type="hidden" name="controllerAction" value="ProdottoManagement.createProduct">
-            </form>
-            <% if(createMessage != null) {%>
-                <%=createMessage%>
-            <%}%>
-        </section>
-        <div class="pt-3"></div>
-        <section class="clearfix">
-            <form class="form-inline mt-2 mt-md-0" name="delete" action="Dispatcher" method="post"> 
-               Elimina prodotto inserendo il Modello<br>
-            <input class="form-control  ml-sm-2 mr-sm-2" type="text" placeholder="Modello" aria-label="Modello" name="model" id="model">
-            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Elimina">
-            <input type="hidden" name="controllerAction" value="ProdottoManagement.deleteProduct">
-            </form>
-            <% if(deleteMessage != null) {%>
-                <%=deleteMessage%>
-            <%}%>
-        </section>
-        <div class="pt-3"></div>
-        <section class="clearfix">
             <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
                 Controlla il numero di ordini effettuati da un utente inserendo il suo Username<br>
             <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
@@ -111,8 +77,8 @@
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
             <input type="hidden" name="controllerAction" value="AdminManagement.findUser">
             </form>
-            <% if(user != null) {%>
-            Username: <%=user.getUsername()%>
+            <% if(user.getUsername() != null) {%>
+                Username: <%=user.getUsername()%>
                 Password: <%=user.getPassword()%><br>
                 Nome: <%=user.getFirstname()%>
                 Cognome: <%=user.getSurname()%><br>
@@ -123,52 +89,14 @@
             <%}%>
             <div class="pt-2"></div>
         </section>
-        <div class="pt-2"></div> 
-        <% if((Listorders.size()) != 0) {%>
-            <section class="clearfix">
-                <div class="pt-3"></div>
-                Lista degli ordini effettuati su Dronazon!<br>
-                <div class="pt-2"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                            Order ID
-                        </div>
-                        <div class="col-sm">
-                            Compratore
-                        </div>
-                        <div class="col-sm">
-                            Totale €
-                        </div>
-                        <div class="col-sm">
-                            Stato
-                        </div>
-                    </div> 
-                    <% for(i=0;i<Listorders.size();i++) { %>
-                    <div class="row">
-                      <div class="col-sm">
-                        <%=Listorders.get(i).getOrder_Id()%>
-                      </div>
-                      <div class="col-sm">
-                        <%=Listorders.get(i).getBuyer()%>
-                      </div>
-                      <div class="col-sm">
-                        <%=Listorders.get(i).getTotprice()%>
-                      </div>
-                        <div class="col-sm">
-                        <%=Listorders.get(i).getStatus()%>
-                      </div>
-                    </div>
-                    <%}%>
-                </div>
-                <div class="pt-2"></div>
-            </section>
-        <%} else {%>
-            <form class="form-inline mt-2 mt-md-0" name="Listorders" action="Dispatcher" method="post"> 
-            <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Lista totale degli ordini">
-            <input type="hidden" name="controllerAction" value="AdminManagement.viewOrders">
+        <div class="pt-2"></div>
+        <section class="clearfix">
+            <form class="form-inline mt-2 mt-md-0" name="prodAdmin" action="Dispatcher" method="post"> 
+                Per la gestione dei prodotti clicca qui<br>
+            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Vai">
+            <input type="hidden" name="controllerAction" value="AdminManagement.viewProdAdmin">
             </form>
-        <%}%>   
+        </section>
     </div>
     </body>
 </html>
