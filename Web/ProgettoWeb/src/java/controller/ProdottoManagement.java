@@ -57,10 +57,12 @@ public class ProdottoManagement {
       productDAO = daoFactory.getProductDAO();
       Product product = productDAO.findByModel(model) ;
       
+      daoFactory.commitTransaction();
       
-      if(product.getBrand()== null)
+      if(product.getModel() != model)
           found = "ERRORE!PRODOTTO NON TROVATO";
-            
+      System.out.println("<<<<<<<<<<"+found);
+      
       if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
             request.setAttribute("loggedOn",loggedUser!=null);
@@ -82,7 +84,8 @@ public class ProdottoManagement {
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
     String applicationMessage = null;
-
+    String found=null;
+     
     Logger logger = LogService.getApplicationLogger();
     
     try {
@@ -98,10 +101,14 @@ public class ProdottoManagement {
 
       String username = request.getParameter("username");
       String password = request.getParameter("password");
-
+      String model = (String) request.getParameter("model");
+      
+      ProductDAO productDAO = daoFactory.getProductDAO();
+      Product product = productDAO.findByModel(model);
+      
       UserDAO userDAO = daoFactory.getUserDAO();
       User user = userDAO.findByUsername(username);
-
+      
       if (user == null || !user.getPassword().equals(password)) {
         loggedUserDAO.destroy(); //distrugge il cookie perche l'utente/password sono errati
         applicationMessage = "Username e password errati!";
@@ -113,10 +120,16 @@ public class ProdottoManagement {
 
       daoFactory.commitTransaction(); //IMPORTANTISSIMA
 
-      request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("applicationMessage", applicationMessage);
-      request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
+      if(product.getBrand()== null)
+          found = "ERRORE!PRODOTTO NON TROVATO";
+            
+      if(loggedUser!=null) 
+            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("notfoundMessage", found);
+            request.setAttribute("product", product);
+            request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
@@ -142,26 +155,40 @@ public class ProdottoManagement {
   public static void logout(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
-    
+    String found=null;
     Logger logger = LogService.getApplicationLogger();
 
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-      sessionDAOFactory.initSession(request, response);
+        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+        sessionDAOFactory.initSession(request, response);
 
-      LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-      loggedUserDAO.destroy();
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+        daoFactory.beginTransaction();
 
+        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+        loggedUserDAO.destroy();
+
+        String model = (String) request.getParameter("model");
+
+        ProductDAO productDAO = daoFactory.getProductDAO();
+        Product product = productDAO.findByModel(model);
+
+        daoFactory.commitTransaction(); //IMPORTANTISSIMA
+
+        if(product.getBrand()== null)
+            found = "ERRORE!PRODOTTO NON TROVATO";
+            
+        request.setAttribute("loggedOn",false);
+        request.setAttribute("loggedUser", null);
+        request.setAttribute("notfoundMessage", found);
+        request.setAttribute("product", product);
+        request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
+      
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
       throw new RuntimeException(e);
-
     }
-    request.setAttribute("loggedOn",false);
-    request.setAttribute("loggedUser", null);
-    request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
-
   }
   
   

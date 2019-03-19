@@ -9,7 +9,7 @@
 
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
    String countMessage = (String)request.getAttribute("countMessage");
-   User user = (User)request.getAttribute("user");
+  // User user = (User) request.getAttribute("user");
 %>
 
 <!DOCTYPE html>
@@ -45,11 +45,10 @@
                     </form>
                 </li>
             </ul>
-            <form class="form-inline mt-2 mt-md-0">
-            <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
-            <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
-            <input class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit">
-            <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+            <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
+                <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
+                <input class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
+                <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
             </form>
         </div>
     </nav>
@@ -77,7 +76,7 @@
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
             <input type="hidden" name="controllerAction" value="AdminManagement.findUser">
             </form>
-            <% if(user.getUsername() != null) {%>
+            <%--<% if(user.getUsername() != null) {%>
                 Username: <%=user.getUsername()%>
                 Password: <%=user.getPassword()%><br>
                 Nome: <%=user.getFirstname()%>
@@ -86,13 +85,13 @@
                 Città: <%=user.getCity()%>
                 Cap: <%=user.getCap()%>
                 Indirizzo: <%=user.getAddress()%>
-            <%}%>
+            <%}%>--%>
             <div class="pt-2"></div>
         </section>
         <div class="pt-2"></div>
         <section class="clearfix">
             <form class="form-inline mt-2 mt-md-0" name="prodAdmin" action="Dispatcher" method="post"> 
-                Per la gestione dei prodotti clicca qui<br>
+                Per la gestione dei prodotti clicca qui <br>
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Vai">
             <input type="hidden" name="controllerAction" value="AdminManagement.viewProdAdmin">
             </form>

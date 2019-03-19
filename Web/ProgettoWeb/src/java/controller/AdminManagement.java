@@ -65,7 +65,7 @@ public class AdminManagement {
     public static void view (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
-                
+           
         Logger logger = LogService.getApplicationLogger();
         
         try{
@@ -78,6 +78,7 @@ public class AdminManagement {
               
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("countMessage", " ");
+            
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
@@ -273,7 +274,7 @@ public class AdminManagement {
             DAOFactory daoFactory = null;
             LoggedAdmin loggedAdmin;
             String applicationMessage = null;
-
+            
             try {
 
                 sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
@@ -289,7 +290,7 @@ public class AdminManagement {
 
                 UserDAO userDAO = daoFactory.getUserDAO();
                 User user = userDAO.findByUsername(username);
-
+                    
                 request.setAttribute("loggedAdminOn",loggedAdmin!=null);
                 request.setAttribute("loggedadmin", loggedAdmin);
                 request.setAttribute("user", user);

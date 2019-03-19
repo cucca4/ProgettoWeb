@@ -46,7 +46,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" href="home.html">Home</a>
+                    <a class="nav-link" href="/homeManagement/home.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Catalogo</a>
@@ -56,14 +56,14 @@
                 </li>
             </ul>  
             <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
-            <input class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2" type="submit" value="Logout">
-            <input type="hidden" name="controllerAction" value="HomeManagement.logout">
+                <input class="btn btn-outline-danger my-2 my-sm-0 mr-sm-2" type="submit" value="Logout">
+                <input type="hidden" name="controllerAction" value="HomeManagement.logout">
             </form>
-      
-        <form class="form-inline mt-2 mt-md-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+            <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
+                <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
+                <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
+                <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+            </form>
         </div>
     </nav>
     <div class="pt-5"></div>

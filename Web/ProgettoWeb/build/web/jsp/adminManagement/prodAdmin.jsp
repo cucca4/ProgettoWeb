@@ -11,7 +11,7 @@
    String createMessage = (String) request.getAttribute("createMessage");
    String deleteMessage = (String) request.getAttribute("deleteMessage");
    //List<Orders> Listorders = (List<Orders>) request.getAttribute("Listorders");
-   int i;
+   //int i;
 %>
 
 <!DOCTYPE html>
@@ -47,11 +47,10 @@
                     </form>
                 </li>
             </ul>
-            <form class="form-inline mt-2 mt-md-0">
-            <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
-            <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="Search">
-            <input class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit">
-            <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+            <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
+                <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
+                <input class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
+                <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
             </form>
         </div>
     </nav>

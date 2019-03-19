@@ -25,7 +25,7 @@
     </head>
     <body class="clearfix">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark clearfix">
-            <a class="navbar-brand" href="#">Dronazon</a>
+            <a class="navbar-brand">Dronazon</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
              <span class="navbar-toggler-icon"></span>
             </button>
@@ -36,10 +36,8 @@
                  </li>
                 </ul>
         </nav>
-        
         <div class="pt-4"></div>
         <div class="pt-4"></div>
-        
         <main>
             <div class="pt-3"></div>
             <div class="container bg-light mx-auto">
