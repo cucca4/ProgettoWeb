@@ -166,7 +166,6 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             + "     city = ?, "
             + "     cap = ? "
             + "WHERE userId = ?;";
-            
 
             ps = conn.prepareStatement(sql);
 

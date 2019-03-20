@@ -1,6 +1,7 @@
 
 package controller;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +13,11 @@ import services.logservice.LogService;
 import model.mo.User;
 import model.mo.Product;
 import model.dao.DAOFactory;
+import model.dao.OrdersDAO;
 import model.dao.UserDAO;
 import model.dao.ProductDAO;
 import model.dao.exception.DuplicatedObjectException;
+import model.mo.Orders;
 import model.session.dao.LoggedAdminDAO;
 
 import model.session.mo.LoggedUser;
@@ -42,28 +45,27 @@ public class ProdottoManagement {
     
     try {
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-      sessionDAOFactory.initSession(request, response);
+        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+        sessionDAOFactory.initSession(request, response);
 
-      LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-      loggedUser = loggedUserDAO.find();
-      
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-      daoFactory.beginTransaction();
-      
-      String model= (String) request.getParameter("search");
-      
-      
-      productDAO = daoFactory.getProductDAO();
-      Product product = productDAO.findByModel(model) ;
-      
-      daoFactory.commitTransaction();
-      
-      if(product.getBrand()== null)
-          found = "ERRORE!PRODOTTO NON TROVATO";
-      System.out.println("<<<<<<<<<<"+found);
-      
-      if(loggedUser!=null) 
+        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+        loggedUser = loggedUserDAO.find();
+
+        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+        daoFactory.beginTransaction();
+
+        String model= (String) request.getParameter("search");
+
+        productDAO = daoFactory.getProductDAO();
+        Product product = productDAO.findByModel(model) ;
+
+        daoFactory.commitTransaction();
+        System.out.println("++++++++"+model);
+        if(product.getBrand()== null)
+            found = "ERRORE!PRODOTTO NON TROVATO";
+        System.out.println("<<<<<<<<<<"+found);
+
+        if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
@@ -73,9 +75,22 @@ public class ProdottoManagement {
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (daoFactory != null) {
+          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+        }
+      } catch (Throwable t) {
+      }
       throw new RuntimeException(e);
-    }
 
+    } finally {
+      try {
+        if (daoFactory != null) {
+          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+        }
+      } catch (Throwable t) {
+      }
+    }
   }
 
   public static void logon(HttpServletRequest request, HttpServletResponse response) {
@@ -149,7 +164,6 @@ public class ProdottoManagement {
       } catch (Throwable t) {
       }
     }
-
   }
 
   public static void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -229,12 +243,15 @@ public class ProdottoManagement {
                 create = "Codice o prodotto già esistente";
                
             }
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            List<Orders> Listorders = ordersdao.ALLview();
             
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", create);
             request.setAttribute("deleteMessage", " ");
+             request.setAttribute("Listorders",Listorders);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
             
         }
@@ -284,12 +301,16 @@ public class ProdottoManagement {
             product = productDAO.findByModel(model);
             productDAO.delete(product);
             delete = "prodotto "+model+" eliminato";
-        
+            
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            List<Orders> Listorders = ordersdao.ALLview();
+            
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", delete);
+             request.setAttribute("Listorders",Listorders);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
             
         }catch(Exception e){

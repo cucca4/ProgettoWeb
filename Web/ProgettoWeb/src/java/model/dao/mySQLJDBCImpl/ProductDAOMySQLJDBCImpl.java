@@ -162,6 +162,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
             ps.setString(4,product.getCategory());
             ps.setFloat (5,product.getPrice());
             ps.setLong (6, product.getQty());
+            ps.setLong(7, product.getProd_Id());
 
             ps.executeUpdate();
 

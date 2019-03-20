@@ -90,7 +90,7 @@ public class AdminManagement {
     public static void viewProdAdmin (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
-        
+        DAOFactory daoFactory = null;
         Logger logger = LogService.getApplicationLogger();
         
         try{
@@ -101,14 +101,35 @@ public class AdminManagement {
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();
             
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            List<Orders> Listorders = ordersdao.ALLview();
+            
+            daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", " ");
+            request.setAttribute("Listorders",Listorders);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
         }catch(Exception e){
             logger.log(Level.SEVERE, "Controller Error", e);
-            throw new RuntimeException(e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
         }
     }
     
@@ -144,7 +165,6 @@ public class AdminManagement {
                 loggedAdminDAO.destroy();
                 applicationMessage = "username o password errati";
                 loggedAdmin=null;
-                
                 request.setAttribute("viewUrl", "adminManagement/loginAdmin");
             } else {
                 applicationMessage = "Corretti";
@@ -156,11 +176,8 @@ public class AdminManagement {
             
             request.setAttribute("loggedAdminOn",loggedAdmin!=null);
             request.setAttribute("loggedadmin", loggedAdmin);
-            request.setAttribute("createMessage", " ");
-            request.setAttribute("deleteMessage", " ");
             request.setAttribute("countMessage", " ");
             request.setAttribute("user", " ");
-            request.setAttribute("Listorders", " ");
             request.setAttribute("adminApplicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "adminManagement/home");
           
@@ -202,12 +219,11 @@ public class AdminManagement {
 
           LoggedAdminDAO loggedUserDAO = sessionDAOFactory.getLoggedAdminDAO();
           loggedUserDAO.destroy();
+          
           PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
           List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
 
-
           daoFactory.commitTransaction();
-
 
           request.setAttribute("loggedAdminOn",false);
           request.setAttribute("loggedAdmin", null);
@@ -216,10 +232,22 @@ public class AdminManagement {
           request.setAttribute("pushedProduct", pushedProduct);
           request.setAttribute("viewUrl", "homeManagement/view");
 
-        } catch (Exception e) {
-          logger.log(Level.SEVERE, "Controller Error", e);
-          throw new RuntimeException(e);
-
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
         }
     }
     
@@ -244,7 +272,6 @@ public class AdminManagement {
             daoFactory.beginTransaction();
             String count;
 
-
             String username= request.getParameter("username");
 
             AdminDAO adminDAO = daoFactory.getAdminDAO();
@@ -253,7 +280,9 @@ public class AdminManagement {
             if(numorders!= 1)
              count = "L'utente " + username + " ha effettuato " + numorders + " ordini";
             else count = "L'utente " + username + " ha effettuato " + numorders + " ordine";
-
+            
+            daoFactory.commitTransaction();
+            
             request.setAttribute("loggedAdminOn",loggedAdmin!=null);
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("countMessage", count);
@@ -265,45 +294,120 @@ public class AdminManagement {
           throw new RuntimeException(e);
 
         }
-        }
+    }
 
-        public static void findUser (HttpServletRequest request, HttpServletResponse response) {
-            Logger logger = LogService.getApplicationLogger();
+    public static void findUser (HttpServletRequest request, HttpServletResponse response) {
+        Logger logger = LogService.getApplicationLogger();
 
-            SessionDAOFactory sessionDAOFactory;
-            DAOFactory daoFactory = null;
-            LoggedAdmin loggedAdmin;
-            String applicationMessage = null;
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedAdmin loggedAdmin;
+        String applicationMessage = null;
+
+        try {
+
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+
+            String username= request.getParameter("username");
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+            User user = userDAO.findByUsername(username);
             
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("loggedAdminOn",loggedAdmin!=null);
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("user", user);
+            request.setAttribute("adminApplicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "adminManagement/home");
+
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
             try {
-
-                sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-                sessionDAOFactory.initSession(request, response);
-
-                LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
-                loggedAdmin = loggedAdminDAO.find();
-
-                daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-                daoFactory.beginTransaction();
-
-                String username= request.getParameter("username");
-
-                UserDAO userDAO = daoFactory.getUserDAO();
-                User user = userDAO.findByUsername(username);
-                    
-                request.setAttribute("loggedAdminOn",loggedAdmin!=null);
-                request.setAttribute("loggedadmin", loggedAdmin);
-                request.setAttribute("user", user);
-                request.setAttribute("adminApplicationMessage", applicationMessage);
-                request.setAttribute("viewUrl", "adminManagement/home");
-
-            }catch (Exception e) {
-                logger.log(Level.SEVERE, "Controller Error", e);
-                    throw new RuntimeException(e);
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
             }
         }
+    }
     
-    public static void viewOrders (HttpServletRequest request, HttpServletResponse response) {
+    public static void updateOrder(HttpServletRequest request, HttpServletResponse response) {
+        Logger logger = LogService.getApplicationLogger();
+        
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedAdmin loggedAdmin;
+        
+        try{
+            
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
+            
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+                        
+            Long order_Id = new Long (request.getParameter("order_Id"));
+            String status = request.getParameter("status");
+            
+            System.out.println("CONTROL 1 " + status + " " + order_Id);
+            
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            
+            Orders order = ordersdao.findOrdersByOrder_Id(order_Id);
+            order.setStatus(status);
+            
+            System.out.println("CONTROL 2 " + order.getStatus()+" "+order.getOrder_Id());
+            
+            ordersdao.update(order);
+            
+            List<Orders> Listorders = ordersdao.ALLview();
+            
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("createMessage", " ");
+            request.setAttribute("deleteMessage", " ");
+            request.setAttribute("Listorders",Listorders);
+            request.setAttribute("viewUrl", "adminManagement/prodAdmin");
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
+        }
+    }
+    
+   /* public static void viewOrders (HttpServletRequest request, HttpServletResponse response) {
         Logger logger = LogService.getApplicationLogger();
         
         SessionDAOFactory sessionDAOFactory;
@@ -325,16 +429,30 @@ public class AdminManagement {
             OrdersDAO ordersdao = daoFactory.getOrdersDAO();
             List<Orders> Listorders = ordersdao.ALLview();
             
+            daoFactory.commitTransaction();
+            
             request.setAttribute("loggedAdminOn",loggedAdmin!=null);
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("Listorders", Listorders);
             request.setAttribute("adminApplicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "adminManagement/");
 
-        }catch (Exception e) {
-          logger.log(Level.SEVERE, "Controller Error", e);
-          throw new RuntimeException(e);
-
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
         }
-    } 
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
+        }
+    }*/
 }

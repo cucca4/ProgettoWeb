@@ -10,8 +10,8 @@
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
    String createMessage = (String) request.getAttribute("createMessage");
    String deleteMessage = (String) request.getAttribute("deleteMessage");
-   //List<Orders> Listorders = (List<Orders>) request.getAttribute("Listorders");
-   //int i;
+   List<Orders> Listorders = (List<Orders>) request.getAttribute("Listorders");
+   int i;
 %>
 
 <!DOCTYPE html>
@@ -32,65 +32,73 @@
     <link rel="stylesheet" type="text/css" href="css/homestyle.css">
     
 </head>
-<body class="clearfix">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary clearfix">
-        <a class="navbar-brand" href="">Dronazon-Admin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
-                        <input class="btn btn-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
-                        <input type="hidden" name="controllerAction" value="AdminManagement.logout">
-                    </form>
-                </li>
-            </ul>
-            <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
-                <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
-                <input class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
-                <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
-            </form>
-        </div>
-    </nav>
-    <div class="pt-5"></div>
-    <div class="pt-3"></div>
-    <div class="container bg-light mx-auto">
-        <div class="pt-4"></div>
-        <section class="clearfix">
-          <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
-                <span>Crea nuova inserzione</span>
-                <input class="form-control ml-sm-2 mr-sm-2" type="number" placeholder="Codice ID" aria-label="Codice ID" name="Prod_Id" id="Prod_Id">
-                <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
-                <input class="form-control mr-sm-2" type="text" placeholder="Modello" aria-label="model" name="model" id="model">
-                <input class="form-control mr-sm-2" type="text" placeholder="Descrizione" aria-label="description" name="description" id="description">
-                <input class="form-control mr-sm-2" type="text" placeholder="Categoria" aria-label="category" name="category" id="category">
-                <input class="form-control mr-sm-2" type="number" placeholder="prezzo" aria-label="price" name="price" id="price">
-                <input class="form-control mr-sm-2" type="number" placeholder="Quantità" aria-label="qty" name="qty" id="qty">
-                <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Crea">
-                <input type="hidden" name="controllerAction" value="ProdottoManagement.createProduct">
-            </form>
-            <% if(createMessage != null) {%>
-                <%=createMessage%>
-            <%}%>
-        </section>
+    <body class="clearfix">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary clearfix">
+            <a class="navbar-brand" href="">Dronazon-Admin</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
+                            <input class="btn btn-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
+                            <input type="hidden" name="controllerAction" value="AdminManagement.logout">
+                        </form>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
+                    <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
+                    <input class="btn btn-success my-2 my-sm-0 mr-sm-2" type="submit" value="Vai">
+                    <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+                </form>
+            </div>
+        </nav>
+        <div class="pt-5"></div>
         <div class="pt-3"></div>
-        <section class="clearfix">
-            <form class="form-inline mt-2 mt-md-0" name="delete" action="Dispatcher" method="post"> 
-               Elimina prodotto inserendo il Modello<br>
-            <input class="form-control  ml-sm-2 mr-sm-2" type="text" placeholder="Modello" aria-label="Modello" name="model" id="model">
-            <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Elimina">
-            <input type="hidden" name="controllerAction" value="ProdottoManagement.deleteProduct">
-            </form>
-            <% if(deleteMessage != null) {%>
-                <%=deleteMessage%>
-            <%}%>
-        </section>
-        <div class="pt-2"></div> 
-        <%--<% if((Listorders.size()) != 0) {%>
+        <div class="container bg-light mx-auto">
+            <div class="pt-4"></div>
             <section class="clearfix">
-                <div class="pt-3"></div>
+              <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
+                    <span>Crea nuova inserzione</span>
+                    <input class="form-control ml-sm-2 mr-sm-2" type="number" placeholder="Codice ID" aria-label="Codice ID" name="Prod_Id" id="Prod_Id">
+                    <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Modello" aria-label="model" name="model" id="model">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Descrizione" aria-label="description" name="description" id="description">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Categoria" aria-label="category" name="category" id="category">
+                    <input class="form-control mr-sm-2" type="number" placeholder="prezzo" aria-label="price" name="price" id="price">
+                    <input class="form-control mr-sm-2" type="number" placeholder="Quantità" aria-label="qty" name="qty" id="qty">
+                    <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Crea">
+                    <input type="hidden" name="controllerAction" value="ProdottoManagement.createProduct">
+                </form>
+                <% if(createMessage != null) {%>
+                    <%=createMessage%>
+                <%}%>
+            </section>
+            <div class="pt-3"></div>
+            <section class="clearfix">
+                <form class="form-inline mt-2 mt-md-0" name="delete" action="Dispatcher" method="post"> 
+                   Elimina prodotto inserendo il Modello<br>
+                <input class="form-control  ml-sm-2 mr-sm-2" type="text" placeholder="Modello" aria-label="Modello" name="model" id="model">
+                <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Elimina">
+                <input type="hidden" name="controllerAction" value="ProdottoManagement.deleteProduct">
+                </form>
+                <% if(deleteMessage != null) {%>
+                    <%=deleteMessage%>
+                <%}%>
+            </section>
+            <section class="clearfix">
+                <form class="form-inline mt-2 mt-md-0" name="update" action="Dispatcher" method="post"> 
+                    Aggiorna lo stato di un ordine inserendo codice ID dell'ordine e il nuovo stato<br>
+                    <input class="form-control  ml-sm-2 mr-sm-2" type="number" placeholder="Order ID" aria-label="Order ID" name="order_Id" id="order_Id">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Status" aria-label="Status" name="status" id="status">
+                    <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Aggiorna">
+                    <input type="hidden" name="controllerAction" value="AdminManagement.updateOrder">
+                </form>
+            </section>
+            <div class="pt-2"></div> 
+            <section class="clearfix">
+                <div class="pt-2"></div>
                 Lista degli ordini effettuati su Dronazon!<br>
                 <div class="pt-2"></div>
                 <div class="container">
@@ -125,14 +133,8 @@
                     </div>
                     <%}%>
                 </div>
-                <div class="pt-2"></div>
+            <div class="pt-2"></div>
             </section>
-        <%} else {%>
-            <form class="form-inline mt-2 mt-md-0" name="Listorders" action="Dispatcher" method="post"> 
-            <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Lista totale degli ordini">
-            <input type="hidden" name="controllerAction" value="AdminManagement.viewOrders">
-            </form>
-        <%}%>   --%>
-    </div>
+        </div>
     </body>
 </html>

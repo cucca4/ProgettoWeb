@@ -15,7 +15,7 @@ public interface OrdersDAO {
            Float totprice,
            String status)throws DuplicatedObjectException;
 
-  public void update(Orders order) throws DuplicatedObjectException;
+  public void update(Orders order);
 
   public void delete(Orders order);
   
