@@ -156,7 +156,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputCap">Cap</label>
-                            <input type="text" class="form-control" id="cap" name="cap" maxlength="40" value="<%=user.getCap()%>" required>
+                            <input type="number" class="form-control" id="cap" name="cap" maxlength="40" value="<%=user.getCap()%>" required>
                         </div>
                     </div>
                     <input type="submit" value="Aggiorna" class="btn btn-outline-warning my-2 mr-sm-0 mr-sm-2">

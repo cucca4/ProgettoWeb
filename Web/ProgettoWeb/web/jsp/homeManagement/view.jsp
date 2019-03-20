@@ -17,6 +17,16 @@
 <html lang="it">
 <head>
     
+    <script>
+        
+        function goToProdottoView(search){
+            
+            document.getElementById("search").value=search;
+            
+            document.ProdottoView.submit();
+        }        
+    </script>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -34,9 +44,9 @@
 <body class="clearfix">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark clearfix">
         <a class="navbar-brand" href="">Dronazon</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-        </button>
+        </button>-->
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
@@ -54,26 +64,24 @@
                 <span class="nav-link nav-message"> <%=applicationMessage%></span>
                 <li class="nav-item">
                     <form class="form-inline mt-2 mt-md-0" name="userArea" action="Dispatcher" method="post"> 
-                    <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Area Personale">
-                    <input type="hidden" name="controllerAction" value="UserArea.view">
+                        <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Area Personale">
+                        <input type="hidden" name="controllerAction" value="UserArea.view">
                     </form>
                 </li>
                 <%}%>
             </ul>
       
             <% if(!loggedOn) {%>     
-
-
                 <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
-                <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
-                <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password" name="password" id="password">
-                <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">
-                <input type="hidden" name="controllerAction" value="HomeManagement.logon">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password" name="password" id="password">
+                    <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">
+                    <input type="hidden" name="controllerAction" value="HomeManagement.logon">
                 </form>
             <%} else {%>
                 <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
-                <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
-                <input type="hidden" name="controllerAction" value="HomeManagement.logout">
+                    <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
+                    <input type="hidden" name="controllerAction" value="HomeManagement.logout">
                 </form>
 
              <%}%>
@@ -93,10 +101,12 @@
        
             <%for(c=0; c<3; c++ ) { %>
                 <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getModel()%>');">
                     <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
                     <div class="card-body">
                         <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
                     </div>
+                    </a>
                 </div> 
             <%}%>
         
@@ -104,26 +114,34 @@
         <div class="row">
             <%for(c=3; c<6; c++ ) { %>
                 <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getModel()%>');">
                     <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
                     <div class="card-body">
                         <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
                     </div>
+                    </a>
                 </div> 
             <%}%>
         </div>
         <div class="row">
             <%for(c=6; c<9; c++ ) { %>
                 <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <a href="javascript:goToProdottoView(<%=pushedProduct.get(c).getModel()%>);">
                     <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
                     <div class="card-body">
                         <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%> </p>
                     </div>
+                    </a>
                 </div> 
              <%}%> 
         </div>
     </div>
 </body>
 
+<form name="ProdottoView" action="Dispatcher"  method="post">
+    <input type="hidden" name="search" id="search" >
+    <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+</form>
 <footer>
         <% if(!loggedOn) {%>
         <form action="Dispatcher" method="post">

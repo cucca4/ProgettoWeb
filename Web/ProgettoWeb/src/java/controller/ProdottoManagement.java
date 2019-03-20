@@ -37,7 +37,7 @@ public class ProdottoManagement {
     LoggedUser loggedUser;
     DAOFactory daoFactory = null;
     ProductDAO productDAO;
-    String found=null;
+    String found = "trovato";
     Logger logger = LogService.getApplicationLogger();
     
     try {
@@ -59,7 +59,7 @@ public class ProdottoManagement {
       
       daoFactory.commitTransaction();
       
-      if(product.getModel() != model)
+      if(product.getBrand()== null)
           found = "ERRORE!PRODOTTO NON TROVATO";
       System.out.println("<<<<<<<<<<"+found);
       
@@ -84,7 +84,7 @@ public class ProdottoManagement {
     DAOFactory daoFactory = null;
     LoggedUser loggedUser;
     String applicationMessage = null;
-    String found=null;
+    String found = "trovato";
      
     Logger logger = LogService.getApplicationLogger();
     
@@ -155,7 +155,7 @@ public class ProdottoManagement {
   public static void logout(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
-    String found=null;
+    String found = "trovato";
     Logger logger = LogService.getApplicationLogger();
 
     try {

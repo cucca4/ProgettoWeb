@@ -61,13 +61,13 @@
         <section class="clearfix">
           <form class="form-inline mt-2 mt-md-0" name="create" action="Dispatcher" method="post"> 
                 <span>Crea nuova inserzione</span>
-                <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Codice ID" aria-label="Codice ID" name="Prod_Id" id="Prod_Id">
+                <input class="form-control ml-sm-2 mr-sm-2" type="number" placeholder="Codice ID" aria-label="Codice ID" name="Prod_Id" id="Prod_Id">
                 <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Marca" aria-label="brand" name="brand" id="brand">
                 <input class="form-control mr-sm-2" type="text" placeholder="Modello" aria-label="model" name="model" id="model">
                 <input class="form-control mr-sm-2" type="text" placeholder="Descrizione" aria-label="description" name="description" id="description">
                 <input class="form-control mr-sm-2" type="text" placeholder="Categoria" aria-label="category" name="category" id="category">
-                <input class="form-control mr-sm-2" type="text" placeholder="prezzo" aria-label="price" name="price" id="price">
-                <input class="form-control mr-sm-2" type="text" placeholder="Quantità" aria-label="qty" name="qty" id="qty">
+                <input class="form-control mr-sm-2" type="number" placeholder="prezzo" aria-label="price" name="price" id="price">
+                <input class="form-control mr-sm-2" type="number" placeholder="Quantità" aria-label="qty" name="qty" id="qty">
                 <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Crea">
                 <input type="hidden" name="controllerAction" value="ProdottoManagement.createProduct">
             </form>

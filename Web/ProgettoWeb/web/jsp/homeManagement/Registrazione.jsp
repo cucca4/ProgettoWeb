@@ -1,14 +1,17 @@
 
+<%@page session="false"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
+<%
+    String applicationMessage = (String) request.getAttribute("applicationMessage");
+%>
 
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-       
         <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap-grid.css">
@@ -25,7 +28,7 @@
     </head>
     <body class="clearfix">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark clearfix">
-            <a class="navbar-brand">Dronazon</a>
+            <a class="navbar-brand" href="">Dronazon</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
              <span class="navbar-toggler-icon"></span>
             </button>
@@ -43,16 +46,15 @@
             <div class="container bg-light mx-auto">
                 <div class="pt-2"></div>
                 <div class="pt-2"></div>
-                <form name="RegistrazioneForm" action="Dispatcher" method="post">
+                <% if(applicationMessage == "Username o utente già esistente"){%>
+                <%=applicationMessage%>
+                <%}%>
+                <form name="RegistrationForm" action="Dispatcher" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-6">                          
                                 <label for="inputEmail4">Email</label>
                                 <input type="text" class="form-control" id="email" name="email" maxlength="40" required>
                         </div>
-                        <!--<div class="form-group col-md-6">                          
-                                <label for="inputId4">User Id</label>
-                                <input type="text" class="form-control" id="userId" name="userId" maxlength="40" required>
-                        </div>-->
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -85,15 +87,14 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputCap">Cap</label>
-                            <input type="text" class="form-control" id="cap" name="cap" maxlength="40" required>
+                            <input type="number" class="form-control" id="cap" name="cap" maxlength="40" required>
                         </div>
                     </div>
+                    <input type="hidden" name="controllerAction" value="UserArea.createUser"/>
                     <input class="btn btn-warning my-2 my-sm-0 mr-sm-2" type="submit" value="Registrati">
-                    <input type="hidden" name="controllerAction" value="UserArea.createUser">
                 </form>
                 <div class="pt-2"></div>
             </div>
-            
         </main>
   </body>
 </html>

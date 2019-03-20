@@ -83,19 +83,21 @@
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
             <div class="pt-4"></div>
-            <% if( notfoundMessage == null) {%> 
+            <% if( notfoundMessage == "trovato") {%> 
                 <div class="float-left">
                     <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
                 </div><br>
                 <div class="media-body">
                     <h5 class="mt-0 mb-1"><%=product.getBrand()%>  <%=product.getModel()%></h5>
                     <h5 class="mt-0 mb-1"><%=product.getPrice()%> Euro</h5>
-                    
                     <%=product.getDescription()%>
                 </div>
                 <div class="pt-3"></div>
 
                 <% if(!loggedOn) {%> 
+                <div class="pt-4"></div>
+                <div class="pt-4"></div>
+                <div class="pt-4"></div>
                 <div class="pt-4"></div>
                 <div class="alert alert-warning" role="alert">
                     Effettua il login per cominciare lo shopping!
@@ -112,8 +114,6 @@
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>
             <div class="pt-xl-5"></div>
-           
     </div>
 </body>
-
 </html>

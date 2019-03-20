@@ -102,14 +102,15 @@ public class UserArea {
         LoggedUser loggedUser;
         Logger logger = LogService.getApplicationLogger();
         User vuser = new User();
-        System.out.println("<<<<<<<<<<<<<<<<<<");
+        
         try{
+            
+            System.out.println("<<<<<<<"+ request.getParameter("username"));
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
             
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             daoFactory.beginTransaction();
-            
             
             //vuser.setUserId(new Long (request.getParameter("userId")));
             vuser.setUsername(request.getParameter("username"));
@@ -123,34 +124,31 @@ public class UserArea {
             
             System.out.println("<<<<<<<<<<<<<<<<<<"+vuser.getFirstname());
             
-            
             UserDAO userDAO = daoFactory.getUserDAO();
-            
             
             LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
             loggedUser = loggedUserDAO.find();
+            
             PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
             List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
             
             try{
-                userDAO.insert(/*vuser.getUserId(),*/vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
-                loggedUser = loggedUserDAO.create(vuser.getUserId(), vuser.getUsername());
+                User user = userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
+                loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
                 applicationMessage="Benvenuto " + loggedUser.getUsername();
                 
+                daoFactory.commitTransaction();
+            
+                request.setAttribute("loggedOn",loggedUser!=null);
+                request.setAttribute("loggedUser", loggedUser);
+                request.setAttribute("pushedProduct", pushedProduct);
+                request.setAttribute("applicationMessage", applicationMessage);
+                request.setAttribute("viewUrl", "homeManagement/view");
             } catch (DuplicatedObjectException e) {
                 
                 applicationMessage = "Username o utente già esistente";
-               
-            }
-            
-            daoFactory.commitTransaction();
-            
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("pushedProduct", pushedProduct);
-            request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
-            
+                request.setAttribute("viewUrl", "homeManagement/Registrazione.jsp");
+            }            
         }
         catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -205,7 +203,6 @@ public class UserArea {
             user.setCity(request.getParameter("city"));
             user.setCap(request.getParameter("cap"));
             
-            
             userDAO.update(user);
             loggedUser.setUsername(user.getUsername());
             loggedUser.setUserId(user.getUserId());
@@ -219,7 +216,6 @@ public class UserArea {
             request.setAttribute("actionPage", "account");
             request.setAttribute("applicationMessage", applicationMessage);
             
-
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
             try {
@@ -329,18 +325,26 @@ public class UserArea {
             UserDAO userDAO = daoFactory.getUserDAO();
             User user = userDAO.findByUserId(loggedUser.getUserId());
             
+            
+            
             if(user.getPassword().equals(password)){
                 
                 userDAO.delete(user);
                 loggedUserDAO.destroy();
                 loggedUser = null;
                
-                
-                request.setAttribute("viewUrl", "homeManagement/view");
+                request.setAttribute("viewUrl", "homeManagement/Registrazione");
                 
             } else {
                 
+                OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
+                List<Orders> orders = ordersDAO.findByBuyer(user.getUsername());
+                
                 applicationMessage = "Password errata,impossibile eliminare account";
+                request.setAttribute("user",user);
+                request.setAttribute("loggedOn", loggedUser != null);
+                request.setAttribute("loggedUser", loggedUser);
+                request.setAttribute("orders", orders);
                 request.setAttribute("applicationMessage", applicationMessage);
                 request.setAttribute("actionPage", "delete");
                 request.setAttribute("viewUrl", "userAreaManagement/view");
