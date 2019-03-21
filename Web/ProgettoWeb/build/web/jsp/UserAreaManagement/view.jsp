@@ -49,10 +49,10 @@
                     <a class="nav-link" href="/homeManagement/home.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Catalogo</a>
+                    <a class="nav-link" href="jsp/catalogManagement/home.jsp">Catalogo</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Area Personale<span class="sr-only">(current)</span></a>
+                    <a class="nav-link active" href=" ">Area Personale<span class="sr-only">(current)</span></a>
                 </li>
             </ul>  
             <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
@@ -122,7 +122,7 @@
             Controlla le informazioni sul tuo profilo o modificane i parametri.
             <br>
             <section>
-                    <form name="uForm" action="Dispatcher" method="post">
+                <form name="uForm" action="Dispatcher" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-6">                          
                             <label for="inputEmail4">Email</label>
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="form-row">   
-                        <div class="form-group">
+                        <div class="form-group col-md-6">
                             <label for="inputAddress">Indirizzo</label>
                             <input type="text" class="form-control" id="address" name="address" maxlength="40" value="<%=user.getAddress()%>" required>
                         </div>
@@ -162,8 +162,7 @@
                     <input type="submit" value="Aggiorna" class="btn btn-outline-warning my-2 mr-sm-0 mr-sm-2">
                     <input type="hidden" name="userId" value="<%=user.getUserId()%>"/>
                     <input type="hidden" name="controllerAction" value="UserArea.modify"/>
-
-                    </form>
+                </form>
             </section>
             <div class="pt-3"></div>
             <h1 class="mt-0 mb-1">CAMBIA PASSWORD</h1>

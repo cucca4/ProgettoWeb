@@ -50,10 +50,10 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="jsp/homeManagement/home.html">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="jsp/homeManagement/home.jsp">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Catalogo</a>
+                        <a class="nav-link" href="jsp/catalogManagement/home.jsp">Catalogo</a>
                     </li>
                     <% if(!loggedOn){%>
                     <li class="nav-item">
@@ -137,7 +137,7 @@
     </body>
 
     <form name="ProdottoView" action="Dispatcher"  method="post">
-        <input type="hidden" name="search" id="search" >
+        <input type="hidden" name="search" id="search">
         <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
     </form>
     <footer>

@@ -19,13 +19,12 @@ import model.session.mo.LoggedUser;
 import model.session.dao.SessionDAOFactory;
 import model.session.dao.LoggedUserDAO;
 
-
-public class HomeManagement {
-
-  private HomeManagement() {
-  }
-
-  public static void view(HttpServletRequest request, HttpServletResponse response) {
+public class CatalogManagement {
+    
+    private CatalogManagement(){
+    }
+    
+    public static void view(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
     DAOFactory daoFactory = null;
@@ -46,7 +45,47 @@ public class HomeManagement {
       PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
       List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
       
+      if(loggedUser!=null) 
+            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
       
+      daoFactory.commitTransaction();
+      
+      request.setAttribute("loggedOn",loggedUser!=null);
+      request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("categoria", null);
+      request.setAttribute("marca", null);
+      request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("viewUrl", "catalogManagement/view");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      throw new RuntimeException(e);
+    }
+  }
+  
+  public static void filter(HttpServletRequest request, HttpServletResponse response) {
+
+    SessionDAOFactory sessionDAOFactory;
+    DAOFactory daoFactory = null;
+    LoggedUser loggedUser;
+
+    Logger logger = LogService.getApplicationLogger();
+    
+    try {
+
+      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+      sessionDAOFactory.initSession(request, response);
+      
+      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+      daoFactory.beginTransaction();
+      
+      String categoria = request.getParameter("categoria");
+      String marca = request.getParameter("marca");
+      
+      LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+      loggedUser = loggedUserDAO.find();
+      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
       
       if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
@@ -55,15 +94,17 @@ public class HomeManagement {
       
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
+      request.setAttribute("categoria", categoria);
+      request.setAttribute("marca", marca);
       request.setAttribute("pushedProduct", pushedProduct);
-      request.setAttribute("viewUrl", "homeManagement/view");
+      request.setAttribute("viewUrl", "catalogManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
       throw new RuntimeException(e);
     }
   }
-
+  
   public static void logon(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
@@ -107,8 +148,10 @@ public class HomeManagement {
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
       request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("categoria", null);
+      request.setAttribute("marca", null);
       request.setAttribute("applicationMessage", applicationMessage);
-      request.setAttribute("viewUrl", "homeManagement/view");
+      request.setAttribute("viewUrl", "catalogManagement/view");
 
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
@@ -150,14 +193,15 @@ public class HomeManagement {
       
       PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
       List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
-
       
       daoFactory.commitTransaction();
       
       request.setAttribute("loggedOn",false);
       request.setAttribute("loggedUser", null);
+      request.setAttribute("categoria", null);
+      request.setAttribute("marca", null);
       request.setAttribute("pushedProduct", pushedProduct);
-      request.setAttribute("viewUrl", "homeManagement/view");
+      request.setAttribute("viewUrl", "catalogManagement/view");
       
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);

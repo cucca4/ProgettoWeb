@@ -35,7 +35,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                  <li class="nav-item active">
-                     <a class="nav-link" href="home.html">Home</a>
+                     <a class="nav-link" href="home.jsp">Home</a>
                  </li>
                 </ul>
         </nav>
@@ -49,50 +49,54 @@
                 <% if(applicationMessage == "Username o utente già esistente"){%>
                 <%=applicationMessage%>
                 <%}%>
-                <form name="RegistrationForm" action="Dispatcher" method="post">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">                          
+                <section>
+                    <form name="RegistrationForm" action="Dispatcher" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">                          
                                 <label for="inputEmail4">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" maxlength="40" required>
+                                <input type="email" class="form-control"  id="email" name="email" maxlength="40" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputUsername4">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" maxlength="40" required>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputUsername4">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" maxlength="40" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputPassword4">Password</label>
+                                <input type="text" class="form-control" id="password" name="password" maxlength="40" required>
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">Password</label>
-                            <input type="text" class="form-control" id="password" name="password" maxlength="40" required>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputFirstname4">Nome</label>
+                                <input type="text" class="form-control"  id="firstname" name="firstname" maxlength="40" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputSurname4">Cognome</label>
+                                <input type="text" class="form-control" id="surname" name="surname" maxlength="40" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputFirstname4">Nome</label>
-                            <input type="text" class="form-control" id="firstname" name="firstname" maxlength="40" required>
+                        <div class="form-row">   
+                            <div class="form-group col-md-6">
+                                <label for="inputAddress">Indirizzo</label>
+                                <input type="text" class="form-control" id="address" name="address" maxlength="40" required>
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputSurname4">Cognome</label>
-                            <input type="text" class="form-control" id="surname" name="surname" maxlength="40" required>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputCity">Città</label>
+                                <input type="text" class="form-control" id="city" name="city" maxlength="40" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputCap">Cap</label>
+                                <input type="number" class="form-control" id="cap" name="cap" maxlength="40" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAddress">Indirizzo</label>
-                        <input type="text" class="form-control" id="address" name="address" maxlength="40" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputCity">Città</label>
-                            <input type="text" class="form-control" id="city" name="city" maxlength="40" required>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="inputCap">Cap</label>
-                            <input type="number" class="form-control" id="cap" name="cap" maxlength="40" required>
-                        </div>
-                    </div>
-                    <input type="hidden" name="controllerAction" value="UserArea.createUser"/>
-                    <input class="btn btn-warning my-2 my-sm-0 mr-sm-2" type="submit" value="Registrati">
-                </form>
+                        <input class="btn btn-warning my-2 my-sm-0 mr-sm-2" type="submit" value="Registrati">
+                        <input type="hidden" name="controllerAction" value="UserArea.createUser"/>
+                    </form>
+                </section>
                 <div class="pt-2"></div>
             </div>
         </main>

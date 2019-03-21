@@ -105,7 +105,7 @@ public class UserArea {
         
         try{
             
-            System.out.println("<<<<<<<"+ request.getParameter("username"));
+            System.out.println("FIN QUI TUTTO BENE POI BO");
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
             
@@ -191,7 +191,7 @@ public class UserArea {
       
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             daoFactory.beginTransaction();
-
+                
             UserDAO userDAO = daoFactory.getUserDAO();
             User user = new User();
             user.setUserId(new Long(request.getParameter("userId")));
@@ -203,19 +203,21 @@ public class UserArea {
             user.setCity(request.getParameter("city"));
             user.setCap(request.getParameter("cap"));
             
+            OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
+            List<Orders> orders = ordersDAO.findByBuyer(user.getUsername());
+                
             userDAO.update(user);
             loggedUser.setUsername(user.getUsername());
             loggedUser.setUserId(user.getUserId());
             
             daoFactory.commitTransaction();
             
-            request.setAttribute("viewUrl", "userAreaManagement/userArea");
-            request.setAttribute("user",user);
+            request.setAttribute("user", user);
             request.setAttribute("loggedOn", loggedUser != null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("actionPage", "account");
-            request.setAttribute("applicationMessage", applicationMessage);
-            
+            request.setAttribute("orders", orders);
+            request.setAttribute("viewUrl", "userAreaManagement/view");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
             try {
@@ -273,7 +275,6 @@ public class UserArea {
             }
             
             daoFactory.commitTransaction();
-            
             
             request.setAttribute("user",user);
             request.setAttribute("loggedOn", loggedUser != null);
