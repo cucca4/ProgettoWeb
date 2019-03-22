@@ -20,7 +20,7 @@
         <script>
 
             function goToProdottoView(search){
-                document.getElementById("search").value=search;
+                document.getElementById("search").value = search;
                 document.ProdottoView.submit();
             }      
             function goToHome(){

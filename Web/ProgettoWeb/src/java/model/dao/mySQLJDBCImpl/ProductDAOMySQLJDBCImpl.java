@@ -143,29 +143,19 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
 
             String sql;
             sql
-            ="UPDATE product"
-            +"SET "
-            + "     brand = ?, "
-            + "     model = ?, "
-            + "     description = ?, "
-            + "     category = ?, "
+            = " UPDATE product"
+            + " SET "
             + "     price = ?, "
-            + "     qty = ?, "
-            + "WHERE "
-            +"Prod_Id = ?;";
+            + "     qty = ? "
+            + "WHERE Prod_Id = ?;";
 
             ps = conn.prepareStatement(sql);
-
-            ps.setString(1,product.getBrand());
-            ps.setString(2,product.getModel() );
-            ps.setString(3, product.getDescription());
-            ps.setString(4,product.getCategory());
-            ps.setFloat (5,product.getPrice());
-            ps.setLong (6, product.getQty());
-            ps.setLong(7, product.getProd_Id());
+;
+            ps.setFloat (1, product.getPrice());
+            ps.setLong (2, product.getQty());
+            ps.setLong(3, product.getProd_Id());
 
             ps.executeUpdate();
-
             ps.close();
 
         } catch (SQLException e) {
@@ -196,7 +186,36 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
             throw new RuntimeException(e);
         }
     }
+    
+    @Override
+    public List<Product> getProduct() {
+        PreparedStatement ps;
+      ArrayList<Product> product = new ArrayList<Product>();
 
+      try {
+          String sq1
+            = "SELECT * "
+            + "FROM product;";
+            
+          ps = conn.prepareStatement(sq1);
+
+          ResultSet resultSet = ps.executeQuery();
+
+          while(resultSet.next()){
+
+              product.add(read(resultSet));
+          }
+
+          resultSet.close();
+          ps.close();
+
+
+      }catch(SQLException e){
+          throw new RuntimeException(e);
+      }
+      return product;
+    } 
+    
   @Override
   public Product findByProdId(Long prod_Id){
          PreparedStatement ps;

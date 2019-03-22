@@ -19,7 +19,7 @@ public interface ProductDAO {
   public void update(Product product) throws DuplicatedObjectException;
 
   public void delete(Product product);
-
+  public List<Product> getProduct();
   public Product findByProdId(Long prod_Id);
   public Product findByBrand(String brand);
   public Product findByCategory(String category);

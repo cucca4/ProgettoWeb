@@ -11,9 +11,9 @@ import services.logservice.LogService;
 
 import model.mo.User;
 import model.dao.DAOFactory;
-import model.dao.PushedProductDAO;
+import model.dao.ProductDAO;
 import model.dao.UserDAO;
-import model.mo.PushedProduct;
+import model.mo.Product;
 
 import model.session.mo.LoggedUser;
 import model.session.dao.SessionDAOFactory;
@@ -68,8 +68,8 @@ public class CatalogManagement {
           LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
           loggedUser = loggedUserDAO.find();
           
-          PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
-          List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+          ProductDAO productDAO = daoFactory.getProductDAO();
+          List<Product> product = productDAO.getProduct();
 
           if(loggedUser!=null) 
                 request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
@@ -80,7 +80,7 @@ public class CatalogManagement {
           request.setAttribute("loggedUser", loggedUser);
           request.setAttribute("categoria", null);
           request.setAttribute("marca", null);
-          request.setAttribute("pushedProduct", pushedProduct);
+          request.setAttribute("product", product);
           request.setAttribute("viewUrl", "catalogManagement/view");
 
         } catch (Exception e) {
@@ -92,45 +92,59 @@ public class CatalogManagement {
   public static void filter(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
-    DAOFactory daoFactory = null;
-    LoggedUser loggedUser;
+        DAOFactory daoFactory = null;
+        LoggedUser loggedUser;
 
-    Logger logger = LogService.getApplicationLogger();
-    
-    try {
+        Logger logger = LogService.getApplicationLogger();
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-      sessionDAOFactory.initSession(request, response);
-      
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-      daoFactory.beginTransaction();
-      
-      String categoria = request.getParameter("categoria");
-      String marca = request.getParameter("marca");
-      
-      System.out.println("PUNTO DI CONTROLLO,PREGA "+marca+" "+categoria);
-      
-      LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-      loggedUser = loggedUserDAO.find();
-      
-      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
-      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
-      
-      if(loggedUser!=null) 
-            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
-      
-      daoFactory.commitTransaction();
-      
-      request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("categoria", categoria);
-      request.setAttribute("marca", marca);
-      request.setAttribute("pushedProduct", pushedProduct);
-      request.setAttribute("viewUrl", "catalogManagement/view");
+        try {
 
-    } catch (Exception e) {
+          sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+          sessionDAOFactory.initSession(request, response);
+
+          daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+          daoFactory.beginTransaction();
+
+          LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+          loggedUser = loggedUserDAO.find();
+          
+          ProductDAO productDAO = daoFactory.getProductDAO();
+          List<Product> product = productDAO.getProduct();
+          
+          String categoria = request.getParameter("categoria");
+          String marca = request.getParameter("marca");
+          
+          System.out.println("CHECK POINT " + marca + " AND " + categoria);
+          
+          if(loggedUser!=null) 
+                request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+
+          daoFactory.commitTransaction();
+
+          request.setAttribute("loggedOn",loggedUser!=null);
+          request.setAttribute("loggedUser", loggedUser);
+          request.setAttribute("categoria", categoria);
+          request.setAttribute("marca", marca);
+          request.setAttribute("product", product);
+          request.setAttribute("viewUrl", "catalogManagement/view");;
+
+    }catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (daoFactory != null) {
+          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+        }
+      } catch (Throwable t) {
+      }
       throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (daoFactory != null) {
+          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+        }
+      } catch (Throwable t) {
+      }
     }
   }
   
@@ -160,8 +174,8 @@ public class CatalogManagement {
       UserDAO userDAO = daoFactory.getUserDAO();
       User user = userDAO.findByUsername(username);
       
-      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
-      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+      ProductDAO productDAO = daoFactory.getProductDAO();
+      List<Product> product = productDAO.getProduct();
 
       if (user == null || !user.getPassword().equals(password)) {
         loggedUserDAO.destroy(); //distrugge il cookie perche l'utente/password sono errati
@@ -176,7 +190,7 @@ public class CatalogManagement {
 
       request.setAttribute("loggedOn",loggedUser!=null);
       request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("product", product);
       request.setAttribute("categoria", null);
       request.setAttribute("marca", null);
       request.setAttribute("applicationMessage", applicationMessage);
@@ -220,22 +234,35 @@ public class CatalogManagement {
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUserDAO.destroy();
       
-      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
-      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
-      
+      ProductDAO productDAO = daoFactory.getProductDAO();
+      List<Product> product = productDAO.getProduct();
+
       daoFactory.commitTransaction();
       
       request.setAttribute("loggedOn",false);
       request.setAttribute("loggedUser", null);
       request.setAttribute("categoria", null);
       request.setAttribute("marca", null);
-      request.setAttribute("pushedProduct", pushedProduct);
+      request.setAttribute("product", product);
       request.setAttribute("viewUrl", "catalogManagement/view");
       
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (daoFactory != null) {
+          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+        }
+      } catch (Throwable t) {
+      }
       throw new RuntimeException(e);
 
+    } finally {
+      try {
+        if (daoFactory != null) {
+          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+        }
+      } catch (Throwable t) {
+      }
     }
   }
 }

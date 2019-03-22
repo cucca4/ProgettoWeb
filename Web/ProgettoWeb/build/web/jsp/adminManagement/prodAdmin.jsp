@@ -5,12 +5,13 @@
 <%@page import="model.mo.User"%>
 <%@page import="model.mo.Orders"%>
 <%@page import="java.util.List"%>
-
+<%@page import="model.mo.Product"%>
 
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
    String createMessage = (String) request.getAttribute("createMessage");
    String deleteMessage = (String) request.getAttribute("deleteMessage");
    List<Orders> Listorders = (List<Orders>) request.getAttribute("Listorders");
+   List<Product> prodqty = (List<Product>) request.getAttribute("prodqty");
    int i;
 %>
 
@@ -133,8 +134,57 @@
                     </div>
                     <%}%>
                 </div>
-            <div class="pt-2"></div>
+            <div class="pt-3"></div>
             </section>
+            <section class="clearfix">
+                <form class="form-inline mt-2 mt-md-0" name="update" action="Dispatcher" method="post"> 
+                    Aggiorna lo stato di un prodotto inserendo codice ID del prodotto e il nuovo stato<br>
+                    <input class="form-control  ml-sm-2 mr-sm-2" type="number" placeholder="Prod ID" aria-label="Prod ID" name="prod_Id" id="prod_Id">
+                    <input class="form-control  ml-sm-2 mr-sm-2" type="text" placeholder="Modello" aria-label="Model ID" name="model" id="model">
+                    <input class="form-control  ml-sm-2 mr-sm-2" type="text" placeholder="Prezzo" aria-label="Price" name="price" id="price">
+                    <input class="form-control  ml-sm-2 mr-sm-2" type="number" placeholder="Quantità" aria-label="Qty" name="qty" id="qty">
+                    <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Aggiorna">
+                    <input type="hidden" name="controllerAction" value="ProdottoManagement.update">
+                </form>
+            </section>
+            <section class="clearfix">
+                <div class="pt-2"></div>
+                Lista della fornitura del magazzino<br>
+                <div class="pt-2"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            Product ID
+                        </div>
+                        <div class="col-sm">
+                            Modello
+                        </div>
+                        <div class="col-sm">
+                            Prezzo €
+                        </div>
+                        <div class="col-sm">
+                            Quantità
+                        </div>
+                    </div> 
+                    <% for(i=0;i<prodqty.size();i++) { %>
+                    <div class="row">
+                      <div class="col-sm">
+                        <%=prodqty.get(i).getProd_Id()%>
+                      </div>
+                      <div class="col-sm">
+                        <%=prodqty.get(i).getModel()%>
+                      </div>
+                      <div class="col-sm">
+                        <%=prodqty.get(i).getPrice()%>
+                      </div>
+                        <div class="col-sm">
+                        <%=prodqty.get(i).getQty()%>
+                      </div>
+                    </div>
+                    <%}%>
+                </div>
+            <div class="pt-3"></div>
+            </section>    
         </div>
     </body>
 </html>

@@ -1,7 +1,7 @@
 
 <%@page session="false"%>
 <%@page import="java.util.List"%>
-<%@page import="model.mo.PushedProduct"%>
+<%@page import="model.mo.Product"%>
 <%@page import="model.session.mo.LoggedUser"%>
 <!doctype html>
 
@@ -11,7 +11,7 @@
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
     String categoria = (String) request.getAttribute("categoria");
-    List<PushedProduct> pushedProduct = (List<PushedProduct>) request.getAttribute("pushedProduct");
+    List<Product> product = (List<Product>) request.getAttribute("product");
     String marca = (String) request.getAttribute("marca");
     int c;
 %>
@@ -38,7 +38,6 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
 
         <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.css">
@@ -107,14 +106,14 @@
                 <input type="hidden" name="controllerAction" value="CatalogManagement.filter">
             </form>
             <div class="pt-5"></div>
-            <%for(c=0; c<pushedProduct.size(); c++ ) { %>
-                <%if(categoria == null || categoria == pushedProduct.get(c).getCategory()){%>
-                     <%if(marca == null || marca == pushedProduct.get(c).getBrand()){%>   
+            <%for(c=0; c < product.size(); c++ ) { %>
+                <%if(categoria == (product.get(c).getCategory())|| categoria == null){%>
+                     <%if(marca == null || marca == product.get(c).getBrand()){%>   
                         <div class="card margin-card mx-auto" style="width: 19rem;">
-                            <a href="javascript:goToProdottoView(<%=pushedProduct.get(c).getModel()%>);">
-                                <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
+                            <a href="javascript:goToProdottoView(<%=product.get(c).getModel()%>);">
+                                <img src="images/products/<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>">
                                 <div class="card-body">
-                                    <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
+                                    <p class="card-text"><%=product.get(c).getBrand()%> <%=product.get(c).getModel()%></p>
                                 </div>
                             </a>
                         </div> 

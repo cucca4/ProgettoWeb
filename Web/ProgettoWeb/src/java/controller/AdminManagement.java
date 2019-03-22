@@ -19,9 +19,11 @@ import model.session.dao.LoggedAdminDAO;
 import model.dao.DAOFactory;
 import model.dao.AdminDAO;
 import model.dao.OrdersDAO;
+import model.dao.ProductDAO;
 import model.dao.PushedProductDAO;
 import model.dao.UserDAO;
 import model.mo.Orders;
+import model.mo.Product;
 import model.mo.PushedProduct;
 import model.mo.User;
 
@@ -106,12 +108,16 @@ public class AdminManagement {
             OrdersDAO ordersdao = daoFactory.getOrdersDAO();
             List<Orders> Listorders = ordersdao.ALLview();
             
+            ProductDAO productDAO = daoFactory.getProductDAO();
+            List<Product> prodqty = productDAO.getProduct();
+            
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", " ");
             request.setAttribute("Listorders",Listorders);
+            request.setAttribute("prodqty",prodqty);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
         }catch(Exception e){
             logger.log(Level.SEVERE, "Controller Error", e);
@@ -380,12 +386,16 @@ public class AdminManagement {
             
             List<Orders> Listorders = ordersdao.ALLview();
             
+            ProductDAO productDAO = daoFactory.getProductDAO();
+            List<Product> prodqty = productDAO.getProduct();
+            
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", " ");
             request.setAttribute("Listorders",Listorders);
+            request.setAttribute("prodqty",prodqty);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
         }catch(Exception e){
             logger.log(Level.SEVERE, "Controller Error", e);

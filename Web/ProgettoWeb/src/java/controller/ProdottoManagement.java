@@ -54,16 +54,16 @@ public class ProdottoManagement {
         daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
         daoFactory.beginTransaction();
 
-        String model= (String) request.getParameter("search");
+        String model = request.getParameter("search");
 
         productDAO = daoFactory.getProductDAO();
         Product product = productDAO.findByModel(model) ;
 
         daoFactory.commitTransaction();
-        System.out.println("++++++++"+model);
+        System.out.println("CHECK POINT 1: " + model + " VALUE.");
         if(product.getBrand()== null)
             found = "ERRORE!PRODOTTO NON TROVATO";
-        System.out.println("<<<<<<<<<<"+found);
+        System.out.println("CHECK POINT 2 " + found);
 
         if(loggedUser!=null) 
             request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
@@ -243,6 +243,9 @@ public class ProdottoManagement {
                 create = "Codice o prodotto già esistente";
                
             }
+           
+            List<Product> prodqty = productDAO.getProduct();
+            
             OrdersDAO ordersdao = daoFactory.getOrdersDAO();
             List<Orders> Listorders = ordersdao.ALLview();
             
@@ -251,7 +254,8 @@ public class ProdottoManagement {
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", create);
             request.setAttribute("deleteMessage", " ");
-             request.setAttribute("Listorders",Listorders);
+            request.setAttribute("Listorders",Listorders);
+            request.setAttribute("prodqty",prodqty);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
             
         }
@@ -305,12 +309,15 @@ public class ProdottoManagement {
             OrdersDAO ordersdao = daoFactory.getOrdersDAO();
             List<Orders> Listorders = ordersdao.ALLview();
             
+            List<Product> prodqty = productDAO.getProduct();
+            
             daoFactory.commitTransaction();
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("createMessage", " ");
             request.setAttribute("deleteMessage", delete);
-             request.setAttribute("Listorders",Listorders);
+            request.setAttribute("Listorders",Listorders);
+            request.setAttribute("prodqty",prodqty);
             request.setAttribute("viewUrl", "adminManagement/prodAdmin");
             
         }catch(Exception e){
@@ -333,4 +340,74 @@ public class ProdottoManagement {
             }
         }
     }
+    
+    public static void update(HttpServletRequest request, HttpServletResponse response) {
+        Logger logger = LogService.getApplicationLogger();
+        
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedAdmin loggedAdmin;
+        
+        try{
+            
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
+            loggedAdmin = loggedAdminDAO.find();
+            
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+                        
+            Long prod_Id = new Long (request.getParameter("prod_Id"));
+            String model = request.getParameter("model");
+            Float price = new Float (request.getParameter("price"));
+            Long qty = new Long (request.getParameter("qty"));
+            
+            System.out.println("CONTROL 1 " + prod_Id + " " + model);
+            
+            ProductDAO productdao = daoFactory.getProductDAO();
+            
+            Product product = productdao.findByProdId(prod_Id);
+            product.setPrice(price);
+            product.setQty(qty);
+            
+            System.out.println("CONTROL 2 " + product.getQty()+" "+product.getPrice());
+            
+            productdao.update(product);
+            
+            List<Product> prodqty = productdao.getProduct();
+            
+            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
+            List<Orders> Listorders = ordersdao.ALLview();
+            
+            System.out.println("CONTROL 3 " + product.getQty()+" "+product.getPrice());
+            
+            daoFactory.commitTransaction();
+            
+            request.setAttribute("loggedadmin", loggedAdmin);
+            request.setAttribute("createMessage", " ");
+            request.setAttribute("deleteMessage", " ");
+            request.setAttribute("Listorders",Listorders);
+            request.setAttribute("prodqty",prodqty);
+            request.setAttribute("viewUrl", "adminManagement/prodAdmin");
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
+        }
+    }
+  
 }
