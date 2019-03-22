@@ -32,6 +32,23 @@ public class UserArea {
     private UserArea(){
     }
     
+    public static void viewReg(HttpServletRequest request, HttpServletResponse response){
+        SessionDAOFactory sessionDAOFactory;
+        Logger logger = LogService.getApplicationLogger();
+        
+        try{
+            
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            request.setAttribute("viewUrl", "homeManagement/Registrazione");
+            
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            throw new RuntimeException(e);
+        }
+    }
+    
     public static void view(HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
@@ -135,7 +152,11 @@ public class UserArea {
             try{
                 User user = userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
                 loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
+                
+                loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
                 applicationMessage="Benvenuto " + loggedUser.getUsername();
+
+                  daoFactory.commitTransaction(); //IMPORTANTISSIMA
                 
                 daoFactory.commitTransaction();
             

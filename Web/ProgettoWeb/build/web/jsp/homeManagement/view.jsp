@@ -20,11 +20,18 @@
         <script>
 
             function goToProdottoView(search){
-
                 document.getElementById("search").value=search;
-
                 document.ProdottoView.submit();
-            }        
+            }      
+            function goToHome(){
+                document.Home.submit();
+            }
+            function goToCatalog(){
+                document.Catalog.submit();
+            }
+            function goToRegistration(){
+                document.Registration.submit();
+            }
         </script>
 
         <meta charset="utf-8">
@@ -50,14 +57,14 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="jsp/homeManagement/home.jsp">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="javascript:goToHome();">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="jsp/catalogManagement/home.jsp">Catalogo</a>
+                        <a class="nav-link" href="javascript:goToCatalog();">Catalogo</a>
                     </li>
                     <% if(!loggedOn){%>
                     <li class="nav-item">
-                        <a class="nav-link" href="jsp/homeManagement/Registrazione.jsp">Registrazione</a>
+                        <a class="nav-link" href="javascript:goToRegistration();">Registrazione</a>
                     </li>
                     <%}%>
                     <% if(loggedOn) {%>
@@ -100,7 +107,7 @@
             <div class="row">
                 <%for(c=0; c<3; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView(<%=pushedProduct.get(c).getModel()%>);">
+                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getModel()%>');">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
@@ -139,6 +146,15 @@
     <form name="ProdottoView" action="Dispatcher"  method="post">
         <input type="hidden" name="search" id="search">
         <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+    </form>
+    <form name="Registration" action="Dispatcher"  method="post">
+        <input type="hidden" name="controllerAction" value="UserArea.viewReg">
+    </form>
+    <form name="Home" action="Dispatcher"  method="post">
+        <input type="hidden" name="controllerAction" value="HomeManagement.view">
+    </form>
+    <form name="Catalog" action="Dispatcher"  method="post">
+        <input type="hidden" name="controllerAction" value="CatalogManagement.view">
     </form>
     <footer>
             <% if(!loggedOn) {%>

@@ -95,7 +95,7 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
                 + "WHERE  "
                 + "firstname = ? AND "
                 + "surname = ? AND "
-                + "deleted_Pr = '0';";
+                + "deleted = '0';";
 
             ps = conn.prepareStatement(sql);
             //ps.setLong(1, user.getUserId());

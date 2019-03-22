@@ -24,44 +24,70 @@ public class CatalogManagement {
     private CatalogManagement(){
     }
     
+    /*public static void home(HttpServletRequest request, HttpServletResponse response){
+        SessionDAOFactory sessionDAOFactory;
+        Logger logger = LogService.getApplicationLogger();
+        LoggedUser loggedUser;
+        try{
+            
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+            
+            if(loggedUser!=null) 
+                request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+            
+            request.setAttribute("loggedOn", loggedUser != null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("viewUrl", "catalogManagement/home");
+            
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            throw new RuntimeException(e);
+        }
+    }*/
+    
     public static void view(HttpServletRequest request, HttpServletResponse response) {
 
-    SessionDAOFactory sessionDAOFactory;
-    DAOFactory daoFactory = null;
-    LoggedUser loggedUser;
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedUser loggedUser;
 
-    Logger logger = LogService.getApplicationLogger();
-    
-    try {
+        Logger logger = LogService.getApplicationLogger();
 
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-      sessionDAOFactory.initSession(request, response);
-      
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-      daoFactory.beginTransaction();
-      
-      LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-      loggedUser = loggedUserDAO.find();
-      PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
-      List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
-      
-      if(loggedUser!=null) 
-            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
-      
-      daoFactory.commitTransaction();
-      
-      request.setAttribute("loggedOn",loggedUser!=null);
-      request.setAttribute("loggedUser", loggedUser);
-      request.setAttribute("categoria", null);
-      request.setAttribute("marca", null);
-      request.setAttribute("pushedProduct", pushedProduct);
-      request.setAttribute("viewUrl", "catalogManagement/view");
+        try {
 
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
+          sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+          sessionDAOFactory.initSession(request, response);
+
+          daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+          daoFactory.beginTransaction();
+
+          LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+          loggedUser = loggedUserDAO.find();
+          
+          PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
+          List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
+
+          if(loggedUser!=null) 
+                request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+
+          daoFactory.commitTransaction();
+
+          request.setAttribute("loggedOn",loggedUser!=null);
+          request.setAttribute("loggedUser", loggedUser);
+          request.setAttribute("categoria", null);
+          request.setAttribute("marca", null);
+          request.setAttribute("pushedProduct", pushedProduct);
+          request.setAttribute("viewUrl", "catalogManagement/view");
+
+        } catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          throw new RuntimeException(e);
+        }
     }
-  }
   
   public static void filter(HttpServletRequest request, HttpServletResponse response) {
 
@@ -82,8 +108,11 @@ public class CatalogManagement {
       String categoria = request.getParameter("categoria");
       String marca = request.getParameter("marca");
       
+      System.out.println("PUNTO DI CONTROLLO,PREGA "+marca+" "+categoria);
+      
       LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
       loggedUser = loggedUserDAO.find();
+      
       PushedProductDAO pushedProductDAO = daoFactory.getPushedProductDAO();
       List<PushedProduct> pushedProduct = pushedProductDAO.getPushedProduct();
       

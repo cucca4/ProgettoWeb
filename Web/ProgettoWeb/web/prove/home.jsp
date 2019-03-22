@@ -45,7 +45,7 @@
                         <a class="nav-link" href="home.jsp">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Catalogo</a>
+                        <a class="nav-link" href="jsp/catalogManagement/home.jsp">Catalogo</a>
                     </li>
                     
                     <li class="nav-item">
@@ -137,7 +137,7 @@
             </div>
 
             <div class="card margin-card mx-auto" style="width: 19rem;">
-                <a href="javascript:goToProdottoView('hubsan-x4');">
+                <a href="javascript:goToProdottoView('x4');">
                 <img src="/ProgettoWeb/images/products/hubsan-x4.jpg" class="card-img-top" width="300" height="300" alt="dji-mavic2enterprise">
                 <div class="card-body">
                     <p class="card-title">Hubsan X4</p>

@@ -8,8 +8,8 @@
 
 
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
-   String countMessage = (String)request.getAttribute("countMessage");
-  // User user = (User) request.getAttribute("user");
+   String countMessage = (String) request.getAttribute("countMessage");
+   //User user = (User) request.getAttribute("user");
 %>
 
 <!DOCTYPE html>
@@ -69,14 +69,14 @@
             <div class="pt-2"></div>
         </section>
         <div class="pt-3"></div>
-        <section class="clearfix">
+        <%-- <section class="clearfix">
             <form class="form-inline mt-2 mt-md-0" name="numOrders" action="Dispatcher" method="post"> 
                 Visualizza le informazioni di un utente inserendo il suo Username<br>
             <input class="form-control ml-sm-2 mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
             <input class="btn btn-outline-info my-2 mr-sm-0 mr-sm-2" type="submit" value="Cerca">
             <input type="hidden" name="controllerAction" value="AdminManagement.findUser">
             </form>
-            <%--<% if(user.getUsername() != null) {%>
+            <% if(user.getUsername() != null) {%>
                 Username: <%=user.getUsername()%>
                 Password: <%=user.getPassword()%><br>
                 Nome: <%=user.getFirstname()%>
@@ -85,9 +85,9 @@
                 Città: <%=user.getCity()%>
                 Cap: <%=user.getCap()%>
                 Indirizzo: <%=user.getAddress()%>
-            <%}%>--%>
+            <%}%>
             <div class="pt-2"></div>
-        </section>
+        </section>--%>
         <div class="pt-2"></div>
         <section class="clearfix">
             <form class="form-inline mt-2 mt-md-0" name="prodAdmin" action="Dispatcher" method="post"> 

@@ -75,10 +75,9 @@ public class AdminManagement {
             
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();  
-              
+            
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("countMessage", " ");
-            
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){

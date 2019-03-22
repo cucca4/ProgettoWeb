@@ -13,7 +13,22 @@
 
 <html lang="it">
 <head>
-    
+    <script>
+
+            function goToProdottoView(search){
+                document.getElementById("search").value=search;
+                document.ProdottoView.submit();
+            }      
+            function goToHome(){
+                document.Home.submit();
+            }
+            function goToCatalog(){
+                document.Catalog.submit();
+            }
+            function goToRegistration(){
+                document.Registration.submit();
+            }
+        </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -37,10 +52,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/homeManagement/home.html">Home <span class="sr-only"></span></a>
+                    <a class="nav-link" href="javascript:goToHome();">Home <span class="sr-only"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Catalogo</a>
+                    <a class="nav-link" href="javascript:goToCatalog();">Catalogo</a>
                 </li>
       
                 <% if(loggedOn) {%>
@@ -116,4 +131,26 @@
             <div class="pt-xl-5"></div>
     </div>
 </body>
+    <form name="ProdottoView" action="Dispatcher"  method="post">
+        <input type="hidden" name="search" id="search">
+        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+    </form>
+    <form name="Registration" action="Dispatcher"  method="post">
+        <input type="hidden" name="controllerAction" value="UserArea.viewReg">
+    </form>
+    <form name="Home" action="Dispatcher"  method="post">
+        <input type="hidden" name="controllerAction" value="HomeManagement.view">
+    </form>
+    <form name="Catalog" action="Dispatcher"  method="post">
+        <input type="hidden" name="controllerAction" value="CatalogManagement.home">
+    </form>
+    <footer>
+            <% if(!loggedOn) {%>
+            <form action="Dispatcher" method="post">
+                <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Admin Area</input>
+                <input type="hidden" name="controllerAction" value="AdminManagement.viewLogin">
+            </form>
+            <% } %>
+
+    </footer>
 </html>
