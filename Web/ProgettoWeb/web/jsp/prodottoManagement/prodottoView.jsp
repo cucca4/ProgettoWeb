@@ -99,7 +99,7 @@
     <div class="container bg-light mx-auto">
             <div class="pt-4"></div>
             <% if( notfoundMessage == "trovato") {%> 
-                <div class="card mb-3" style="max-width: 540px;">
+                <div class="card mb-3" >
                     <div class="row no-gutters">
                         <div class="col-md-4">
                             <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
@@ -127,7 +127,7 @@
                     Numero pezzi disponibili in magazzino: <%=product.getQty()%>
                     <div class="pt-1"></div>
                     <form class="form-inline mt-2 mt-md-0" name="AddCart" action="Dispatcher" method="post"> 
-                        <input class=" form-inline mt-2 mt-md-0" type="number" aria-label="Qty" name="qty" id="qty">
+                        <input class=" form-inline mt-2 mt-md-0 my-2 my-sm-0 mr-sm-2" type="number" aria-label="Qty" name="qty" id="qty">
                         <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Aggiungi al carrello">
                         <input type="hidden" name="prodId" id="prodId" value="<%=product.getProd_Id()%>">
                         <input type="hidden" name="price" id="price" value="<%=product.getPrice()%>">

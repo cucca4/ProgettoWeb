@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.util.List;
 import model.dao.exception.DuplicatedObjectException;
 import model.mo.User;
 
@@ -19,7 +20,7 @@ public interface UserDAO {
   public void update(User user);
   public void updatePassword(User user);
   public void delete(User user);
-
+  public List<User> Allview();
   public User findByUserId(Long userId);
   
   public User findByUsername(String username);

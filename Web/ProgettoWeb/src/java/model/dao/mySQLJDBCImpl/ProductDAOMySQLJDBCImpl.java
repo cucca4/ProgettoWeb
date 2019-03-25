@@ -190,30 +190,30 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
     @Override
     public List<Product> getProduct() {
         PreparedStatement ps;
-      ArrayList<Product> product = new ArrayList<Product>();
+        ArrayList<Product> product = new ArrayList<Product>();
 
-      try {
-          String sq1
-            = "SELECT * "
-            + "FROM product;";
-            
-          ps = conn.prepareStatement(sq1);
+        try {
+            String sq1
+              = "SELECT * "
+              + "FROM product;";
 
-          ResultSet resultSet = ps.executeQuery();
+            ps = conn.prepareStatement(sq1);
 
-          while(resultSet.next()){
+            ResultSet resultSet = ps.executeQuery();
 
-              product.add(read(resultSet));
-          }
+            while(resultSet.next()){
 
-          resultSet.close();
-          ps.close();
+                product.add(read(resultSet));
+            }
+
+            resultSet.close();
+            ps.close();
 
 
-      }catch(SQLException e){
-          throw new RuntimeException(e);
-      }
-      return product;
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return product;
     } 
     
   @Override
@@ -221,7 +221,6 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
          PreparedStatement ps;
          Product product = new Product();
          
-
          try {
               String sq1
                       = "SELECT * "

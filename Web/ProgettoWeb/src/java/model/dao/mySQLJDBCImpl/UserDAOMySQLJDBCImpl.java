@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 import model.dao.exception.DuplicatedObjectException;
 
 import model.mo.User;
@@ -236,6 +238,34 @@ public class UserDAOMySQLJDBCImpl implements UserDAO {
             throw new RuntimeException(e);
         }
       
+  }
+  
+  public List<User> Allview(){
+      PreparedStatement ps;
+        ArrayList<User> user = new ArrayList<User>();
+
+        try {
+            String sq1
+              = "SELECT * "
+              + "FROM user;";
+
+            ps = conn.prepareStatement(sq1);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+
+                user.add(read(resultSet));
+            }
+
+            resultSet.close();
+            ps.close();
+
+
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return user;
   }
 
   @Override

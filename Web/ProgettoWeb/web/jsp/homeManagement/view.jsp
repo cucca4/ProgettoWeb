@@ -19,8 +19,8 @@
     <head>
         <script>
 
-            function goToProdottoView(search){
-                document.getElementById("search").value = search;
+            function goToProdottoView(Prod_Id){
+                document.getElementById("Prod_Id").value = Prod_Id;
                 document.ProdottoView.submit();
             }      
             function goToHome(){
@@ -107,7 +107,7 @@
             <div class="row">
                 <%for(c=0; c<3; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getModel()%>');">
+                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getProd_Id() %>');">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
@@ -119,7 +119,7 @@
             <div class="row">
                 <%for(c=3; c<6; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getModel()%>');">
+                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getProd_Id()%>');">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
@@ -131,7 +131,7 @@
             <div class="row">
                 <%for(c=6; c<9; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getModel()%>');">
+                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getProd_Id()%>');">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%> </p>
@@ -144,8 +144,8 @@
     </body>
 
     <form name="ProdottoView" action="Dispatcher"  method="post">
-        <input type="hidden" name="search" id="search">
-        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+        <input type="hidden" name="Prod_Id" id="Prod_Id">
+        <input type="hidden" name="controllerAction" value="ProdottoManagement.click">
     </form>
     <form name="Registration" action="Dispatcher"  method="post">
         <input type="hidden" name="controllerAction" value="UserArea.viewReg">

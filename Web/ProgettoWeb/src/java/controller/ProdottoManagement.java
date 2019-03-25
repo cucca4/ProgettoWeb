@@ -92,6 +92,66 @@ public class ProdottoManagement {
       }
     }
   }
+    
+  public static void click(HttpServletRequest request, HttpServletResponse response) {
+
+    SessionDAOFactory sessionDAOFactory;
+    LoggedUser loggedUser;
+    DAOFactory daoFactory = null;
+    ProductDAO productDAO;
+    String found = "trovato";
+    Logger logger = LogService.getApplicationLogger();
+    
+    try {
+
+        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+        sessionDAOFactory.initSession(request, response);
+
+        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+        loggedUser = loggedUserDAO.find();
+
+        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+        daoFactory.beginTransaction();
+
+        String model = request.getParameter("search");
+        Long id = Long.parseLong(model);
+        
+        productDAO = daoFactory.getProductDAO();
+        Product product = productDAO.findByProdId(id) ;
+
+        daoFactory.commitTransaction();
+        System.out.println("CHECK POINT 1: " + product.getModel() + " VALUE.");
+        if(product.getBrand()== null)
+            found = "ERRORE!PRODOTTO NON TROVATO";
+        System.out.println("CHECK POINT 2 " + found);
+
+        if(loggedUser!=null) 
+            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("notfoundMessage", found);
+            request.setAttribute("product", product);
+            request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
+
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Controller Error", e);
+      try {
+        if (daoFactory != null) {
+          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+        }
+      } catch (Throwable t) {
+      }
+      throw new RuntimeException(e);
+
+    } finally {
+      try {
+        if (daoFactory != null) {
+          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+        }
+      } catch (Throwable t) {
+      }
+    }
+  }
 
   public static void logon(HttpServletRequest request, HttpServletResponse response) {
 

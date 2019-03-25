@@ -67,7 +67,8 @@ public class AdminManagement {
     public static void view (HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         LoggedAdmin loggedAdmin;
-           
+        DAOFactory daoFactory  = null;
+        
         Logger logger = LogService.getApplicationLogger();
         
         try{
@@ -78,13 +79,35 @@ public class AdminManagement {
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();  
             
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+            
+            UserDAO userdao = daoFactory.getUserDAO();
+            List<User> user = userdao.Allview();
+            
+            daoFactory.commitTransaction();
+            
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("countMessage", " ");
+            request.setAttribute("user", user);
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
             logger.log(Level.SEVERE, "Controller Error", e);
-            throw new RuntimeException(e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
         }
     }
     
