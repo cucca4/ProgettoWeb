@@ -9,10 +9,8 @@
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
     Cart cart = (Cart) request.getAttribute("cart");
-    //List <Long> productId = (List<Long>) request.getAttribute("productId");
-    //List <Integer> Qty = (List<Integer>) request.getAttribute("Qty");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
-    Float Tot = null;
+    Float Tot = 0.0f;
 %>
 
 <html lang="it">
@@ -92,19 +90,24 @@
         <div class="pt-4"></div>
         <% for(int i = 0; i < cart.getProductList().size(); i++){ %>
         ID Prodotto: <%=cart.getProductList().get(i) %>     Quantità: <%=cart.getProductQty().get(i)%>      Prezzo unitario: <%=cart.getProductPrice().get(i)%><br>
-        Tot = Tot + <%=cart.getProductPrice().get(i)%>;
+        <% Tot = Tot + (cart.getProductPrice().get(i)*cart.getProductQty().get(i));%>
         <%}%>
         <div class="pt-3"></div>
-        Totale ordine ? Tot
+        Totale ordine Euro <%=Tot%>
         
+        <ul class="list-group">
+            <li class="list-group-item disabled" aria-disabled="true">Scegli metodo di pagamento</li>
+            <li class="list-group-item">Paypal</li>
+            <li class="list-group-item">PostePay</li>
+            <li class="list-group-item">Carta di credito</li>
+        </ul>
         <form class="form-inline mt-2 mt-md-0" name="createOrder" action="Dispatcher" method="post"> 
             <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Ordina">
-            <input type="hidden" name="total" id="total" value="Tot">
+            <input type="hidden" name="Tot" id="Tot" value="<%=Tot%>">
             <input type="hidden" name="buyer" id="buyer" value="<%=loggedUser.getUsername()%>">
             <input type="hidden" name="controllerAction" value="CartManagement.order">
         </form>
     
-        <div class="pt-xl-5"></div>
         <div class="pt-xl-5"></div>
         <div class="pt-xl-5"></div>
     </div>

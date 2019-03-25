@@ -55,20 +55,22 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
         Orders orders = new Orders();
         orders.setBuyer(buyer);
         orders.setTotprice(totprice);
+        orders.setStatus("elaborazione");
         
         try {
                 String sql
                 = " INSERT INTO orders "
                 + "   ( buyer,"
                 + "     totprice,"
-                + "     deleted "
+                + "     status "
                 + "   ) "
-                + " VALUES (?,?,'0');";
+                + " VALUES (?,?,?);";
 
                 ps = conn.prepareStatement(sql);
 
                 ps.setString(1, orders.getBuyer());
                 ps.setFloat(2, orders.getTotprice());
+                ps.setString(3, orders.getStatus());
 
                 ps.executeUpdate();
             }catch(SQLException e)

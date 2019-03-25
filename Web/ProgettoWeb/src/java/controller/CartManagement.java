@@ -68,22 +68,32 @@ public class CartManagement {
                     cart = cartDAO.create(prodId,qty,price);
                     applicationMessage="Prodotto inserito nel carrello";
                     }else{
+                        List<Long> productList = new ArrayList();
+                        List<Integer> productQty = new ArrayList();
+                        List<Float> productPrice = new ArrayList();
+                        productList = cart.getProductList();
+                        productList.add(prodId);
+                        productQty = cart.getProductQty();
+                        productQty.add(qty);
+                        productPrice = cart.getProductPrice();
+                        productPrice.add(price);
+                        
+                        cart.setProductList(productList);
+                        cart.setProductQty(productQty);
+                        cart.setProductPrice(productPrice);
+                        
                         cartDAO.update(cart);
                         applicationMessage="Carrello aggiornato";
                     }
                 }
-            
-            /*List<Long> productId = new ArrayList();
-            productId = cart.getProductList();
-            List<Integer> Qty = new ArrayList();
-            Qty = cart.getProductQty();*/
-            
+           
             daoFactory.commitTransaction(); //IMPORTANTISSIMA
+            
             request.setAttribute("cart", cart);
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "cartManagement/view");
         } catch (Exception e) {
           logger.log(Level.SEVERE, "Controller Error", e);
           try {
@@ -128,15 +138,17 @@ public class CartManagement {
             
             OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
             String buyer = request.getParameter("buyer");
-            Float tot = Float.parseFloat(request.getParameter("total"));
+            String spend = request.getParameter("Tot");
+            Float tot = Float.parseFloat(spend);
             Orders order = ordersDAO.insert(buyer,tot);
-            
+            if(order.getBuyer() != null)
+                applicationMessage = "Complimenti! Ordine effettuato!!";
             cartDAO.destroy();
             daoFactory.commitTransaction(); //IMPORTANTISSIMA
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "homeManagement/view");
+            request.setAttribute("viewUrl", "cartManagement/ordered");
         }catch (Exception e) {
           logger.log(Level.SEVERE, "Controller Error", e);
           try {

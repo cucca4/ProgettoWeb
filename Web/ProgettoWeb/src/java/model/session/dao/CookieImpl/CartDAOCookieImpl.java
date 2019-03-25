@@ -27,9 +27,9 @@ public class CartDAOCookieImpl implements CartDAO {
         List<Long> productList = new ArrayList();
         List<Integer> productQty = new ArrayList();
         List<Float> productPrice = new ArrayList();
-        productList.set(0, productId);
-        productQty.set(0, Qty);
-        productPrice.set(0, price);
+        productList.add(productId);
+        productQty.add(Qty);
+        productPrice.add(price);
         
         cart.setProductList(productList);
         cart.setProductQty(productQty);

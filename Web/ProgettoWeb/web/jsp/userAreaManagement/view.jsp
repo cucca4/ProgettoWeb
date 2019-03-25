@@ -99,13 +99,14 @@
                                         Totale €: <%=orders.get(i).getTotprice()%>
                                     <br>
                                     Stato: 
-                                    <% if(orders.get(i).getStatus()== "elaborazione"){%>
+                                    <% if(orders.get(i).getStatus().equals("elaborazione")){%>
 
-                                        Ordine non ancora spedito
+                                        <strong>Ordine non ancora spedito</strong>
 
                                     <%} else {%>
-                                        <% if(orders.get(i).getStatus()== "spedito"){%>
-                                        Ordine spedito
+                                        <% if(orders.get(i).getStatus().equals("spedito")){%>
+                                        
+                                        <strong>Ordine spedito</strong>
 
                                     <%} else {%>
                                         <strong>Ordine consegnato</strong>

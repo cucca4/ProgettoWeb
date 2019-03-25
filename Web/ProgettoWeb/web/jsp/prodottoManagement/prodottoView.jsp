@@ -99,13 +99,19 @@
     <div class="container bg-light mx-auto">
             <div class="pt-4"></div>
             <% if( notfoundMessage == "trovato") {%> 
-                <div class="float-left">
-                    <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
-                </div><br>
-                <div class="media-body">
-                    <h5 class="mt-0 mb-1"><%=product.getBrand()%>  <%=product.getModel()%></h5>
-                    <h5 class="mt-0 mb-1"><%=product.getPrice()%> Euro</h5>
-                    <%=product.getDescription()%>
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="mt-0 mb-1"><%=product.getBrand()%>  <%=product.getModel()%></h5>
+                                <h5 class="mt-0 mb-1"><%=product.getPrice()%> Euro</h5>
+                                <%=product.getDescription()%>
+                            </div>
+                        </div>
+                    </div>  
                 </div>
                 <div class="pt-3"></div>
 
