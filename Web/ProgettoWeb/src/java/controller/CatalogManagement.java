@@ -108,11 +108,11 @@ public class CatalogManagement {
           LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
           loggedUser = loggedUserDAO.find();
           
-          ProductDAO productDAO = daoFactory.getProductDAO();
-          List<Product> product = productDAO.getProduct();
-          
           String categoria = request.getParameter("categoria");
           String marca = request.getParameter("marca");
+          
+          ProductDAO productDAO = daoFactory.getProductDAO();
+          List<Product> product = productDAO.findByFilter(categoria,marca);
           
           System.out.println("CHECK POINT " + marca + " AND " + categoria);
           

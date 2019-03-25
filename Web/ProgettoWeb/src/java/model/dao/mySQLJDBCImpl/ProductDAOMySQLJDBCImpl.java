@@ -246,6 +246,37 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
          return product;
      }
   
+  public List<Product> findByFilter(String category,String brand){
+        PreparedStatement ps;
+        ArrayList<Product> product = new ArrayList<Product>();
+         
+
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE brand = ? AND "
+                      + " category = ?;";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setString(1, brand);
+              ps.setString(2, category);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              while(resultSet.next()){
+              product.add(read(resultSet));
+              }
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+         return product;
+  }
+  
   @Override
   public Product findByBrand(String brand){
 
@@ -275,7 +306,6 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
          }
 
          return product;
-
   }
   
   @Override

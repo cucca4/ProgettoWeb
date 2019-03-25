@@ -23,6 +23,7 @@ public interface ProductDAO {
   public Product findByProdId(Long prod_Id);
   public Product findByBrand(String brand);
   public Product findByCategory(String category);
+  public List<Product> findByFilter(String category,String brand);
   public Product findByModel(String model);
   public Product findByQty(Long qty);
   public Product findByPrice(Float price);

@@ -47,66 +47,35 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
     
     @Override
     public Orders insert(
-           Long order_Id,
            String buyer,
-           Float totprice,
-           String status)throws DuplicatedObjectException{
+           Float totprice)throws DuplicatedObjectException{
   
         PreparedStatement ps;
         ResultSet resultSet;
-        Orders order=new Orders();
-        order.setOrder_Id(order_Id);
-        order.setBuyer(buyer);
-        order.setTotprice(totprice);
-        order.setStatus(status);
-
-        try{
-            String sql;
-            sql = "SELECT * "
-                + "FROM orders "
-                + "WHERE order_Id = ? AND "
-                + "buyer = ? AND "
-                + "totprice = ? AND "
-                + "status = ?;";
-
-            ps = conn.prepareStatement(sql);
-            ps.setLong(1, order.getOrder_Id());
-            ps.setString(2, order.getBuyer());
-            ps.setFloat(3, order.getTotprice());
-            ps.setString(4, order.getStatus());
-
-            resultSet = ps.executeQuery();
-
-            if(resultSet.next())
-                throw new DuplicatedObjectException("OrdersDAOJDBCImpl.create: Tentativo di inserimento di un ordine già esistente.");
-            try {
-                sql
+        Orders orders = new Orders();
+        orders.setBuyer(buyer);
+        orders.setTotprice(totprice);
+        
+        try {
+                String sql
                 = " INSERT INTO orders "
-                + "   (order_Id"
-                + "     buyer,"
+                + "   ( buyer,"
                 + "     totprice,"
-                + "     status,"
-                + "     deleted_Or) "
-                + " VALUES (?,?,?,?,'0');";
+                + "     deleted "
+                + "   ) "
+                + " VALUES (?,?,'0');";
 
                 ps = conn.prepareStatement(sql);
 
-                ps.setLong(1, order.getOrder_Id());
-                ps.setString(2, order.getBuyer());
-                ps.setFloat(3, order.getTotprice());
-                ps.setString(4, order.getStatus());
+                ps.setString(1, orders.getBuyer());
+                ps.setFloat(2, orders.getTotprice());
 
                 ps.executeUpdate();
-            }
-            catch(SQLIntegrityConstraintViolationException e){
-                throw new DuplicatedObjectException("OrdersDAOJDBCImpl.create: Tentativo di inserimento di un ordine già esistente.");
-            }
-        }
-        catch(SQLException e)
+            }catch(SQLException e)
         {
             throw new RuntimeException(e);
         }
-        return order;
+        return orders;
     }
     
     @Override

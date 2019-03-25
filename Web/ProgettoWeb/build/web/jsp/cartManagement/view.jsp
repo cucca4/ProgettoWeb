@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="model.session.mo.Cart"%>
 <%@page import="model.session.mo.LoggedUser"%>
 <%@page import="model.mo.Product"%>
 
@@ -6,9 +8,11 @@
 <%
     boolean loggedOn = (Boolean) request.getAttribute("loggedOn");
     LoggedUser loggedUser = (LoggedUser) request.getAttribute("loggedUser");
-    Product product = (Product) request.getAttribute("product");
+    Cart cart = (Cart) request.getAttribute("cart");
+    //List <Long> productId = (List<Long>) request.getAttribute("productId");
+    //List <Integer> Qty = (List<Integer>) request.getAttribute("Qty");
     String applicationMessage = (String) request.getAttribute("applicationMessage");
-    String notfoundMessage = (String) request.getAttribute("notfoundMessage");
+    Float Tot = null;
 %>
 
 <html lang="it">
@@ -69,22 +73,10 @@
                 </li>
                 <%}%>
             </ul>
-      
-            <% if(!loggedOn) {%>     
-                <form class="form-inline mt-2 mt-md-0" name="login" action="Dispatcher" method="post"> 
-                <input class="form-control mr-sm-2" type="text" placeholder="Username" aria-label="Username" name="username" id="username">
-                <input class="form-control mr-sm-2" type="text" placeholder="Password" aria-label="Password" name="password" id="password">
-                <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">
-                <input type="hidden" name="model" value="<%=product.getModel()%>">
-                <input type="hidden" name="controllerAction" value="ProdottoManagement.logon">
-                </form>
-            <%} else {%>
-                <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
+            <form class="form-inline mt-2 mt-md-0" name="logout" action="Dispatcher" method="post"> 
                 <input class="btn btn-outline-danger my-2 mr-sm-0 mr-sm-2" type="submit" value="Logout">
-                <input type="hidden" name="model" value="<%=product.getModel()%>">
-                <input type="hidden" name="controllerAction" value="ProdottoManagement.logout">
-                </form>
-             <%}%>
+                <input type="hidden" name="controllerAction" value="HomeManagement.logout">
+            </form>
          
             <form class="form-inline mt-2 mt-md-0" name="search" action="Dispatcher" method="post"> 
                 <input class="form-control mr-sm-2" type="text" placeholder="Cerca" aria-label="search" name="search" id="search">
@@ -97,43 +89,24 @@
     <div class="pt-5"></div>
     <div class="pt-3"></div>
     <div class="container bg-light mx-auto">
-            <div class="pt-4"></div>
-            <% if( notfoundMessage == "trovato") {%> 
-                <div class="float-left">
-                    <img src="images/products/<%=product.getBrand()%>-<%=product.getModel()%>.jpg" class="mr-3" width="320" height="320">
-                </div><br>
-                <div class="media-body">
-                    <h5 class="mt-0 mb-1"><%=product.getBrand()%>  <%=product.getModel()%></h5>
-                    <h5 class="mt-0 mb-1"><%=product.getPrice()%> Euro</h5>
-                    <%=product.getDescription()%>
-                </div>
-                <div class="pt-3"></div>
-
-                <% if(!loggedOn) {%> 
-                <div class="pt-4"></div>
-                <div class="pt-4"></div>
-                <div class="pt-4"></div>
-                <div class="pt-4"></div>
-                <div class="alert alert-warning" role="alert">
-                    Effettua il login per cominciare lo shopping!
-                </div>
-                <%} else {%>
-                    Numero pezzi disponibili in magazzino: <%=product.getQty()%>
-                    <div class="pt-1"></div>
-                    <form class="form-inline mt-2 mt-md-0" name="AddCart" action="Dispatcher" method="post"> 
-                        <input class=" form-inline mt-2 mt-md-0" type="number" aria-label="Qty" name="qty" id="qty">
-                        <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Aggiungi al carrello">
-                        <input type="hidden" name="prodId" id="prodId" value="<%=product.getProd_Id()%>">
-                        <input type="hidden" name="price" id="price" value="<%=product.getPrice()%>">
-                        <input type="hidden" name="controllerAction" value="CartManagement.add">
-                    </form>
-                <%}%>
-            <%} else {%>
-                <h1><%=notfoundMessage%></h1>
-            <%}%>
-            <div class="pt-xl-5"></div>
-            <div class="pt-xl-5"></div>
-            <div class="pt-xl-5"></div>
+        <div class="pt-4"></div>
+        <% for(int i = 0; i < cart.getProductList().size(); i++){ %>
+        ID Prodotto: <%=cart.getProductList().get(i) %>     Quantità: <%=cart.getProductQty().get(i)%>      Prezzo unitario: <%=cart.getProductPrice().get(i)%><br>
+        Tot = Tot + <%=cart.getProductPrice().get(i)%>;
+        <%}%>
+        <div class="pt-3"></div>
+        Totale ordine ? Tot
+        
+        <form class="form-inline mt-2 mt-md-0" name="createOrder" action="Dispatcher" method="post"> 
+            <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Ordina">
+            <input type="hidden" name="total" id="total" value="Tot">
+            <input type="hidden" name="buyer" id="buyer" value="<%=loggedUser.getUsername()%>">
+            <input type="hidden" name="controllerAction" value="CartManagement.order">
+        </form>
+    
+        <div class="pt-xl-5"></div>
+        <div class="pt-xl-5"></div>
+        <div class="pt-xl-5"></div>
     </div>
 </body>
     <form name="ProdottoView" action="Dispatcher"  method="post">

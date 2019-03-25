@@ -119,9 +119,14 @@
                 </div>
                 <%} else {%>
                     Numero pezzi disponibili in magazzino: <%=product.getQty()%>
-                    <input class=" form-inline mt-2 mt-md-0" type="number" aria-label="Qty" name="qty" id="qty">
                     <div class="pt-1"></div>
-                    <button type="button" class="btn btn-warning ">Aggiungi al carrello</button>
+                    <form class="form-inline mt-2 mt-md-0" name="AddCart" action="Dispatcher" method="post"> 
+                        <input class=" form-inline mt-2 mt-md-0" type="number" aria-label="Qty" name="qty" id="qty">
+                        <input class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit" value="Aggiungi al carrello">
+                        <input type="hidden" name="prodId" id="prodId" value="<%=product.getProd_Id()%>">
+                        <input type="hidden" name="price" id="price" value="<%=product.getPrice()%>">
+                        <input type="hidden" name="controllerAction" value="CartManagement.add">
+                    </form>
                 <%}%>
             <%} else {%>
                 <h1><%=notfoundMessage%></h1>

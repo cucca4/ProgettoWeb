@@ -15,6 +15,8 @@ public abstract class SessionDAOFactory {
   public abstract LoggedUserDAO getLoggedUserDAO();
   
   public abstract LoggedAdminDAO getLoggedAdminDAO();
+  
+  public abstract CartDAO getCartDAO();
 
   public static SessionDAOFactory getSesssionDAOFactory(String whichFactory) {
 

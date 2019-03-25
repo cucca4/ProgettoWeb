@@ -2,6 +2,7 @@ package model.session.dao.CookieImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.session.dao.CartDAO;
 import model.session.dao.LoggedAdminDAO;
 
 import model.session.dao.SessionDAOFactory;
@@ -32,6 +33,11 @@ public class CookieSessionDAOFactory extends SessionDAOFactory {
     @Override
     public LoggedAdminDAO getLoggedAdminDAO() {
         return new LoggedAdminDAOCookieImpl(request,response);
+    }
+    
+    @Override
+    public CartDAO getCartDAO(){
+        return new CartDAOCookieImpl(request, response);
     }
 
 }

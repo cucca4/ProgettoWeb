@@ -107,18 +107,14 @@
             </form>
             <div class="pt-5"></div>
             <%for(c=0; c < product.size(); c++ ) { %>
-                <%if(categoria == (product.get(c).getCategory())|| categoria == null){%>
-                     <%if(marca == null || marca == product.get(c).getBrand()){%>   
-                        <div class="card margin-card mx-auto" style="width: 19rem;">
-                            <a href="javascript:goToProdottoView(<%=product.get(c).getModel()%>);">
-                                <img src="images/products/<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>">
-                                <div class="card-body">
-                                    <p class="card-text"><%=product.get(c).getBrand()%> <%=product.get(c).getModel()%></p>
-                                </div>
-                            </a>
-                        </div> 
-                    <%}%>
-                <%}%>
+                <div class="card margin-card mx-auto" style="width: 19rem;">
+                    <a href="javascript:goToProdottoView('<%=product.get(c).getModel()%>');">
+                        <img src="images/products/<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>">
+                        <div class="card-body">
+                            <p class="card-text"><%=product.get(c).getBrand()%> <%=product.get(c).getModel()%></p>
+                        </div>
+                    </a>
+                </div> 
             <%}%>
         </div>
     </body>
