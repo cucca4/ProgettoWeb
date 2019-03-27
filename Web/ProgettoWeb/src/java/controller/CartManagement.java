@@ -131,7 +131,7 @@ public class CartManagement {
             loggedUser = loggedUserDAO.find();
 
             CartDAO cartDAO = sessionDAOFactory.getCartDAO();
-            
+            cart = cartDAO.find();
 
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             daoFactory.beginTransaction();
@@ -140,9 +140,26 @@ public class CartManagement {
             String buyer = request.getParameter("buyer");
             String spend = request.getParameter("Tot");
             Float tot = Float.parseFloat(spend);
-            Orders order = ordersDAO.insert(buyer,tot);
+            String description = "";
+            for(int i=0; i< cart.getProductList().size(); i++){
+                String conc = " prodID:" + cart.getProductList().get(i) + " Qty:" + cart.getProductQty().get(i) + "\n";
+                description = description.concat(conc);
+            }
+            Orders order = ordersDAO.insert(buyer,description,tot);
+            
+            ProductDAO productDAO = daoFactory.getProductDAO();
+                List<Product> products = new ArrayList();
+                for(int i=0; i<cart.getProductList().size(); i++){
+                    Product product = productDAO.findByProdId(cart.getProductList().get(i));
+                    Long num = product.getQty() - cart.getProductQty().get(i);
+                    product.setQty(num);
+                    products.add(product);
+                }
+            productDAO.updateList(products);
+            
             if(order.getBuyer() != null)
                 applicationMessage = "Complimenti! Ordine effettuato!!";
+            
             cartDAO.destroy();
             daoFactory.commitTransaction(); //IMPORTANTISSIMA
             request.setAttribute("loggedOn",loggedUser!=null);

@@ -151,15 +151,11 @@ public class UserArea {
             
             try{
                 User user = userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
-                loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
-                
-                loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
-                applicationMessage="Benvenuto " + loggedUser.getUsername();
+               
+                applicationMessage="Registrazione completata! " + loggedUser.getUsername();
 
-                  daoFactory.commitTransaction(); //IMPORTANTISSIMA
+                daoFactory.commitTransaction(); //IMPORTANTISSIMA
                 
-                daoFactory.commitTransaction();
-            
                 request.setAttribute("loggedOn",loggedUser!=null);
                 request.setAttribute("loggedUser", loggedUser);
                 request.setAttribute("pushedProduct", pushedProduct);

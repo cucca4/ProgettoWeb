@@ -21,8 +21,8 @@
     <head>
         <script>
 
-            function goToProdottoView(search){
-                document.getElementById("search").value=search;
+            function goToProdottoView(Prod_Id){
+                document.getElementById("Prod_Id").value = Prod_Id;
                 document.ProdottoView.submit();
             }      
             function goToHome(){
@@ -108,7 +108,7 @@
             <div class="pt-5"></div>
             <%for(c=0; c < product.size(); c++ ) { %>
                 <div class="card margin-card mx-auto" style="width: 19rem;">
-                    <a href="javascript:goToProdottoView('<%=product.get(c).getModel()%>');">
+                    <a href="javascript:goToProdottoView(<%=product.get(c).getProd_Id()%>);">
                         <img src="images/products/<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=product.get(c).getBrand()%>-<%=product.get(c).getModel()%>">
                         <div class="card-body">
                             <p class="card-text"><%=product.get(c).getBrand()%> <%=product.get(c).getModel()%></p>
@@ -119,8 +119,8 @@
         </div>
     </body>
     <form name="ProdottoView" action="Dispatcher"  method="post">
-        <input type="hidden" name="search" id="search">
-        <input type="hidden" name="controllerAction" value="ProdottoManagement.view">
+        <input type="hidden" name="Prod_Id" id="Prod_Id">
+        <input type="hidden" name="controllerAction" value="ProdottoManagement.click">
     </form>
     <form name="Registration" action="Dispatcher"  method="post">
         <input type="hidden" name="controllerAction" value="UserArea.viewReg">

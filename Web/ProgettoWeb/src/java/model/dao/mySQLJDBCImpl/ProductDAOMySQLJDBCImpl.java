@@ -150,7 +150,7 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
             + "WHERE Prod_Id = ?;";
 
             ps = conn.prepareStatement(sql);
-;
+
             ps.setFloat (1, product.getPrice());
             ps.setLong (2, product.getQty());
             ps.setLong(3, product.getProd_Id());
@@ -162,7 +162,39 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
             throw new RuntimeException(e);
         }
     }
+    
+    @Override
+    public void updateList(List<Product> products){
+        PreparedStatement ps;
+    
+        try {
 
+            String sql;
+            sql
+            = " UPDATE product"
+            + " SET "
+            + "     qty = ? "
+            + "WHERE Prod_Id = ?;";
+
+            ps = conn.prepareStatement(sql);
+;
+           for(Product product : products){
+                ps.setLong (1, product.getQty());
+                ps.setLong(2, product.getProd_Id());
+                
+                ps.addBatch();
+                
+            }
+                      
+            ps.executeBatch();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     @Override
     public void delete(Product product){
         PreparedStatement ps;
@@ -244,8 +276,43 @@ public class ProductDAOMySQLJDBCImpl implements ProductDAO{
 
          return product;
      }
+     
   
-  public List<Product> findByFilter(String category,String brand){
+    /*@Override
+    public List<Product> findListByProdId(List<Long> prod_Id){
+        PreparedStatement ps;
+         List<Product> product = new ArrayList();
+         
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM product "
+                      + " WHERE Prod_Id = ?;";
+
+              ps = conn.prepareStatement(sq1);
+              
+              for(Long prodId : prod_Id){
+                ps.setLong(1, prodId);
+                
+                ps.addBatch();
+              }
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product[i] = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return prodId;
+    }*/
+  
+    @Override
+    public List<Product> findByFilter(String category,String brand){
         PreparedStatement ps;
         ArrayList<Product> product = new ArrayList<Product>();
          

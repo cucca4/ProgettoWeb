@@ -16,8 +16,10 @@ import model.dao.DAOFactory;
 import model.dao.OrdersDAO;
 import model.dao.UserDAO;
 import model.dao.ProductDAO;
+import model.dao.PushedProductDAO;
 import model.dao.exception.DuplicatedObjectException;
 import model.mo.Orders;
+import model.mo.PushedProduct;
 import model.session.dao.LoggedAdminDAO;
 
 import model.session.mo.LoggedUser;
@@ -113,7 +115,7 @@ public class ProdottoManagement {
         daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
         daoFactory.beginTransaction();
 
-        String model = request.getParameter("search");
+        String model = request.getParameter("Prod_Id");
         Long id = Long.parseLong(model);
         
         productDAO = daoFactory.getProductDAO();

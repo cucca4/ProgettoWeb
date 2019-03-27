@@ -33,6 +33,10 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
         } catch (SQLException sqle) {
         }
         try {
+            order.setDescription(rs.getString("description"));
+        } catch(SQLException sqle){
+        }
+        try {
             order.setTotprice(rs.getFloat("totprice"));
         } catch (SQLException sqle) {
         }
@@ -48,6 +52,7 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
     @Override
     public Orders insert(
            String buyer,
+           String description,
            Float totprice)throws DuplicatedObjectException{
   
         PreparedStatement ps;
@@ -55,22 +60,25 @@ public class OrdersDAOMySQLJDBCImpl implements OrdersDAO{
         Orders orders = new Orders();
         orders.setBuyer(buyer);
         orders.setTotprice(totprice);
+        orders.setDescription(description);
         orders.setStatus("elaborazione");
         
         try {
                 String sql
                 = " INSERT INTO orders "
                 + "   ( buyer,"
+                + "     description,"
                 + "     totprice,"
                 + "     status "
                 + "   ) "
-                + " VALUES (?,?,?);";
+                + " VALUES (?,?,?,?);";
 
                 ps = conn.prepareStatement(sql);
 
                 ps.setString(1, orders.getBuyer());
-                ps.setFloat(2, orders.getTotprice());
-                ps.setString(3, orders.getStatus());
+                ps.setString(2, orders.getDescription());
+                ps.setFloat(3, orders.getTotprice());
+                ps.setString(4, orders.getStatus());
 
                 ps.executeUpdate();
             }catch(SQLException e)

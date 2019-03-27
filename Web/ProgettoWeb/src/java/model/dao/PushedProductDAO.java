@@ -10,4 +10,5 @@ import model.session.mo.LoggedUser;
 
 public interface PushedProductDAO {
     public List<PushedProduct> getPushedProduct();
+    public PushedProduct findByProdId(Long prod_Id);
 }

@@ -119,12 +119,12 @@
                         <% if(orders.size()==0) {%>
                                 <img src="images/error.png" height="200px" width="200px">
                                 <div>
-                                <h2>
-                                    Nessun ordine effettuato!
-                                </h2>
-                                <h3 class='support-h3'>
-                                    Effettua un ordine per visualizzarne i dettagli.
-                                </h3>
+                                    <h2>
+                                        Nessun ordine effettuato!
+                                    </h2>
+                                    <h3 class='support-h3'>
+                                        Effettua un ordine per visualizzarne i dettagli.
+                                    </h3>
                                 </div>
                         <%}%>
                     </div>  

@@ -6,6 +6,7 @@ package model.mo;
 public class Orders {
   private Long order_Id;
   private String buyer;
+  private String description;
   private float totprice;
   private String status;
   private boolean deleted_Ad;
@@ -25,7 +26,15 @@ public class Orders {
     public void setBuyer(String buyer) {
         this.buyer = buyer;
     }
+    
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     public float getTotprice() {
         return totprice;
     }

@@ -9,7 +9,7 @@
 
 <% LoggedAdmin loggedAdmin = (LoggedAdmin)request.getAttribute("loggedadmin");
    String countMessage = (String) request.getAttribute("countMessage");
-   List<User> user = (List<User>) request.getAttribute("user");
+   //List<String> user = (List<String>) request.getAttribute("user");
    int i;
 %>
 
@@ -70,7 +70,7 @@
             <div class="pt-2"></div>
         </section>
         <div class="pt-3"></div>
-         <section class="clearfix">
+        <%-- <section class="clearfix">
                 <div class="pt-2"></div>
                 Lista degli utenti registrati su Dronazon!<br>
                 <div class="pt-2"></div>
@@ -89,25 +89,11 @@
                             Cognome
                         </div>
                     </div> 
-                    <% for(i=0;i<user.size();i++) { %>
-                    <div class="row">
-                      <div class="col-sm">
-                        <%=user.get(i).getUserId() %>
-                      </div>
-                      <div class="col-sm">
-                        <%=user.get(i).getUsername()%>
-                      </div>
-                      <div class="col-sm">
-                        <%=user.get(i).getFirstname()%>
-                      </div>
-                        <div class="col-sm">
-                        <%=user.get(i).getSurname()%>
-                      </div>
-                    </div>
+                    <% for(i = 0 ; i < user.size() ; i++) { %>
+                    <%= user.get(i)%>
                     <%}%>
                 </div>
-            <div class=->iv>
-            </section>
+            </section>--%>
         <div class="pt-2"></div>
         <section class="clearfix">
             <form class="form-inline mt-2 mt-md-0" name="prodAdmin" action="Dispatcher" method="post"> 

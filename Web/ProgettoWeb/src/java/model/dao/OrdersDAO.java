@@ -11,6 +11,7 @@ import model.dao.exception.DuplicatedObjectException;
 public interface OrdersDAO {
     public Orders insert(
            String buyer,
+           String description,
            Float totprice)throws DuplicatedObjectException;
 
   public void update(Orders order);

@@ -2,6 +2,7 @@
 
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,17 +80,26 @@ public class AdminManagement {
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();  
             
-            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            /*daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             daoFactory.beginTransaction();
             
+            List<String> users = new ArrayList();
             UserDAO userdao = daoFactory.getUserDAO();
-            List<User> user = userdao.Allview();
+            User u=new User();
+            Long i=0L;
             
-            daoFactory.commitTransaction();
+            do{
+                u = userdao.findByUserId(i);
+                String user = u.getUserId() + " " + u.getUsername() + " " + u.getFirstname() + " " + u.getSurname() + "\n";
+                users.add(user);
+                i++;
+            }while(u.getUsername() == null);
+            
+            daoFactory.commitTransaction();*/
             
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("countMessage", " ");
-            request.setAttribute("user", user);
+            //request.setAttribute("user", users);
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){

@@ -32,6 +32,7 @@
             function goToRegistration(){
                 document.Registration.submit();
             }
+            
         </script>
 
         <meta charset="utf-8">
@@ -51,9 +52,6 @@
     <body class="clearfix">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark clearfix">
             <a class="navbar-brand" href="">Dronazon</a>
-            <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>-->
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
@@ -107,7 +105,7 @@
             <div class="row">
                 <%for(c=0; c<3; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getProd_Id() %>');">
+                        <a href="javascript:goToProdottoView(<%=pushedProduct.get(c).getProd_Id() %>);">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>">
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
@@ -119,7 +117,7 @@
             <div class="row">
                 <%for(c=3; c<6; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getProd_Id()%>');">
+                        <a href="javascript:goToProdottoView(<%=pushedProduct.get(c).getProd_Id()%>);">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%></p>
@@ -131,7 +129,7 @@
             <div class="row">
                 <%for(c=6; c<9; c++ ) { %>
                     <div class="card margin-card mx-auto" style="width: 19rem;">
-                        <a href="javascript:goToProdottoView('<%=pushedProduct.get(c).getProd_Id()%>');">
+                        <a href="javascript:goToProdottoView(<%=pushedProduct.get(c).getProd_Id()%>);">
                         <img src="images/products/<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>.jpg" class="card-img-top" width="300" height="250" alt="<%=pushedProduct.get(c).getBrand()%>-<%=pushedProduct.get(c).getModel()%>" >
                         <div class="card-body">
                             <p class="card-text"><%=pushedProduct.get(c).getBrand()%> <%=pushedProduct.get(c).getModel()%> </p>
@@ -145,7 +143,7 @@
 
     <form name="ProdottoView" action="Dispatcher"  method="post">
         <input type="hidden" name="Prod_Id" id="Prod_Id">
-        <input type="hidden" name="controllerAction" value="ProdottoManagement.click">
+        <input type="hidden" name="controllerAction" value="PushedProductManagement.click">
     </form>
     <form name="Registration" action="Dispatcher"  method="post">
         <input type="hidden" name="controllerAction" value="UserArea.viewReg">

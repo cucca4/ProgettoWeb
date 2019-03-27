@@ -111,6 +111,9 @@
                             Compratore
                         </div>
                         <div class="col-sm">
+                            Pezzi
+                        </div>
+                        <div class="col-sm">
                             Totale €
                         </div>
                         <div class="col-sm">
@@ -124,6 +127,9 @@
                       </div>
                       <div class="col-sm">
                         <%=Listorders.get(i).getBuyer()%>
+                      </div>
+                      <div class="col-sm">
+                        <%=Listorders.get(i).getDescription()%>
                       </div>
                       <div class="col-sm">
                         <%=Listorders.get(i).getTotprice()%>

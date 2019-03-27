@@ -86,5 +86,34 @@ public class PushedProductDAOMySQLJDBCImpl implements PushedProductDAO{
         
         
     }
+
+    @Override
+    public PushedProduct findByProdId(Long prod_Id) {
+        PreparedStatement ps;
+        PushedProduct product = new PushedProduct();
+         
+         try {
+              String sq1
+                      = "SELECT * "
+                      + " FROM pushedproduct "
+                      + " WHERE Prod_Id = ?;";
+
+              ps = conn.prepareStatement(sq1);
+              ps.setLong(1, prod_Id);
+
+              ResultSet resultSet = ps.executeQuery();
+
+              if(resultSet.next())
+                  product = read(resultSet);
+
+              resultSet.close();
+              ps.close();
+
+         }catch(SQLException e){
+              throw new RuntimeException(e);
+         }
+
+         return product;
+    }
    
 }
