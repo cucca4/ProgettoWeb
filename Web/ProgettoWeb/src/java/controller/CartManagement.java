@@ -30,6 +30,10 @@ import model.session.dao.CartDAO;
 
 
 public class CartManagement {
+    
+    private CartManagement(){
+    }
+    
     public static void add(HttpServletRequest request, HttpServletResponse response) {
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
@@ -94,23 +98,25 @@ public class CartManagement {
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "cartManagement/view");
-        } catch (Exception e) {
-          logger.log(Level.SEVERE, "Controller Error", e);
-          try {
-            if (daoFactory != null) {
-              daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
-            }
-          } catch (Throwable t) {
-          }
-          throw new RuntimeException(e);
+        }catch (Exception e) {
+            logger.log(Level.SEVERE, "Controller Error", e);
 
-        } finally {
-          try {
-            if (daoFactory != null) {
-              daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } 
+            catch (Throwable t) {
             }
-          } catch (Throwable t) {
-          }
+            throw new RuntimeException(e);
+        } 
+        finally {
+            try {
+                    if (daoFactory != null) {
+                        daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+            }
         }
     }
     
@@ -155,6 +161,7 @@ public class CartManagement {
                     product.setQty(num);
                     products.add(product);
                 }
+                
             productDAO.updateList(products);
             
             if(order.getBuyer() != null)
@@ -167,22 +174,60 @@ public class CartManagement {
             request.setAttribute("applicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "cartManagement/ordered");
         }catch (Exception e) {
-          logger.log(Level.SEVERE, "Controller Error", e);
-          try {
-            if (daoFactory != null) {
-              daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
-            }
-          } catch (Throwable t) {
-          }
-          throw new RuntimeException(e);
+            logger.log(Level.SEVERE, "Controller Error", e);
 
-        } finally {
-          try {
-            if (daoFactory != null) {
-              daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+            try {
+                if (daoFactory != null) {
+                    daoFactory.rollbackTransaction();
+                }
+            } 
+            catch (Throwable t) {
             }
-          } catch (Throwable t) {
-          }
+            throw new RuntimeException(e);
+        } 
+        finally {
+            try {
+                    if (daoFactory != null) {
+                        daoFactory.closeTransaction();
+                }
+            } catch (Throwable t) {
+            }
+        }
+    }
+    
+    public static void update(HttpServletRequest request, HttpServletResponse response) {
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        Cart cart;
+        LoggedUser loggedUser;
+        String applicationMessage = null;
+
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+            
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+            
+            CartDAO cartDAO = sessionDAOFactory.getCartDAO();
+            cart = cartDAO.find();
+            
+            Long IdRemove = Long.parseLong(request.getParameter("Id"));
+            
+            cartDAO.removeId(cart, IdRemove);
+            
+            applicationMessage="Carrello aggiornato";
+           
+            request.setAttribute("cart", cart);
+            request.setAttribute("loggedOn",loggedUser!=null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("applicationMessage", applicationMessage);
+            request.setAttribute("viewUrl", "cartManagement/view");
+            
+        }catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
         }
     }
 }

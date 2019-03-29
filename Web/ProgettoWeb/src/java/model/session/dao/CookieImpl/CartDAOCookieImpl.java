@@ -76,7 +76,15 @@ public class CartDAOCookieImpl implements CartDAO {
         
         return cart;
     }
-
+    
+    @Override
+    public void removeId(Cart cart,Long Id){
+        Cookie cookie;
+        cookie = new Cookie("cart", remove(cart,Id));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+       
     private String encode(Cart cart) {
         String encodedCart = "";
         for(int i = 0; i<cart.getProductList().size(); i++){
@@ -103,5 +111,24 @@ public class CartDAOCookieImpl implements CartDAO {
         cart.setProductPrice(productPrice);
         
         return cart;
+    }
+    
+    private String remove(Cart cart, Long IdRemove){
+        Cart cart2= new Cart();
+        List<Long> productList = new ArrayList();
+        List<Integer> productQty = new ArrayList();
+        List<Float> productPrice = new ArrayList();
+        for(int i = 0; i<cart.getProductList().size(); i++){
+            if(IdRemove != cart.getProductList().get(i))
+                productList.add(cart.getProductList().get(i));
+                productQty.add(cart.getProductQty().get(i));
+                productPrice.add(cart.getProductPrice().get(i));
+        }
+        cart2.setProductList(productList);
+        cart2.setProductQty(productQty);
+        cart2.setProductPrice(productPrice);
+        
+        String encoded = encode(cart2);
+        return encoded;
     }
 }

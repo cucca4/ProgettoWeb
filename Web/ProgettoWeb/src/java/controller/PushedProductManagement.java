@@ -21,6 +21,9 @@ import services.logservice.LogService;
 
 public class PushedProductManagement {
     
+    private PushedProductManagement(){
+    }
+    
     public static void click(HttpServletRequest request, HttpServletResponse response) {
 
     SessionDAOFactory sessionDAOFactory;
@@ -164,13 +167,14 @@ public class PushedProductManagement {
     SessionDAOFactory sessionDAOFactory;
     String found = "trovato";
     Logger logger = LogService.getApplicationLogger();
-
+    DAOFactory daoFactory = null;
+    
     try {
 
         sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
         sessionDAOFactory.initSession(request, response);
 
-        DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
         daoFactory.beginTransaction();
 
         LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
@@ -193,10 +197,23 @@ public class PushedProductManagement {
         request.setAttribute("product", product);
         request.setAttribute("viewUrl", "prodottoManagement/pushedproductview");
       
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
+    } catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
+        }
     }
-  }
     
 }

@@ -80,26 +80,8 @@ public class AdminManagement {
             LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
             loggedAdmin = loggedAdminDAO.find();  
             
-            /*daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-            daoFactory.beginTransaction();
-            
-            List<String> users = new ArrayList();
-            UserDAO userdao = daoFactory.getUserDAO();
-            User u=new User();
-            Long i=0L;
-            
-            do{
-                u = userdao.findByUserId(i);
-                String user = u.getUserId() + " " + u.getUsername() + " " + u.getFirstname() + " " + u.getSurname() + "\n";
-                users.add(user);
-                i++;
-            }while(u.getUsername() == null);
-            
-            daoFactory.commitTransaction();*/
-            
             request.setAttribute("loggedadmin", loggedAdmin);
             request.setAttribute("countMessage", " ");
-            //request.setAttribute("user", users);
             request.setAttribute("viewUrl", "adminManagement/home");           
             
         }catch(Exception e){
@@ -243,7 +225,6 @@ public class AdminManagement {
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
 
-
         Logger logger = LogService.getApplicationLogger();
 
         try {
@@ -327,10 +308,22 @@ public class AdminManagement {
             request.setAttribute("adminApplicationMessage", applicationMessage);
             request.setAttribute("viewUrl", "adminManagement/home");
 
-        }catch (Exception e) {
-          logger.log(Level.SEVERE, "Controller Error", e);
-          throw new RuntimeException(e);
-
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Controller Error", e);
+            try {
+                if(daoFactory != null){
+                    daoFactory.rollbackTransaction();
+                }
+            }catch (Throwable t){
+        }
+        throw new RuntimeException(e);
+        } finally {
+            try {
+                if(daoFactory != null) {
+                    daoFactory.closeTransaction();
+                }
+            }catch(Throwable t){
+            }
         }
     }
 
@@ -448,53 +441,4 @@ public class AdminManagement {
             }
         }
     }
-    
-   /* public static void viewOrders (HttpServletRequest request, HttpServletResponse response) {
-        Logger logger = LogService.getApplicationLogger();
-        
-        SessionDAOFactory sessionDAOFactory;
-        DAOFactory daoFactory = null;
-        LoggedAdmin loggedAdmin;
-        String applicationMessage = null;
-
-        try {
-
-            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-            sessionDAOFactory.initSession(request, response);
-
-            LoggedAdminDAO loggedAdminDAO = sessionDAOFactory.getLoggedAdminDAO();
-            loggedAdmin = loggedAdminDAO.find();
-
-            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-            daoFactory.beginTransaction();
-
-            OrdersDAO ordersdao = daoFactory.getOrdersDAO();
-            List<Orders> Listorders = ordersdao.ALLview();
-            
-            daoFactory.commitTransaction();
-            
-            request.setAttribute("loggedAdminOn",loggedAdmin!=null);
-            request.setAttribute("loggedadmin", loggedAdmin);
-            request.setAttribute("Listorders", Listorders);
-            request.setAttribute("adminApplicationMessage", applicationMessage);
-            request.setAttribute("viewUrl", "adminManagement/");
-
-        }catch(Exception e){
-            logger.log(Level.SEVERE, "Controller Error", e);
-            try {
-                if(daoFactory != null){
-                    daoFactory.rollbackTransaction();
-                }
-            }catch (Throwable t){
-        }
-        throw new RuntimeException(e);
-        } finally {
-            try {
-                if(daoFactory != null) {
-                    daoFactory.closeTransaction();
-                }
-            }catch(Throwable t){
-            }
-        }
-    }*/
 }

@@ -35,6 +35,7 @@ public class UserArea {
     public static void viewReg(HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         Logger logger = LogService.getApplicationLogger();
+        String applicationMessage = null;
         
         try{
             
@@ -58,38 +59,37 @@ public class UserArea {
         Logger logger = LogService.getApplicationLogger();
         
         try{
-                sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-                sessionDAOFactory.initSession(request, response);
-                
-                daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-                daoFactory.beginTransaction();
-                             
-                
-                LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-                loggedUser = loggedUserDAO.find();
-                
-                System.out.println(loggedUser.getUsername()); //punto di controllo 1
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
 
-                
-                UserDAO userDAO = daoFactory.getUserDAO();
-                User user = userDAO.findByUserId(loggedUser.getUserId());
-                
-                OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
-                List<Orders> orders = ordersDAO.findByBuyer(user.getUsername());  
-                
-                daoFactory.commitTransaction();
-                
-                System.out.println(user.getFirstname());  //punto di controllo 2
-                
-                //user.setPassword(null);
-                request.setAttribute("user", user);
-                request.setAttribute("loggedOn", loggedUser != null);
-                request.setAttribute("loggedUser", loggedUser);
-                request.setAttribute("actionPage", "account");
-                request.setAttribute("orders", orders);
-                request.setAttribute("viewUrl", "userAreaManagement/view");
-            }
-        catch (Exception e) {
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+
+
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            System.out.println(loggedUser.getUsername()); //punto di controllo 1
+
+
+            UserDAO userDAO = daoFactory.getUserDAO();
+            User user = userDAO.findByUserId(loggedUser.getUserId());
+
+            OrdersDAO ordersDAO = daoFactory.getOrdersDAO();
+            List<Orders> orders = ordersDAO.findByBuyer(user.getUsername());  
+
+            daoFactory.commitTransaction();
+
+            System.out.println(user.getFirstname());  //punto di controllo 2
+
+            //user.setPassword(null);
+            request.setAttribute("user", user);
+            request.setAttribute("loggedOn", loggedUser != null);
+            request.setAttribute("loggedUser", loggedUser);
+            request.setAttribute("actionPage", "account");
+            request.setAttribute("orders", orders);
+            request.setAttribute("viewUrl", "userAreaManagement/view");
+        }catch (Exception e) {
             logger.log(Level.SEVERE, "Controller Error", e);
 
             try {
@@ -152,7 +152,7 @@ public class UserArea {
             try{
                 User user = userDAO.insert(vuser.getUsername(), vuser.getPassword(), vuser.getFirstname(),vuser.getSurname(), vuser.getEmail(),vuser.getAddress(),vuser.getCity(),vuser.getCap());
                
-                applicationMessage="Registrazione completata! " + loggedUser.getUsername();
+                applicationMessage="Registrazione completata! " ;
 
                 daoFactory.commitTransaction(); //IMPORTANTISSIMA
                 
@@ -164,7 +164,7 @@ public class UserArea {
             } catch (DuplicatedObjectException e) {
                 
                 applicationMessage = "Username o utente già esistente";
-                request.setAttribute("viewUrl", "homeManagement/Registrazione.jsp");
+                request.setAttribute("viewUrl", "homeManagement/Registrazione");
             }            
         }
         catch (Exception e) {
@@ -392,6 +392,5 @@ public class UserArea {
             }
         }
     }
-  
 }
   

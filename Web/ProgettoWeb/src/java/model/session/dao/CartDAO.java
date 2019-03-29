@@ -10,5 +10,5 @@ public interface CartDAO {
     public void update(Cart cart);
     public void destroy();
     public Cart find();
-    
+    public void removeId(Cart cart, Long IdRemove);    
 }

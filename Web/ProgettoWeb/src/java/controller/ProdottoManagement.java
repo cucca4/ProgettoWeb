@@ -28,247 +28,249 @@ import model.session.dao.LoggedUserDAO;
 import model.session.mo.LoggedAdmin;
 
 
-
-
 public class ProdottoManagement {
     
     private ProdottoManagement(){
-        
     }
     
     public static void view(HttpServletRequest request, HttpServletResponse response) {
 
-    SessionDAOFactory sessionDAOFactory;
-    LoggedUser loggedUser;
-    DAOFactory daoFactory = null;
-    ProductDAO productDAO;
-    String found = "trovato";
-    Logger logger = LogService.getApplicationLogger();
+        SessionDAOFactory sessionDAOFactory;
+        LoggedUser loggedUser;
+        DAOFactory daoFactory = null;
+        ProductDAO productDAO;
+        String found = "trovato";
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
+
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+
+            String model = request.getParameter("search");
+
+            productDAO = daoFactory.getProductDAO();
+            Product product = productDAO.findByModel(model) ;
+
+            daoFactory.commitTransaction();
+            System.out.println("CHECK POINT 1: " + model + " VALUE.");
+            if(product.getBrand()== null)
+                found = "ERRORE!PRODOTTO NON TROVATO";
+            System.out.println("CHECK POINT 2 " + found);
+
+            if(loggedUser!=null) 
+                request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+                request.setAttribute("loggedOn",loggedUser!=null);
+                request.setAttribute("loggedUser", loggedUser);
+                request.setAttribute("notfoundMessage", found);
+                request.setAttribute("product", product);
+                request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
+
+        } catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          try {
+            if (daoFactory != null) {
+              daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+            }
+          } catch (Throwable t) {
+          }
+          throw new RuntimeException(e);
+
+        } finally {
+          try {
+            if (daoFactory != null) {
+              daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+            }
+          } catch (Throwable t) {
+          }
+        }
+    }
     
-    try {
+    public static void click(HttpServletRequest request, HttpServletResponse response) {
 
-        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-        sessionDAOFactory.initSession(request, response);
+        SessionDAOFactory sessionDAOFactory;
+        LoggedUser loggedUser;
+        DAOFactory daoFactory = null;
+        ProductDAO productDAO;
+        String found = "trovato";
+        Logger logger = LogService.getApplicationLogger();
 
-        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-        loggedUser = loggedUserDAO.find();
+        try {
 
-        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-        daoFactory.beginTransaction();
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
 
-        String model = request.getParameter("search");
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUser = loggedUserDAO.find();
 
-        productDAO = daoFactory.getProductDAO();
-        Product product = productDAO.findByModel(model) ;
+            daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
 
-        daoFactory.commitTransaction();
-        System.out.println("CHECK POINT 1: " + model + " VALUE.");
-        if(product.getBrand()== null)
-            found = "ERRORE!PRODOTTO NON TROVATO";
-        System.out.println("CHECK POINT 2 " + found);
+            String model = request.getParameter("Prod_Id");
+            Long id = Long.parseLong(model);
 
-        if(loggedUser!=null) 
-            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+            productDAO = daoFactory.getProductDAO();
+            Product product = productDAO.findByProdId(id) ;
+
+            daoFactory.commitTransaction();
+            
+            System.out.println("CHECK POINT 1: " + product.getModel() + " VALUE.");
+            
+            if(product.getBrand()== null)
+                found = "ERRORE!PRODOTTO NON TROVATO";
+            
+            System.out.println("CHECK POINT 2 " + found);
+
+            if(loggedUser!=null) 
+                request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+                
             request.setAttribute("loggedOn",loggedUser!=null);
             request.setAttribute("loggedUser", loggedUser);
             request.setAttribute("notfoundMessage", found);
             request.setAttribute("product", product);
             request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
 
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      try {
-        if (daoFactory != null) {
-          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
-        }
-      } catch (Throwable t) {
-      }
-      throw new RuntimeException(e);
+        } catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          try {
+            if (daoFactory != null) {
+              daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+            }
+          } catch (Throwable t) {
+          }
+          throw new RuntimeException(e);
 
-    } finally {
-      try {
-        if (daoFactory != null) {
-          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+        } finally {
+          try {
+            if (daoFactory != null) {
+              daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+            }
+          } catch (Throwable t) {
+          }
         }
-      } catch (Throwable t) {
-      }
     }
-  }
-    
-  public static void click(HttpServletRequest request, HttpServletResponse response) {
 
-    SessionDAOFactory sessionDAOFactory;
-    LoggedUser loggedUser;
-    DAOFactory daoFactory = null;
-    ProductDAO productDAO;
-    String found = "trovato";
-    Logger logger = LogService.getApplicationLogger();
-    
-    try {
+    public static void logon(HttpServletRequest request, HttpServletResponse response) {
 
-        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-        sessionDAOFactory.initSession(request, response);
+        SessionDAOFactory sessionDAOFactory;
+        DAOFactory daoFactory = null;
+        LoggedUser loggedUser;
+        String applicationMessage = null;
+        String found = "trovato";
 
-        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-        loggedUser = loggedUserDAO.find();
+        Logger logger = LogService.getApplicationLogger();
 
-        daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-        daoFactory.beginTransaction();
+        try {
 
-        String model = request.getParameter("Prod_Id");
-        Long id = Long.parseLong(model);
+          sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+          sessionDAOFactory.initSession(request, response);
+
+          LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+          loggedUser = loggedUserDAO.find();
+
+          daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+          daoFactory.beginTransaction();
+
+          String username = request.getParameter("username");
+          String password = request.getParameter("password");
+          String model = (String) request.getParameter("model");
+
+          ProductDAO productDAO = daoFactory.getProductDAO();
+          Product product = productDAO.findByModel(model);
+
+          UserDAO userDAO = daoFactory.getUserDAO();
+          User user = userDAO.findByUsername(username);
+
+          if (user == null || !user.getPassword().equals(password)) {
+            loggedUserDAO.destroy(); //distrugge il cookie perche l'utente/password sono errati
+            applicationMessage = "Username e password errati!";
+            loggedUser=null;
+          } else {
+            loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
+            applicationMessage="Benvenuto " + loggedUser.getUsername();
+          }
+
+          daoFactory.commitTransaction(); //IMPORTANTISSIMA
+
+          if(product.getBrand()== null)
+              found = "ERRORE!PRODOTTO NON TROVATO";
+
+          if(loggedUser!=null) 
+                request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
+                request.setAttribute("loggedOn",loggedUser!=null);
+                request.setAttribute("loggedUser", loggedUser);
+                request.setAttribute("notfoundMessage", found);
+                request.setAttribute("product", product);
+                request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
+
+        } catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          try {
+            if (daoFactory != null) {
+              daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
+            }
+          } catch (Throwable t) {
+          }
+          throw new RuntimeException(e);
+
+        } finally {
+          try {
+            if (daoFactory != null) {
+              daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
+            }
+          } catch (Throwable t) {
+          }
+        }
+    }
+
+    public static void logout(HttpServletRequest request, HttpServletResponse response) {
+
+        SessionDAOFactory sessionDAOFactory;
+        String found = "trovato";
+        Logger logger = LogService.getApplicationLogger();
+
+        try {
+
+            sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
+            sessionDAOFactory.initSession(request, response);
+
+            DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
+            daoFactory.beginTransaction();
+
+            LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
+            loggedUserDAO.destroy();
+
+            String model = (String) request.getParameter("model");
+
+            ProductDAO productDAO = daoFactory.getProductDAO();
+            Product product = productDAO.findByModel(model);
+
+            daoFactory.commitTransaction(); //IMPORTANTISSIMA
+
+            if(product.getBrand()== null)
+                found = "ERRORE!PRODOTTO NON TROVATO";
+
+            request.setAttribute("loggedOn",false);
+            request.setAttribute("loggedUser", null);
+            request.setAttribute("notfoundMessage", found);
+            request.setAttribute("product", product);
+            request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
+
+        } catch (Exception e) {
+          logger.log(Level.SEVERE, "Controller Error", e);
+          throw new RuntimeException(e);
+        }
+    }
+
+  
+    public static void createProduct(HttpServletRequest request, HttpServletResponse response){
         
-        productDAO = daoFactory.getProductDAO();
-        Product product = productDAO.findByProdId(id) ;
-
-        daoFactory.commitTransaction();
-        System.out.println("CHECK POINT 1: " + product.getModel() + " VALUE.");
-        if(product.getBrand()== null)
-            found = "ERRORE!PRODOTTO NON TROVATO";
-        System.out.println("CHECK POINT 2 " + found);
-
-        if(loggedUser!=null) 
-            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("notfoundMessage", found);
-            request.setAttribute("product", product);
-            request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
-
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      try {
-        if (daoFactory != null) {
-          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
-        }
-      } catch (Throwable t) {
-      }
-      throw new RuntimeException(e);
-
-    } finally {
-      try {
-        if (daoFactory != null) {
-          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
-        }
-      } catch (Throwable t) {
-      }
-    }
-  }
-
-  public static void logon(HttpServletRequest request, HttpServletResponse response) {
-
-    SessionDAOFactory sessionDAOFactory;
-    DAOFactory daoFactory = null;
-    LoggedUser loggedUser;
-    String applicationMessage = null;
-    String found = "trovato";
-     
-    Logger logger = LogService.getApplicationLogger();
-    
-    try {
-
-      sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-      sessionDAOFactory.initSession(request, response);
-
-      LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-      loggedUser = loggedUserDAO.find();
-
-      daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-      daoFactory.beginTransaction();
-
-      String username = request.getParameter("username");
-      String password = request.getParameter("password");
-      String model = (String) request.getParameter("model");
-      
-      ProductDAO productDAO = daoFactory.getProductDAO();
-      Product product = productDAO.findByModel(model);
-      
-      UserDAO userDAO = daoFactory.getUserDAO();
-      User user = userDAO.findByUsername(username);
-      
-      if (user == null || !user.getPassword().equals(password)) {
-        loggedUserDAO.destroy(); //distrugge il cookie perche l'utente/password sono errati
-        applicationMessage = "Username e password errati!";
-        loggedUser=null;
-      } else {
-        loggedUser = loggedUserDAO.create(user.getUserId(), user.getUsername());
-        applicationMessage="Benvenuto " + loggedUser.getUsername();
-      }
-
-      daoFactory.commitTransaction(); //IMPORTANTISSIMA
-
-      if(product.getBrand()== null)
-          found = "ERRORE!PRODOTTO NON TROVATO";
-            
-      if(loggedUser!=null) 
-            request.setAttribute("applicationMessage","Benvenuto " + loggedUser.getUsername());
-            request.setAttribute("loggedOn",loggedUser!=null);
-            request.setAttribute("loggedUser", loggedUser);
-            request.setAttribute("notfoundMessage", found);
-            request.setAttribute("product", product);
-            request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
-
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      try {
-        if (daoFactory != null) {
-          daoFactory.rollbackTransaction(); //FONDAMENTALE ALTRIMENTI SI PIANTA IL DB
-        }
-      } catch (Throwable t) {
-      }
-      throw new RuntimeException(e);
-
-    } finally {
-      try {
-        if (daoFactory != null) {
-          daoFactory.closeTransaction(); //IMPORTANTE PERCHE ALTRIMENTI AVREI TROPPE CONNESSIONI FISICHE VERSO IL DB 
-        }
-      } catch (Throwable t) {
-      }
-    }
-  }
-
-  public static void logout(HttpServletRequest request, HttpServletResponse response) {
-
-    SessionDAOFactory sessionDAOFactory;
-    String found = "trovato";
-    Logger logger = LogService.getApplicationLogger();
-
-    try {
-
-        sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
-        sessionDAOFactory.initSession(request, response);
-
-        DAOFactory daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
-        daoFactory.beginTransaction();
-
-        LoggedUserDAO loggedUserDAO = sessionDAOFactory.getLoggedUserDAO();
-        loggedUserDAO.destroy();
-
-        String model = (String) request.getParameter("model");
-
-        ProductDAO productDAO = daoFactory.getProductDAO();
-        Product product = productDAO.findByModel(model);
-
-        daoFactory.commitTransaction(); //IMPORTANTISSIMA
-
-        if(product.getBrand()== null)
-            found = "ERRORE!PRODOTTO NON TROVATO";
-            
-        request.setAttribute("loggedOn",false);
-        request.setAttribute("loggedUser", null);
-        request.setAttribute("notfoundMessage", found);
-        request.setAttribute("product", product);
-        request.setAttribute("viewUrl", "prodottoManagement/prodottoView");
-      
-    } catch (Exception e) {
-      logger.log(Level.SEVERE, "Controller Error", e);
-      throw new RuntimeException(e);
-    }
-  }
-  
-  
-  public static void createProduct(HttpServletRequest request, HttpServletResponse response){
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
         String applicationMessage = null;
@@ -286,7 +288,7 @@ public class ProdottoManagement {
             
             daoFactory = DAOFactory.getDAOFactory(Configuration.DAO_IMPL);
             
-            vprod.setProd_Id( new Long (request.getParameter("Prod_Id")));
+            vprod.setProd_Id(new Long (request.getParameter("Prod_Id")));
             vprod.setBrand(request.getParameter("brand"));
             vprod.setModel(request.getParameter("model"));
             vprod.setDescription(request.getParameter("description"));
@@ -299,7 +301,7 @@ public class ProdottoManagement {
             try{
                 
                 Product product = productDAO.insert(vprod.getProd_Id(),vprod.getBrand(), vprod.getModel(), vprod.getDescription(),vprod.getCategory(), vprod.getPrice(),vprod.getQty());
-                 create ="prodotto "+vprod.getModel()+" creato";
+                create ="prodotto "+vprod.getModel()+" creato";
             } catch (DuplicatedObjectException e) {
                 
                 create = "Codice o prodotto già esistente";
@@ -343,14 +345,15 @@ public class ProdottoManagement {
         }
     }
   
-  public static void deleteProduct(HttpServletRequest request, HttpServletResponse response){
+    public static void deleteProduct(HttpServletRequest request, HttpServletResponse response){
+        
         Logger logger = LogService.getApplicationLogger();
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
         Product product;
         String delete;
-        
         LoggedAdmin loggedAdmin = null;
+        
         try{
             sessionDAOFactory = SessionDAOFactory.getSesssionDAOFactory(Configuration.SESSION_IMPL);
             sessionDAOFactory.initSession(request, response);
@@ -366,6 +369,7 @@ public class ProdottoManagement {
             ProductDAO productDAO = daoFactory.getProductDAO();
             product = productDAO.findByModel(model);
             productDAO.delete(product);
+            
             delete = "prodotto "+model+" eliminato";
             
             OrdersDAO ordersdao = daoFactory.getOrdersDAO();
@@ -404,8 +408,8 @@ public class ProdottoManagement {
     }
     
     public static void update(HttpServletRequest request, HttpServletResponse response) {
-        Logger logger = LogService.getApplicationLogger();
         
+        Logger logger = LogService.getApplicationLogger();
         SessionDAOFactory sessionDAOFactory;
         DAOFactory daoFactory = null;
         LoggedAdmin loggedAdmin;
@@ -471,5 +475,4 @@ public class ProdottoManagement {
             }
         }
     }
-  
 }

@@ -61,10 +61,10 @@
             <div class="container bg-light mx-auto">
                 <div class="pt-2"></div>
                 <div class="pt-2"></div>
-                <% if(applicationMessage == "Username o utente già esistente"){%>
-                <%=applicationMessage%>
-                <%}%>
                 <section>
+                    <% if(applicationMessage == "Username o utente già esistente"){%>
+                        <%=applicationMessage%>
+                    <%}%>
                     <form name="RegistrationForm" action="Dispatcher" method="post">
                         <div class="form-row">
                             <div class="form-group col-md-6">                          
